@@ -38,6 +38,18 @@ loses no message, and an opt-in AI categorizer. Everything runs on the Python
 **standard library** — no network, no services, no external assets in the
 generated HTML, and nothing to `pip install` to use the core.
 
+## Why this exists
+
+Archiving a mailbox — or saving a long conversation one message at a time —
+leaves you with a folder of files that *mostly* overlap: the same thread exported
+five times, each copy a little different. Cleaning it up by hand is slow, and the
+obvious shortcut ("keep the biggest file, delete the rest") is quietly wrong,
+because a forked conversation can tuck a unique reply — or an attachment — into a
+file that isn't the largest. I wanted a tool that could state, *provably*, "these
+are the files to keep; together they hold every message and attachment, and the
+rest are safe to delete." That guarantee is the whole point, and it's what makes
+the deduplication **branch-aware** instead of a size heuristic.
+
 ## Screenshots
 
 <!--
@@ -123,6 +135,31 @@ Each file is reduced to a **set of content keys**:
 A file is **redundant** only if its key-set is a *subset* of another file's
 key-set. Files that aren't a subset of anything are the **branches** worth
 keeping; together they preserve every message and attachment.
+
+```mermaid
+flowchart TB
+    A["thread_main_full<br/>{m1, m2, m3}"]
+    B["forward_with_attachment<br/>{m2, m3, file.pdf}"]
+    C["partial_thread<br/>{m1, m2}"]
+    D["single_message<br/>{m1}"]
+
+    C -->|subset of| A
+    D -->|subset of| A
+
+    A:::keep
+    B:::keep
+    C:::drop
+    D:::drop
+
+    classDef keep fill:#dcfce7,stroke:#16a34a,color:#14532d;
+    classDef drop fill:#eef2f7,stroke:#94a3b8,color:#475569;
+```
+
+Green = kept, grey = redundant. `partial_thread` and `single_message` are strict
+subsets of `thread_main_full`, so they're flagged. `forward_with_attachment`
+overlaps `thread_main_full` heavily and is *smaller* — but it is **not** redundant,
+because it carries a key (`file.pdf`) the bigger file never had. Size can't see
+that; comparing key-sets can. Both branches are kept.
 
 The tool only **recommends** a delete list — it never deletes anything.
 
