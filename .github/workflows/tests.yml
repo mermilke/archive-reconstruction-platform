@@ -32,5 +32,8 @@ jobs:
       - name: Verify the CLI entry point
         run: arc --version
 
+      - name: Byte-compile check (syntax across all modules)
+        run: python -m compileall -q src tests scripts
+
       - name: Run the test suite
         run: python tests/run_all.py

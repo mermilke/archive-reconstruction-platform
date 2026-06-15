@@ -1,0 +1,38 @@
+# Changelog
+
+All notable changes to this project are documented here. The format is based on
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
+adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] — 2026-06-15
+
+First public release. Zero third-party runtime dependencies — the standard
+library does everything in the core.
+
+### Added
+
+- **Branch-aware deduplication** (`arc dedup`). Each file is reduced to a set of
+  content keys (sender + body fingerprint, plus one key per attachment); a file
+  is redundant only when its key-set is a subset of another's. A forked thread
+  that hides a unique reply or attachment is never discarded. Recommends a delete
+  list — it never deletes anything.
+- **Self-contained interactive timelines** (`arc timeline`). One HTML file with
+  tabs, an SVG overview axis, category colours, importance levels, filters,
+  grouped phases, and expandable cards — no external assets.
+- **Real mailbox ingestion**: `.eml` and `.mbox` via the stdlib `email` /
+  `mailbox` modules, plus a stacked `.txt` export format.
+- **Hardened parser**: tolerant of quoted replies, forwarded blocks, signatures,
+  timezone-shifted duplicates, and malformed/folded headers.
+- **Thread-tree reconstruction** (`arc tree`) from `Message-ID` / `In-Reply-To` /
+  `References`, which *verifies* dedup loses no message.
+- **Accumulating SQLite store** (`arc store`) that dedups across runs, formats,
+  and folders.
+- **Folder → timeline** (`arc timeline-threads`) and an editable draft export
+  (`arc ingest`).
+- **Local web UI** (`arc web`): drag-drop an export, see keep/delete, pick
+  threads, and browse the timeline — on the stdlib `http.server`, no framework.
+- **Opt-in LLM categorizer** (`arc organize`, needs `ANTHROPIC_API_KEY`),
+  implemented with stdlib `urllib` so there is still nothing to `pip install`.
+  Every other command is fully offline.
+
+[1.0.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.0.0
