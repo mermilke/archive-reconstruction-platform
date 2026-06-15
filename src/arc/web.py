@@ -276,7 +276,7 @@ PAGE_HTML = r"""<!doctype html>
   .pill{margin-left:auto;font-size:11px;font-weight:600;color:#0369a1;
     background:#e0f2fe;border:1px solid #bae6fd;border-radius:999px;padding:3px 10px}
   main{padding:24px 28px;max-width:1280px;margin:0 auto}
-  .drop{border:2px dashed #cbd5e1;border-radius:var(--radius);background:var(--panel);
+  .drop{display:block;border:2px dashed #cbd5e1;border-radius:var(--radius);background:var(--panel);
     padding:34px;text-align:center;color:var(--muted);transition:.15s;cursor:pointer}
   .drop.hover{border-color:var(--accent);background:#eff6ff;color:var(--accent)}
   .drop b{color:var(--ink)}
