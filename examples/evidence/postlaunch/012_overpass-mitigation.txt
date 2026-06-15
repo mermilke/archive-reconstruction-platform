@@ -1,0 +1,5 @@
+From: Perception ML
+Sent: 2026-01-02
+Subject: Overpass mitigation
+
+Geofence plus a perception patch in shadow mode.

@@ -1,0 +1,47 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated output (timelines are build artifacts, not source)
+timeline.html
+threads_timeline.html
+draft_timeline.html
+draft.json
+ai_timeline.html
+ai_draft.json
+raw_timeline.html
+raw_draft.json
+*.generated.html
+
+# SQLite store (accumulated working data, not source)
+*.db
+arc.db
+
+# Session continuity (working state, not part of the product)
+session_handoff.md
+lessons_learned.md
+
+# Editor, tooling, and OS cruft
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.claude/
+CLAUDE.md
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/

@@ -1,0 +1,5 @@
+From: Sora Kim
+Sent: 2025-04-16
+Subject: Redundant cue added
+
+Haptic seat cue added as a backup to the visual handover.

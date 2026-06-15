@@ -1,0 +1,9 @@
+# Normalize line endings to LF in the repo (keeps the Makefile, shell scripts,
+# and cross-platform CI consistent regardless of the contributor's OS).
+* text=auto eol=lf
+
+# Treat binary assets as binary (no EOL munging) — for the screenshots to come.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary

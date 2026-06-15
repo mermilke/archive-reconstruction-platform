@@ -1,0 +1,6 @@
+From: Lena Ortiz → Program
+Sent: 2025-02-18
+Subject: Roadmap & milestones locked
+Attachments: roadmap.xlsx
+
+Build, validation, beta, and launch milestones agreed.

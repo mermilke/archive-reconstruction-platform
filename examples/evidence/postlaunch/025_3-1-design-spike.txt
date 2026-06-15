@@ -1,0 +1,5 @@
+From: Sora Kim
+Sent: 2026-05-01
+Subject: 3.1 design spike
+
+Design explores the auto lane-change cues.

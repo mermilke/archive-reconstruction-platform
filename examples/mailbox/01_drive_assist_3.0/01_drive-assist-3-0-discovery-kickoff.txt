@@ -1,0 +1,17 @@
+From: Mia Chen <mia.chen@voltera.example>
+Sent: 2024-09-22 08:25
+Subject: RE: Drive Assist 3.0 - discovery kickoff
+
+Will do — leaning toward miles-per-disengagement as the north star.
+
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2024-09-21 11:40
+Subject: RE: Drive Assist 3.0 - discovery kickoff
+
+Great. Tie the findings to a metric we can move so the PRD writes itself later.
+
+From: Mia Chen <mia.chen@voltera.example>
+Sent: 2024-09-12 09:15
+Subject: Drive Assist 3.0 - discovery kickoff
+
+Kicking off discovery on why drivers disengage today. I'll run a diary study with 30 owners over three weeks.

@@ -1,0 +1,7 @@
+From: Sora Kim
+Sent: 2025-01-10
+Subject: Handover animation prototype
+
+Motion prototype for the control handover sequence.
+
+"The 1.5s ramp reads as 'the car is handing back', not 'the car gave up.'"

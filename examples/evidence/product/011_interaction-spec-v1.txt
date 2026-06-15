@@ -1,0 +1,6 @@
+From: Sora Kim → Eng
+Sent: 2024-12-17
+Subject: Interaction spec v1
+Attachments: interaction_spec.pdf
+
+First end-to-end interaction spec for review.

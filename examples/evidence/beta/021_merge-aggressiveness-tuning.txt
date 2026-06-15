@@ -1,0 +1,5 @@
+From: Vehicle Software
+Sent: 2025-11-05
+Subject: Merge-aggressiveness tuning
+
+Calibrated a more natural merge gap-acceptance.

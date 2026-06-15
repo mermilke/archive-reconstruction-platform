@@ -1,0 +1,7 @@
+From: Perception ML
+Sent: 2025-10-21
+Subject: Shadow A/B vs production
+
+rc2 shadow-driven against the shipping model for two weeks.
+
+Significance: Real-road evidence the new model is safe to let drive.

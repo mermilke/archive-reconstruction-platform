@@ -1,0 +1,17 @@
+From: Elena Cruz <elena.cruz@voltera.example>
+Sent: 2025-06-20 14:10
+Subject: RE: Internal fleet - cold start handover bug
+
+Fix confirmed across the fleet. Caught before any customer saw it.
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-05-22 09:00
+Subject: RE: Internal fleet - cold start handover bug
+
+Repro'd. Timing assumes a warm cache; fixing the first-minute path.
+
+From: Elena Cruz <elena.cruz@voltera.example>
+Sent: 2025-05-20 13:25
+Subject: Internal fleet - cold start handover bug
+
+Dogfood is seeing the seat haptic fire a beat early on cold start.

@@ -1,0 +1,17 @@
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-04-18 09:45
+Subject: RE: Network software integration
+
+Availability API is live. Sub-second updates.
+
+From: Nora Fischer <nora.fischer@voltera.example>
+Sent: 2025-03-12 13:15
+Subject: RE: Network software integration
+
+I'll surface live availability in the app once the API is stable.
+
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-03-11 10:00
+Subject: Network software integration
+
+Integrating the chargers with the app's find-and-pay flow.

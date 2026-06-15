@@ -1,0 +1,7 @@
+From: Lena Ortiz
+Sent: 2024-11-26
+Subject: Success metrics defined
+
+Primary metric set to miles-per-disengagement; guardrails on comfort.
+
+"North star: 5x miles-per-disengagement without raising hard-brake events."

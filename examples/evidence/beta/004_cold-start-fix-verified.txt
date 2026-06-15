@@ -1,0 +1,5 @@
+From: Elena Cruz
+Sent: 2025-07-01
+Subject: Cold-start fix verified
+
+Fix confirmed across the fleet.

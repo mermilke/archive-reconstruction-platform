@@ -1,0 +1,23 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-10-14 09:40
+Subject: RE: Question on older-hardware support
+
+Slightly reduced night range on HW3; we'll footnote it.
+
+From: Nora Fischer <nora.fischer@voltera.example>
+Sent: 2025-10-04 11:00
+Subject: RE: Question on older-hardware support
+
+Following up — any HW3 caveats for the launch notes?
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-02-13 10:10
+Subject: RE: Question on older-hardware support
+
+After the compute optimization, HW3 stays in scope. Confirmed.
+
+From: Nora Fischer <nora.fischer@voltera.example>
+Sent: 2024-11-19 15:30
+Subject: Question on older-hardware support
+
+Are we committing to HW3 cars for Drive Assist 3.0, or is this HW4-only?

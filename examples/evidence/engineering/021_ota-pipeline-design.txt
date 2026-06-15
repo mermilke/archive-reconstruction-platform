@@ -1,0 +1,6 @@
+From: Dev Anand
+Sent: 2024-11-18
+Subject: OTA pipeline design
+Attachments: ota_design.pdf
+
+Design for staged, reversible over-the-air delivery.

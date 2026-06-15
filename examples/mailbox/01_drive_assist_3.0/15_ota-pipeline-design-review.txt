@@ -1,0 +1,12 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-01-06 09:05
+Subject: RE: OTA pipeline design review
+
+Looks solid. The rollback path is the part safety will care about most.
+
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2024-11-21 10:20
+Subject: OTA pipeline design review
+Attachments: ota_design.pdf
+
+Design for staged, reversible OTA attached. Percentage targeting with instant rollback.

@@ -1,0 +1,6 @@
+From: Dev Anand, Aisha Bello
+Sent: 2025-11-16
+Subject: Rollout runbook finalized
+Attachments: rollout_runbook.pdf
+
+Step-by-step plan with halt criteria per ring.

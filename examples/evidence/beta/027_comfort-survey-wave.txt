@@ -1,0 +1,6 @@
+From: Mia Chen
+Sent: 2026-02-15
+Subject: Comfort survey wave
+Attachments: comfort_survey.csv
+
+Large survey on ride comfort and trust.

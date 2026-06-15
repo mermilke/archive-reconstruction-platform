@@ -1,0 +1,6 @@
+From: Lena Ortiz, Aisha Bello
+Sent: 2025-06-28
+Subject: Go/no-go criteria published
+Attachments: go_criteria.pdf
+
+The exact metrics that gate each rollout stage.

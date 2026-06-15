@@ -1,0 +1,12 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-05-11 08:30
+Subject: RE: Design freeze - Drive Assist 3.0
+
+Got it — building to this. Variances go through you.
+
+From: Sora Kim <sora.kim@voltera.example>
+Sent: 2025-05-01 17:00
+Subject: Design freeze - Drive Assist 3.0
+Attachments: design_spec_final.pdf
+
+Interaction and visual spec are frozen for build. Final spec attached.

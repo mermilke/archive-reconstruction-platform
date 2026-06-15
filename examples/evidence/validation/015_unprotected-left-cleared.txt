@@ -1,0 +1,9 @@
+From: Caleb Reed → Safety
+Sent: 2025-10-03
+Subject: Unprotected-left cleared
+
+Fix passes the track battery with margin.
+
+"200/200 clean runs after the planner fix."
+
+Significance: Clears the headline safety issue for beta.

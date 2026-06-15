@@ -1,0 +1,8 @@
+From: Tomás Vidal → Validation
+Sent: 2025-07-02
+Subject: Model frozen for validation (rc1)
+Attachments: model_card.pdf
+
+Candidate v3.0-rc1 handed to validation.
+
+Significance: The model build the whole validation campaign runs against.

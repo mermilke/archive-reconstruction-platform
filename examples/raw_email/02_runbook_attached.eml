@@ -1,0 +1,26 @@
+From: Raj Patel <raj.patel@voltera.example>
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Date: Wed, 26 Nov 2025 16:45:00 -0800
+Subject: RE: Drive Assist 3.0 =?utf-8?q?=E2=80=94_canary_go/no-go_=E2=9C=85?=
+Message-ID: <canary-runbook@voltera.example>
+In-Reply-To: <canary-open@voltera.example>
+References: <canary-open@voltera.example>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0086771152686096196=="
+
+--===============0086771152686096196==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Runbook attached. The auto-halt trips if the canary disengagement rate regres=
+ses beyond the beta baseline. Raj
+
+--===============0086771152686096196==
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="rollout_runbook.pdf"
+MIME-Version: 1.0
+
+Uk9MTE9VVCBSVU5CT09LCjEuIDElIGNhbmFyeQoyLiAxMCUgcmluZwouLi4=
+
+--===============0086771152686096196==--

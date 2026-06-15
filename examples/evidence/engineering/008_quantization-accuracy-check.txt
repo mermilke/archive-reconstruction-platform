@@ -1,0 +1,7 @@
+From: Perception ML
+Sent: 2025-07-23
+Subject: Quantization accuracy check
+
+Quantized model verified within tolerance of float.
+
+"INT8 within 0.4% of float on the validation slice."

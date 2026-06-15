@@ -1,0 +1,9 @@
+From: Perception ML
+Sent: 2025-04-07
+Subject: Regression: tunnel false positives
+
+Shadow-mode flags phantom braking entering tunnels.
+
+"Tunnel entrances trigger false positives; the exposure shift is the cause."
+
+Significance: Triggers a data campaign and a two-week slip.

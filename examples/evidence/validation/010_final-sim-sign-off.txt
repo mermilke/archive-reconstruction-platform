@@ -1,0 +1,7 @@
+From: Sofia Marenko
+Sent: 2025-10-03
+Subject: Final sim sign-off
+
+rc3 passes the full campaign with no open criticals.
+
+Significance: Simulation's release recommendation.

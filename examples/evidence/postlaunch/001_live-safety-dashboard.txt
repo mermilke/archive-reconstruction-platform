@@ -1,0 +1,6 @@
+From: Sofia Marenko
+Sent: 2026-01-18
+Subject: Live safety dashboard
+Attachments: metrics_dashboard.png
+
+Real-time MPD and hard-brake metrics per ring.

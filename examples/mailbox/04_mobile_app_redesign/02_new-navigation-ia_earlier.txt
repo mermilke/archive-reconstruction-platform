@@ -1,0 +1,6 @@
+From: Sora Kim <sora.kim@voltera.example>
+Sent: 2025-02-03 14:00
+Subject: New navigation IA
+Attachments: app_ia.fig
+
+New information architecture: four tabs instead of the current seven.

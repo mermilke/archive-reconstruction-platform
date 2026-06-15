@@ -1,0 +1,7 @@
+From: Caleb Reed
+Sent: 2025-07-05
+Subject: Unprotected-left reproduced
+
+Track reproduces the sim's gap-acceptance issue with a soft target.
+
+"Confirmed on track with the foam vehicle; matches sim exactly."

@@ -1,0 +1,7 @@
+From: Simulation
+Sent: 2025-08-30
+Subject: Replay of beta disengagements
+
+Real beta disengagements replayed in sim to confirm fixes.
+
+"Every reported beta disengagement now passes in sim."

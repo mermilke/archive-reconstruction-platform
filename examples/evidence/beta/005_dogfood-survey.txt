@@ -1,0 +1,6 @@
+From: Elena Cruz
+Sent: 2025-07-22
+Subject: Dogfood survey
+Attachments: dogfood_survey.csv
+
+Employees rate trust and comfort weekly.

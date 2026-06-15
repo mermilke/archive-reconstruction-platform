@@ -1,0 +1,7 @@
+From: Dev Anand, Aisha Bello
+Sent: 2025-11-29
+Subject: Canary metrics auto-halt
+
+Auto-pause if canary safety metrics regress.
+
+Significance: Lets the OTA stop itself without a human in the loop.

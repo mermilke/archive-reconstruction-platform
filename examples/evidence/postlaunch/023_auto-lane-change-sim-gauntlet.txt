@@ -1,0 +1,5 @@
+From: Simulation, Vehicle SW
+Sent: 2026-03-01
+Subject: Auto lane-change sim gauntlet
+
+The 3.1 behavior enters the simulation suite.

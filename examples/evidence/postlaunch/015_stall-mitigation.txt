@@ -1,0 +1,5 @@
+From: Dev Anand
+Sent: 2026-01-28
+Subject: Stall mitigation
+
+Failover to a second CDN; stuck cars recovered.

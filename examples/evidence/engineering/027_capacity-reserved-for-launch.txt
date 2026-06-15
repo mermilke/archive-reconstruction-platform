@@ -1,0 +1,5 @@
+From: Dev Anand
+Sent: 2025-10-09
+Subject: Capacity reserved for launch
+
+Headroom provisioned for the rollout window.

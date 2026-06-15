@@ -1,0 +1,5 @@
+From: Vehicle Software
+Sent: 2026-02-02
+Subject: Intersection-handling spike
+
+Engineering spike on the long-tail intersection cases.

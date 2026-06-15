@@ -1,0 +1,9 @@
+From: Raj Patel
+Sent: 2025-01-13
+Subject: Compute budget exceeded
+
+New stack overruns the SoC compute budget at peak.
+
+"Peak load is 118% of budget; we need to prune or offload."
+
+Significance: Risks a hardware floor that would exclude older cars.

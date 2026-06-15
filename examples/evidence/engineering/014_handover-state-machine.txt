@@ -1,0 +1,6 @@
+From: Raj Patel → Sora Kim
+Sent: 2024-11-23
+Subject: Handover state machine
+Attachments: handover_fsm.pdf
+
+Implements the design's engage/warn/handover transitions.

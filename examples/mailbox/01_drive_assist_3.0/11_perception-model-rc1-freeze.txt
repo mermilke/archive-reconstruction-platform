@@ -1,0 +1,12 @@
+From: Sofia Marenko <sofia.marenko@voltera.example>
+Sent: 2025-04-17 14:20
+Subject: RE: Perception model rc1 freeze
+
+Received. Kicking off the full sim campaign tonight.
+
+From: Tomás Vidal <tomas.vidal@voltera.example>
+Sent: 2025-04-17 12:00
+Subject: Perception model rc1 freeze
+Attachments: model_card.pdf
+
+Candidate v3.0-rc1 is frozen and handed to validation. Model card attached.

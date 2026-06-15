@@ -1,0 +1,7 @@
+From: Sora Kim, Aisha Bello
+Sent: 2025-04-09
+Subject: Design review with safety
+
+Safety flags two cues that could be missed in sunlight.
+
+"High-glare conditions wash out the amber cue; needs a redundant channel."

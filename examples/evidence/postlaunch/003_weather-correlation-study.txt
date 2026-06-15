@@ -1,0 +1,5 @@
+From: Telemetry
+Sent: 2026-02-14
+Subject: Weather-correlation study
+
+Disengagements correlate with heavy precipitation, as expected.

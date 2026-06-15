@@ -1,0 +1,7 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-11-24 09:00
+Subject: Drive Assist 3.0 -
+ canary go/no-go
+To: Raj Patel <raj.patel@voltera.example>
+
+Raj, are we go for the 1% canary next week? Lena

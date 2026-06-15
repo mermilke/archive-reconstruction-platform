@@ -1,0 +1,5 @@
+From: Dev Anand
+Sent: 2025-07-22
+Subject: Region failover
+
+Multi-region failover for the update service.

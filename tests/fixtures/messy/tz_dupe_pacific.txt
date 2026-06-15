@@ -1,0 +1,6 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-24 15:30 -0800
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Drive Assist 3.0 - canary go/no-go
+
+Lena, perception rc3 is signed off and the release candidate build is cut. The safety case approval landed Friday. From engineering we are go for the canary. Raj

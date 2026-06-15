@@ -1,0 +1,5 @@
+From: Raj Patel → Cloud
+Sent: 2025-08-04
+Subject: Feature-flagged for beta
+
+Behavior gated behind the staged-rollout flag service.

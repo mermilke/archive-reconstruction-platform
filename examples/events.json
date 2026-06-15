@@ -1,0 +1,2961 @@
+{
+  "title": "Voltera Drive Assist 3.0 — Rollout Timeline",
+  "subtitle": "Fully synthetic sample data for a fictional EV software rollout. No real people, companies, or files.",
+  "categories": [
+    {
+      "id": "research",
+      "label": "UX Research",
+      "color": "#8B5CF6"
+    },
+    {
+      "id": "design",
+      "label": "Product Design",
+      "color": "#6366F1"
+    },
+    {
+      "id": "product",
+      "label": "Product Mgmt",
+      "color": "#1E88E5"
+    },
+    {
+      "id": "perception",
+      "label": "Perception ML",
+      "color": "#EF4444"
+    },
+    {
+      "id": "vehiclesw",
+      "label": "Vehicle Software",
+      "color": "#0EA5E9"
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud Platform",
+      "color": "#14B8A6"
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile App",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "simulation",
+      "label": "Simulation",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "tracktest",
+      "label": "Track Testing",
+      "color": "#10B981"
+    },
+    {
+      "id": "safety",
+      "label": "Safety",
+      "color": "#DC2626"
+    },
+    {
+      "id": "regulatory",
+      "label": "Regulatory",
+      "color": "#A16207"
+    },
+    {
+      "id": "internalfleet",
+      "label": "Internal Fleet",
+      "color": "#2563EB"
+    },
+    {
+      "id": "earlyaccess",
+      "label": "Early Access",
+      "color": "#0284C7"
+    },
+    {
+      "id": "expandedbeta",
+      "label": "Expanded Beta",
+      "color": "#16A34A"
+    },
+    {
+      "id": "ota",
+      "label": "Staged OTA",
+      "color": "#0D9488"
+    },
+    {
+      "id": "marketing",
+      "label": "Marketing",
+      "color": "#DB2777"
+    },
+    {
+      "id": "support",
+      "label": "Support",
+      "color": "#D97706"
+    },
+    {
+      "id": "pr",
+      "label": "Comms / PR",
+      "color": "#9333EA"
+    },
+    {
+      "id": "telemetry",
+      "label": "Telemetry",
+      "color": "#059669"
+    },
+    {
+      "id": "incidents",
+      "label": "Incidents",
+      "color": "#B91C1C"
+    },
+    {
+      "id": "iteration",
+      "label": "Iteration",
+      "color": "#2563EB"
+    }
+  ],
+  "tabs": [
+    {
+      "id": "product",
+      "label": "1. Product & Design",
+      "heading": "Product & design",
+      "description": "Discovery, the product definition, and the design of Drive Assist 3.0.",
+      "filters": true,
+      "summary": "Drive Assist 3.0 starts as a discovery effort: UX research probes why drivers disengage today, product turns that into a definition and success metrics, and design works from early flows to a frozen spec. The signed PRD and the design freeze are the two gates everything downstream builds against.",
+      "groups": [
+        {
+          "id": "research",
+          "label": "UX Research",
+          "category": "research",
+          "events": [
+            {
+              "date": "2024-11-06",
+              "title": "Discovery kickoff",
+              "summary": "Research scopes why drivers disengage from the current assist and where trust breaks down.",
+              "parties": "Mia Chen",
+              "importance": 1,
+              "phase": "Discovery",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/001_discovery-kickoff.txt"
+              }
+            },
+            {
+              "date": "2024-12-12",
+              "title": "Diary study launched",
+              "summary": "30 owners log every disengagement for three weeks.",
+              "parties": "Mia Chen → Panel",
+              "importance": 1,
+              "phase": "Discovery",
+              "attachments": [
+                "study_protocol.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/002_diary-study-launched.txt"
+              }
+            },
+            {
+              "date": "2025-01-24",
+              "title": "Disengagement themes",
+              "summary": "Five recurring triggers identified; lane-change hesitation tops the list.",
+              "parties": "Mia Chen",
+              "importance": 2,
+              "phase": "Discovery",
+              "quote": "Drivers grab the wheel most often during unprotected lane changes.",
+              "attachments": [
+                {
+                  "name": "research_readout.pdf",
+                  "href": "files/research_readout.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/003_disengagement-themes.txt"
+              }
+            },
+            {
+              "date": "2025-03-26",
+              "title": "Trust & handover model",
+              "summary": "A model for how the car should ask for and return control.",
+              "parties": "Mia Chen, Lena Ortiz",
+              "importance": 2,
+              "phase": "Synthesis",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/004_trust-handover-model.txt"
+              }
+            },
+            {
+              "date": "2025-05-05",
+              "title": "Concept testing round 1",
+              "summary": "Three interaction concepts tested; the ambient-cue concept wins.",
+              "parties": "Mia Chen",
+              "importance": 1,
+              "phase": "Synthesis",
+              "quote": "Ambient cues felt 'calmer' than alerts; testers trusted them more.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/005_concept-testing-round-1.txt"
+              }
+            },
+            {
+              "date": "2025-06-23",
+              "title": "Accessibility research",
+              "summary": "Findings on cues for low-vision and hard-of-hearing drivers.",
+              "parties": "Mia Chen → Design",
+              "importance": 1,
+              "phase": "Synthesis",
+              "attachments": [
+                "a11y_findings.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/006_accessibility-research.txt"
+              }
+            },
+            {
+              "date": "2025-10-24",
+              "title": "Beta interview program set up",
+              "summary": "Recurring interview cadence stood up for the beta phase.",
+              "parties": "Mia Chen",
+              "importance": 0,
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/007_beta-interview-program-set-up.txt"
+              }
+            },
+            {
+              "date": "2026-03-14",
+              "title": "Pre-launch perception study",
+              "summary": "Owners rate the near-final experience; trust scores up sharply.",
+              "parties": "Mia Chen",
+              "importance": 2,
+              "quote": "Net trust score moved from +12 to +41 versus today's assist.",
+              "significance": "Validates the handover model right before staged rollout.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/008_pre-launch-perception-study.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "design",
+          "label": "Product Design",
+          "category": "design",
+          "events": [
+            {
+              "date": "2024-10-03",
+              "title": "Design exploration begins",
+              "summary": "First flows for engagement, lane changes, and handover.",
+              "parties": "Sora Kim",
+              "importance": 0,
+              "phase": "Explore",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/009_design-exploration-begins.txt"
+              }
+            },
+            {
+              "date": "2024-11-15",
+              "title": "Cluster & HUD concepts",
+              "summary": "Competing instrument-cluster treatments sketched.",
+              "parties": "Sora Kim",
+              "importance": 1,
+              "phase": "Explore",
+              "attachments": [
+                "cluster_concepts.fig"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/010_cluster-hud-concepts.txt"
+              }
+            },
+            {
+              "date": "2024-12-17",
+              "title": "Interaction spec v1",
+              "summary": "First end-to-end interaction spec for review.",
+              "parties": "Sora Kim → Eng",
+              "importance": 2,
+              "phase": "Define",
+              "attachments": [
+                {
+                  "name": "interaction_spec.pdf",
+                  "href": "files/interaction_spec.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/011_interaction-spec-v1.txt"
+              }
+            },
+            {
+              "date": "2025-01-10",
+              "title": "Handover animation prototype",
+              "summary": "Motion prototype for the control handover sequence.",
+              "parties": "Sora Kim",
+              "importance": 1,
+              "phase": "Define",
+              "quote": "The 1.5s ramp reads as 'the car is handing back', not 'the car gave up.'",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/012_handover-animation-prototype.txt"
+              }
+            },
+            {
+              "date": "2025-02-07",
+              "title": "Sound design pass",
+              "summary": "Earcons designed for engage, warn, and handover.",
+              "parties": "Sora Kim, Audio",
+              "importance": 1,
+              "phase": "Define",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/013_sound-design-pass.txt"
+              }
+            },
+            {
+              "date": "2025-04-09",
+              "title": "Design review with safety",
+              "summary": "Safety flags two cues that could be missed in sunlight.",
+              "parties": "Sora Kim, Aisha Bello",
+              "importance": 2,
+              "phase": "Define",
+              "quote": "High-glare conditions wash out the amber cue; needs a redundant channel.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/014_design-review-with-safety.txt"
+              }
+            },
+            {
+              "date": "2025-04-16",
+              "title": "Redundant cue added",
+              "summary": "Haptic seat cue added as a backup to the visual handover.",
+              "parties": "Sora Kim",
+              "importance": 2,
+              "phase": "Define",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/015_redundant-cue-added.txt"
+              }
+            },
+            {
+              "date": "2025-05-10",
+              "title": "Design freeze",
+              "summary": "Interaction and visual spec frozen for build.",
+              "parties": "Sora Kim → Eng",
+              "importance": 3,
+              "phase": "Freeze",
+              "attachments": [
+                {
+                  "name": "design_spec_final.pdf",
+                  "href": "files/design_spec_final.pdf"
+                }
+              ],
+              "significance": "The spec engineering builds to; later changes need a variance.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/016_design-freeze.txt"
+              }
+            },
+            {
+              "date": "2025-10-05",
+              "title": "Localization handoff",
+              "summary": "Strings and cues handed to localization for 14 markets.",
+              "parties": "Sora Kim → Localization",
+              "importance": 0,
+              "phase": "Freeze",
+              "attachments": [
+                "loc_kit.zip"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/017_localization-handoff.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "product",
+          "label": "Product Management",
+          "category": "product",
+          "events": [
+            {
+              "date": "2024-09-12",
+              "title": "Problem brief circulated",
+              "summary": "One-pager framing the opportunity and bets.",
+              "parties": "Lena Ortiz",
+              "importance": 1,
+              "phase": "Define",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/018_problem-brief-circulated.txt"
+              }
+            },
+            {
+              "date": "2024-11-26",
+              "title": "Success metrics defined",
+              "summary": "Primary metric set to miles-per-disengagement; guardrails on comfort.",
+              "parties": "Lena Ortiz",
+              "importance": 2,
+              "phase": "Define",
+              "quote": "North star: 5x miles-per-disengagement without raising hard-brake events.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/019_success-metrics-defined.txt"
+              }
+            },
+            {
+              "date": "2024-12-24",
+              "title": "PRD signed off",
+              "summary": "Product requirements approved by engineering and safety leadership.",
+              "parties": "Lena Ortiz, Dana Olsen",
+              "importance": 3,
+              "phase": "Define",
+              "attachments": [
+                {
+                  "name": "prd_drive_assist_3.pdf",
+                  "href": "files/prd_drive_assist_3.pdf"
+                }
+              ],
+              "significance": "Authorizes the full build; scope is now contract.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/020_prd-signed-off.txt"
+              }
+            },
+            {
+              "date": "2025-01-14",
+              "title": "Scope cut: no auto lane-change at launch",
+              "summary": "Auto lane-change deferred to a fast-follow to protect the date.",
+              "parties": "Lena Ortiz",
+              "importance": 2,
+              "phase": "Plan",
+              "quote": "We ship driver-confirmed lane changes first; full auto is a 3.1 item.",
+              "significance": "De-risks the launch date by removing the hardest behavior.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/021_scope-cut-no-auto-lane-change-at-launch.txt"
+              }
+            },
+            {
+              "date": "2025-02-18",
+              "title": "Roadmap & milestones locked",
+              "summary": "Build, validation, beta, and launch milestones agreed.",
+              "parties": "Lena Ortiz → Program",
+              "importance": 1,
+              "phase": "Plan",
+              "attachments": [
+                "roadmap.xlsx"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/022_roadmap-milestones-locked.txt"
+              }
+            },
+            {
+              "date": "2025-04-17",
+              "title": "Pricing & packaging decision",
+              "summary": "Feature ships included on new trims, subscription for existing fleet.",
+              "parties": "Lena Ortiz, Finance",
+              "importance": 2,
+              "phase": "Plan",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/023_pricing-packaging-decision.txt"
+              }
+            },
+            {
+              "date": "2025-06-28",
+              "title": "Go/no-go criteria published",
+              "summary": "The exact metrics that gate each rollout stage.",
+              "parties": "Lena Ortiz, Aisha Bello",
+              "importance": 2,
+              "phase": "Plan",
+              "attachments": [
+                {
+                  "name": "go_criteria.pdf",
+                  "href": "files/go_criteria.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/024_go-no-go-criteria-published.txt",
+                "by": "Lena Ortiz",
+                "at": "2025-05-19 11:40"
+              }
+            },
+            {
+              "date": "2025-10-12",
+              "title": "Launch readiness review #1",
+              "summary": "First cross-functional readiness check; two ambers on support load.",
+              "parties": "Lena Ortiz",
+              "importance": 1,
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/025_launch-readiness-review-1.txt"
+              }
+            },
+            {
+              "date": "2025-12-15",
+              "title": "Launch readiness review #2",
+              "summary": "All gates green; recommends opening the staged OTA.",
+              "parties": "Lena Ortiz, Dana Olsen",
+              "importance": 3,
+              "significance": "Formal authorization to begin the production rollout.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/product/026_launch-readiness-review-2.txt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engineering",
+      "label": "2. Engineering",
+      "heading": "Engineering",
+      "description": "Perception ML, vehicle software, cloud platform, and the mobile app.",
+      "filters": true,
+      "summary": "Four engineering tracks build in parallel for the better part of a year. Perception ML retrains the night/rain stack and recovers from a tunnel false-positive regression; vehicle software integrates the planner and the new handover; cloud builds the OTA pipeline and shadow-mode telemetry; and the mobile app adds trip review and the consent flow. Perception sign-off and the release-candidate build are the milestones the rest gate on.",
+      "groups": [
+        {
+          "id": "perception",
+          "label": "Perception ML",
+          "category": "perception",
+          "events": [
+            {
+              "date": "2024-10-31",
+              "title": "Perception 3.0 research kickoff",
+              "summary": "Scope the next-gen stack targeting night and rain performance.",
+              "parties": "Tomás Vidal",
+              "importance": 1,
+              "phase": "Research",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/001_perception-3-0-research-kickoff.txt"
+              }
+            },
+            {
+              "date": "2024-11-21",
+              "title": "Dataset expansion plan",
+              "summary": "Plan to triple the labeled night-driving set; new labeling vendor engaged.",
+              "parties": "Tomás Vidal → Data Ops",
+              "importance": 1,
+              "phase": "Research",
+              "attachments": [
+                "dataset_plan.xlsx"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/002_dataset-expansion-plan.txt"
+              }
+            },
+            {
+              "date": "2025-01-25",
+              "title": "Baseline model benchmarked",
+              "summary": "New backbone beats production on the internal benchmark.",
+              "parties": "Perception ML",
+              "importance": 2,
+              "phase": "Research",
+              "quote": "+7% mAP on the night/rain slice; latency within budget.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/003_baseline-model-benchmarked.txt"
+              }
+            },
+            {
+              "date": "2025-02-21",
+              "title": "Architecture review",
+              "summary": "Cross-team review approves multi-camera fusion.",
+              "parties": "Tomás Vidal, Raj Patel",
+              "importance": 2,
+              "phase": "Build",
+              "attachments": [
+                {
+                  "name": "perception_arch.pdf",
+                  "href": "files/perception_arch.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/004_architecture-review.txt"
+              }
+            },
+            {
+              "date": "2025-04-07",
+              "title": "Regression: tunnel false positives",
+              "summary": "Shadow-mode flags phantom braking entering tunnels.",
+              "parties": "Perception ML",
+              "importance": 2,
+              "phase": "Build",
+              "quote": "Tunnel entrances trigger false positives; the exposure shift is the cause.",
+              "significance": "Triggers a data campaign and a two-week slip.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/005_regression-tunnel-false-positives.txt"
+              }
+            },
+            {
+              "date": "2025-05-28",
+              "title": "Tunnel dataset + retrain",
+              "summary": "Targeted data collected; false positives down 90%.",
+              "parties": "Perception ML",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/006_tunnel-dataset-retrain.txt"
+              }
+            },
+            {
+              "date": "2025-07-02",
+              "title": "Model frozen for validation (rc1)",
+              "summary": "Candidate v3.0-rc1 handed to validation.",
+              "parties": "Tomás Vidal → Validation",
+              "importance": 3,
+              "phase": "Hardening",
+              "attachments": [
+                {
+                  "name": "model_card.pdf",
+                  "href": "files/model_card.pdf"
+                }
+              ],
+              "significance": "The model build the whole validation campaign runs against.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/007_model-frozen-for-validation-rc1.txt"
+              }
+            },
+            {
+              "date": "2025-07-23",
+              "title": "Quantization accuracy check",
+              "summary": "Quantized model verified within tolerance of float.",
+              "parties": "Perception ML",
+              "importance": 1,
+              "phase": "Hardening",
+              "quote": "INT8 within 0.4% of float on the validation slice.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/008_quantization-accuracy-check.txt"
+              }
+            },
+            {
+              "date": "2025-09-10",
+              "title": "Edge-case hardening (rc2)",
+              "summary": "Long-tail cases — debris, animals — addressed.",
+              "parties": "Perception ML",
+              "importance": 1,
+              "phase": "Hardening",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/009_edge-case-hardening-rc2.txt"
+              }
+            },
+            {
+              "date": "2025-10-21",
+              "title": "Shadow A/B vs production",
+              "summary": "rc2 shadow-driven against the shipping model for two weeks.",
+              "parties": "Perception ML",
+              "importance": 2,
+              "phase": "Hardening",
+              "significance": "Real-road evidence the new model is safe to let drive.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/010_shadow-a-b-vs-production.txt"
+              }
+            },
+            {
+              "date": "2025-11-14",
+              "title": "Per-batch camera calibration",
+              "summary": "Calibration across camera batches removes a model bias.",
+              "parties": "Perception ML",
+              "importance": 1,
+              "phase": "Hardening",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/011_per-batch-camera-calibration.txt"
+              }
+            },
+            {
+              "date": "2026-01-01",
+              "title": "Perception sign-off (rc3)",
+              "summary": "Validation accepts rc3 for the beta program.",
+              "parties": "Tomás Vidal, Aisha Bello",
+              "importance": 3,
+              "phase": "Hardening",
+              "significance": "Unblocks beta for the perception stack.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/012_perception-sign-off-rc3.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vehiclesw",
+          "label": "Vehicle Software",
+          "category": "vehiclesw",
+          "events": [
+            {
+              "date": "2024-10-12",
+              "title": "Planner integration branch opened",
+              "summary": "New behavior planner wired into the vehicle stack behind a flag.",
+              "parties": "Raj Patel",
+              "importance": 0,
+              "phase": "Integrate",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/013_planner-integration-branch-opened.txt"
+              }
+            },
+            {
+              "date": "2024-11-23",
+              "title": "Handover state machine",
+              "summary": "Implements the design's engage/warn/handover transitions.",
+              "parties": "Raj Patel → Sora Kim",
+              "importance": 2,
+              "phase": "Integrate",
+              "attachments": [
+                "handover_fsm.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/014_handover-state-machine.txt"
+              }
+            },
+            {
+              "date": "2025-01-13",
+              "title": "Compute budget exceeded",
+              "summary": "New stack overruns the SoC compute budget at peak.",
+              "parties": "Raj Patel",
+              "importance": 2,
+              "phase": "Integrate",
+              "quote": "Peak load is 118% of budget; we need to prune or offload.",
+              "significance": "Risks a hardware floor that would exclude older cars.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/015_compute-budget-exceeded.txt"
+              }
+            },
+            {
+              "date": "2025-03-20",
+              "title": "Optimization recovers headroom",
+              "summary": "Operator fusion and quantization bring peak under budget.",
+              "parties": "Raj Patel",
+              "importance": 2,
+              "phase": "Integrate",
+              "quote": "Back to 86% peak; older HW3 cars stay in scope.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/016_optimization-recovers-headroom.txt"
+              }
+            },
+            {
+              "date": "2025-05-07",
+              "title": "Driver-confirmed lane change",
+              "summary": "Ships the launch-scope lane-change behavior.",
+              "parties": "Vehicle Software",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/017_driver-confirmed-lane-change.txt"
+              }
+            },
+            {
+              "date": "2025-06-16",
+              "title": "Fail-safe & fallback paths",
+              "summary": "Graceful degradation when a sensor drops out.",
+              "parties": "Raj Patel, Aisha Bello",
+              "importance": 2,
+              "phase": "Build",
+              "attachments": [
+                {
+                  "name": "failsafe_design.pdf",
+                  "href": "files/failsafe_design.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/018_fail-safe-fallback-paths.txt"
+              }
+            },
+            {
+              "date": "2025-08-04",
+              "title": "Feature-flagged for beta",
+              "summary": "Behavior gated behind the staged-rollout flag service.",
+              "parties": "Raj Patel → Cloud",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/019_feature-flagged-for-beta.txt"
+              }
+            },
+            {
+              "date": "2025-09-29",
+              "title": "Release candidate cut",
+              "summary": "rc build assembled with frozen perception and planner.",
+              "parties": "Raj Patel",
+              "importance": 3,
+              "phase": "Stabilize",
+              "attachments": [
+                "release_notes.md",
+                {
+                  "name": "ota_manifest.json",
+                  "href": "files/ota_manifest.json"
+                }
+              ],
+              "significance": "The exact build beta and validation run against.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/020_release-candidate-cut.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cloud",
+          "label": "Cloud Platform",
+          "category": "cloud",
+          "events": [
+            {
+              "date": "2024-11-18",
+              "title": "OTA pipeline design",
+              "summary": "Design for staged, reversible over-the-air delivery.",
+              "parties": "Dev Anand",
+              "importance": 1,
+              "phase": "Design",
+              "attachments": [
+                {
+                  "name": "ota_design.pdf",
+                  "href": "files/ota_design.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/021_ota-pipeline-design.txt"
+              }
+            },
+            {
+              "date": "2024-12-20",
+              "title": "Shadow-mode telemetry",
+              "summary": "Pipeline to log model decisions without acting on them.",
+              "parties": "Dev Anand → Perception",
+              "importance": 2,
+              "phase": "Build",
+              "quote": "Shadow mode lets us measure a build on real roads before it drives.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/022_shadow-mode-telemetry.txt"
+              }
+            },
+            {
+              "date": "2025-02-24",
+              "title": "Staged-rollout flag service",
+              "summary": "Percentage-based targeting with instant rollback.",
+              "parties": "Dev Anand",
+              "importance": 2,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/023_staged-rollout-flag-service.txt"
+              }
+            },
+            {
+              "date": "2025-04-08",
+              "title": "Load test: 1M vehicles",
+              "summary": "Simulated fleet check-in storm; one bottleneck found and fixed.",
+              "parties": "Cloud Platform",
+              "importance": 1,
+              "phase": "Build",
+              "quote": "Check-in p99 held under 400ms at 1M simulated cars.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/024_load-test-1m-vehicles.txt"
+              }
+            },
+            {
+              "date": "2025-06-03",
+              "title": "Rollback drill",
+              "summary": "Game-day proves a bad build can be pulled fleet-wide fast.",
+              "parties": "Dev Anand",
+              "importance": 2,
+              "phase": "Harden",
+              "quote": "Full-fleet rollback completed in 22 minutes end to end.",
+              "significance": "The safety net that makes a staged production rollout acceptable.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/025_rollback-drill.txt"
+              }
+            },
+            {
+              "date": "2025-07-22",
+              "title": "Region failover",
+              "summary": "Multi-region failover for the update service.",
+              "parties": "Dev Anand",
+              "importance": 1,
+              "phase": "Harden",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/026_region-failover.txt"
+              }
+            },
+            {
+              "date": "2025-10-09",
+              "title": "Capacity reserved for launch",
+              "summary": "Headroom provisioned for the rollout window.",
+              "parties": "Dev Anand",
+              "importance": 0,
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/027_capacity-reserved-for-launch.txt"
+              }
+            },
+            {
+              "date": "2025-11-29",
+              "title": "Canary metrics auto-halt",
+              "summary": "Auto-pause if canary safety metrics regress.",
+              "parties": "Dev Anand, Aisha Bello",
+              "importance": 2,
+              "phase": "Harden",
+              "significance": "Lets the OTA stop itself without a human in the loop.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/028_canary-metrics-auto-halt.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mobile",
+          "label": "Mobile App",
+          "category": "mobile",
+          "events": [
+            {
+              "date": "2024-12-12",
+              "title": "Consent & enrollment flow",
+              "summary": "In-app flow to opt into the beta and accept terms.",
+              "parties": "Nora Fischer → Legal",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/029_consent-enrollment-flow.txt"
+              }
+            },
+            {
+              "date": "2025-02-12",
+              "title": "Trip review screen",
+              "summary": "Post-drive view of where assist helped or handed back.",
+              "parties": "Nora Fischer",
+              "importance": 2,
+              "phase": "Build",
+              "attachments": [
+                "trip_review.fig"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/030_trip-review-screen.txt"
+              }
+            },
+            {
+              "date": "2025-04-01",
+              "title": "Feedback capture",
+              "summary": "One-tap 'that felt wrong' tied to a trip timestamp.",
+              "parties": "Nora Fischer",
+              "importance": 1,
+              "phase": "Build",
+              "quote": "Owners can flag a moment; it lands on the engineer's dashboard.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/031_feedback-capture.txt"
+              }
+            },
+            {
+              "date": "2025-05-25",
+              "title": "Push: update available",
+              "summary": "Notifies eligible cars an update is ready.",
+              "parties": "Mobile App",
+              "importance": 0,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/032_push-update-available.txt"
+              }
+            },
+            {
+              "date": "2025-07-06",
+              "title": "App store review friction",
+              "summary": "Reviewer questions the driving-feature screenshots.",
+              "parties": "Nora Fischer → Comms",
+              "importance": 1,
+              "phase": "Ship",
+              "quote": "Store reviewer asked us to clarify it's driver-supervised.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/033_app-store-review-friction.txt"
+              }
+            },
+            {
+              "date": "2025-07-29",
+              "title": "Beta build approved",
+              "summary": "App update with beta features clears review.",
+              "parties": "Nora Fischer",
+              "importance": 2,
+              "phase": "Ship",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/034_beta-build-approved.txt"
+              }
+            },
+            {
+              "date": "2025-10-18",
+              "title": "Localized release",
+              "summary": "App shipped in 14 markets ahead of rollout.",
+              "parties": "Nora Fischer",
+              "importance": 1,
+              "phase": "Ship",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/035_localized-release.txt"
+              }
+            },
+            {
+              "date": "2025-12-18",
+              "title": "Launch app live",
+              "summary": "Public app update with Drive Assist 3.0 surfaces.",
+              "parties": "Nora Fischer",
+              "importance": 2,
+              "phase": "Ship",
+              "significance": "Front door for owners on launch day.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/engineering/036_launch-app-live.txt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation",
+      "label": "3. Validation & Safety",
+      "heading": "Validation & safety",
+      "description": "Simulation, closed-track testing, the safety case, and regulatory filings.",
+      "filters": true,
+      "summary": "Validation is the long pole. Simulation runs millions of scenario miles and surfaces an unprotected-left weakness; track testing reproduces and clears it; the safety case assembles the argument and evidence; and regulatory files in the launch markets. The safety case approval and the first market clearance are the gates that release the production rollout.",
+      "groups": [
+        {
+          "id": "simulation",
+          "label": "Simulation",
+          "category": "simulation",
+          "events": [
+            {
+              "date": "2025-01-10",
+              "title": "Scenario library v3",
+              "summary": "Expanded library covering the new behaviors.",
+              "parties": "Sofia Marenko",
+              "importance": 1,
+              "phase": "Build",
+              "attachments": [
+                "scenario_list.xlsx"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/001_scenario-library-v3.txt"
+              }
+            },
+            {
+              "date": "2025-02-23",
+              "title": "First full-stack sim run",
+              "summary": "rc1 driven through 2M scenario miles overnight.",
+              "parties": "Simulation",
+              "importance": 2,
+              "phase": "Run",
+              "quote": "2.1M sim miles; one cluster of failures at unprotected lefts.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/002_first-full-stack-sim-run.txt"
+              }
+            },
+            {
+              "date": "2025-03-27",
+              "title": "Unprotected-left weakness",
+              "summary": "Sim isolates a gap-acceptance bug on unprotected left turns.",
+              "parties": "Sofia Marenko → Vehicle SW",
+              "importance": 2,
+              "phase": "Run",
+              "quote": "The planner accepts gaps a cautious human would reject.",
+              "significance": "Becomes the headline issue track testing must clear.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/003_unprotected-left-weakness.txt"
+              }
+            },
+            {
+              "date": "2025-05-15",
+              "title": "Regression suite green",
+              "summary": "Fix verified across the expanded suite.",
+              "parties": "Simulation",
+              "importance": 1,
+              "phase": "Run",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/004_regression-suite-green.txt"
+              }
+            },
+            {
+              "date": "2025-06-04",
+              "title": "Rare-event resampling",
+              "summary": "Suite reweighted toward the long tail.",
+              "parties": "Sofia Marenko",
+              "importance": 0,
+              "phase": "Run",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/005_rare-event-resampling.txt"
+              }
+            },
+            {
+              "date": "2025-06-25",
+              "title": "Fault-injection campaign",
+              "summary": "Sensor dropouts and degraded compute injected at scale.",
+              "parties": "Sofia Marenko",
+              "importance": 2,
+              "phase": "Run",
+              "attachments": [
+                {
+                  "name": "fault_injection.pdf",
+                  "href": "files/fault_injection.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/006_fault-injection-campaign.txt"
+              }
+            },
+            {
+              "date": "2025-08-08",
+              "title": "Coverage report",
+              "summary": "Scenario coverage mapped to the safety case claims.",
+              "parties": "Simulation → Safety",
+              "importance": 1,
+              "phase": "Report",
+              "attachments": [
+                "coverage_report.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/007_coverage-report.txt"
+              }
+            },
+            {
+              "date": "2025-08-30",
+              "title": "Replay of beta disengagements",
+              "summary": "Real beta disengagements replayed in sim to confirm fixes.",
+              "parties": "Simulation",
+              "importance": 2,
+              "phase": "Run",
+              "quote": "Every reported beta disengagement now passes in sim.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/008_replay-of-beta-disengagements.txt"
+              }
+            },
+            {
+              "date": "2025-09-13",
+              "title": "Sim-to-track correlation",
+              "summary": "Sim outcomes correlated against the track results.",
+              "parties": "Simulation, Track Testing",
+              "importance": 1,
+              "phase": "Report",
+              "attachments": [
+                "sim_track_correlation.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/009_sim-to-track-correlation.txt"
+              }
+            },
+            {
+              "date": "2025-10-03",
+              "title": "Final sim sign-off",
+              "summary": "rc3 passes the full campaign with no open criticals.",
+              "parties": "Sofia Marenko",
+              "importance": 3,
+              "phase": "Report",
+              "significance": "Simulation's release recommendation.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/010_final-sim-sign-off.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "tracktest",
+          "label": "Track Testing",
+          "category": "tracktest",
+          "events": [
+            {
+              "date": "2025-03-23",
+              "title": "Test plan approved",
+              "summary": "Closed-track plan for the new behaviors and edge cases.",
+              "parties": "Caleb Reed, Aisha Bello",
+              "importance": 1,
+              "phase": "Plan",
+              "attachments": [
+                {
+                  "name": "track_test_plan.pdf",
+                  "href": "files/track_test_plan.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/011_test-plan-approved.txt"
+              }
+            },
+            {
+              "date": "2025-04-28",
+              "title": "First track week",
+              "summary": "Baseline runs on the proving ground.",
+              "parties": "Track Testing",
+              "importance": 1,
+              "phase": "Execute",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/012_first-track-week.txt"
+              }
+            },
+            {
+              "date": "2025-07-05",
+              "title": "Unprotected-left reproduced",
+              "summary": "Track reproduces the sim's gap-acceptance issue with a soft target.",
+              "parties": "Caleb Reed",
+              "importance": 2,
+              "phase": "Execute",
+              "quote": "Confirmed on track with the foam vehicle; matches sim exactly.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/013_unprotected-left-reproduced.txt"
+              }
+            },
+            {
+              "date": "2025-08-18",
+              "title": "Wet & low-sun sessions",
+              "summary": "Adverse-condition runs for handover cues.",
+              "parties": "Track Testing",
+              "importance": 1,
+              "phase": "Execute",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/014_wet-low-sun-sessions.txt"
+              }
+            },
+            {
+              "date": "2025-10-03",
+              "title": "Unprotected-left cleared",
+              "summary": "Fix passes the track battery with margin.",
+              "parties": "Caleb Reed → Safety",
+              "importance": 2,
+              "phase": "Execute",
+              "quote": "200/200 clean runs after the planner fix.",
+              "significance": "Clears the headline safety issue for beta.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/015_unprotected-left-cleared.txt"
+              }
+            },
+            {
+              "date": "2025-12-28",
+              "title": "Night cut-in testing",
+              "summary": "Aggressive cut-ins at night with the new perception.",
+              "parties": "Track Testing",
+              "importance": 1,
+              "phase": "Execute",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/016_night-cut-in-testing.txt"
+              }
+            },
+            {
+              "date": "2026-02-04",
+              "title": "Track sign-off",
+              "summary": "Closed-course program complete; no open criticals.",
+              "parties": "Caleb Reed",
+              "importance": 3,
+              "phase": "Execute",
+              "significance": "Track testing's go for on-road beta expansion.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/017_track-sign-off.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "safety",
+          "label": "Safety",
+          "category": "safety",
+          "events": [
+            {
+              "date": "2025-02-08",
+              "title": "Safety case outline",
+              "summary": "Top-level claims-and-evidence structure agreed.",
+              "parties": "Aisha Bello",
+              "importance": 1,
+              "phase": "Argue",
+              "attachments": [
+                "safety_case_outline.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/018_safety-case-outline.txt"
+              }
+            },
+            {
+              "date": "2025-03-27",
+              "title": "Hazard analysis updated",
+              "summary": "HARA refreshed for the new behaviors.",
+              "parties": "Aisha Bello",
+              "importance": 2,
+              "phase": "Argue",
+              "attachments": [
+                {
+                  "name": "hara.pdf",
+                  "href": "files/hara.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/019_hazard-analysis-updated.txt"
+              }
+            },
+            {
+              "date": "2025-05-08",
+              "title": "Threat & misuse review",
+              "summary": "Foreseeable-misuse analysis for the handover.",
+              "parties": "Aisha Bello, Security",
+              "importance": 1,
+              "phase": "Argue",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/020_threat-misuse-review.txt"
+              }
+            },
+            {
+              "date": "2025-06-09",
+              "title": "Operational design domain locked",
+              "summary": "The exact conditions the feature may engage in.",
+              "parties": "Aisha Bello",
+              "importance": 2,
+              "phase": "Argue",
+              "attachments": [
+                {
+                  "name": "odd_definition.pdf",
+                  "href": "files/odd_definition.pdf"
+                }
+              ],
+              "significance": "Bounds where the feature operates — central to the case.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/021_operational-design-domain-locked.txt"
+              }
+            },
+            {
+              "date": "2025-07-27",
+              "title": "Independent safety audit",
+              "summary": "Third-party reviewer probes the argument; two findings.",
+              "parties": "External Auditor",
+              "importance": 2,
+              "phase": "Review",
+              "quote": "Auditor: strengthen the evidence for the degraded-sensor claim.",
+              "significance": "External findings must close before approval.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/022_independent-safety-audit.txt"
+              }
+            },
+            {
+              "date": "2025-08-15",
+              "title": "Human-factors study readout",
+              "summary": "Attention and reaction data feed the driver-monitoring thresholds.",
+              "parties": "Aisha Bello, Mia Chen",
+              "importance": 1,
+              "phase": "Review",
+              "attachments": [
+                "hf_study.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/023_human-factors-study-readout.txt"
+              }
+            },
+            {
+              "date": "2025-08-30",
+              "title": "Findings closed",
+              "summary": "Both audit findings addressed with added evidence.",
+              "parties": "Aisha Bello",
+              "importance": 1,
+              "phase": "Review",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/024_findings-closed.txt"
+              }
+            },
+            {
+              "date": "2025-09-24",
+              "title": "Recall-risk assessment",
+              "summary": "Worst-case mitigation paths reviewed with legal.",
+              "parties": "Aisha Bello, Legal",
+              "importance": 1,
+              "phase": "Review",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/025_recall-risk-assessment.txt"
+              }
+            },
+            {
+              "date": "2025-10-15",
+              "title": "Driver-monitoring threshold set",
+              "summary": "Attention thresholds tuned with human-factors data.",
+              "parties": "Aisha Bello, Mia Chen",
+              "importance": 2,
+              "phase": "Review",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/026_driver-monitoring-threshold-set.txt"
+              }
+            },
+            {
+              "date": "2025-11-12",
+              "title": "Safety case approved",
+              "summary": "Safety leadership approves the case for staged rollout.",
+              "parties": "Aisha Bello, Dana Olsen",
+              "importance": 3,
+              "phase": "Approve",
+              "attachments": [
+                {
+                  "name": "safety_case_final.pdf",
+                  "href": "files/safety_case_final.pdf"
+                }
+              ],
+              "significance": "The central gate: production rollout cannot start without it.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/027_safety-case-approved.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "regulatory",
+          "label": "Regulatory",
+          "category": "regulatory",
+          "events": [
+            {
+              "date": "2025-02-25",
+              "title": "Market applicability matrix",
+              "summary": "Which behaviors are allowed in which launch markets.",
+              "parties": "Kenji Watanabe",
+              "importance": 1,
+              "phase": "Prepare",
+              "attachments": [
+                "reg_matrix.xlsx"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/028_market-applicability-matrix.txt"
+              }
+            },
+            {
+              "date": "2025-04-20",
+              "title": "Pre-submission meeting",
+              "summary": "Early alignment with the lead-market regulator.",
+              "parties": "Kenji Watanabe",
+              "importance": 2,
+              "phase": "Prepare",
+              "quote": "Regulator open to driver-confirmed lane change; wants DMS data.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/029_pre-submission-meeting.txt"
+              }
+            },
+            {
+              "date": "2025-06-10",
+              "title": "Type-approval dossier drafted",
+              "summary": "Technical dossier assembled for the lead market.",
+              "parties": "Kenji Watanabe → Legal",
+              "importance": 1,
+              "phase": "File",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/030_type-approval-dossier-drafted.txt"
+              }
+            },
+            {
+              "date": "2025-07-14",
+              "title": "Dossier filed (lead market)",
+              "summary": "Formal submission lodged.",
+              "parties": "Kenji Watanabe",
+              "importance": 2,
+              "phase": "File",
+              "attachments": [
+                {
+                  "name": "reg_filing.pdf",
+                  "href": "files/reg_filing.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/031_dossier-filed-lead-market.txt"
+              }
+            },
+            {
+              "date": "2025-08-26",
+              "title": "Regulator clarification round",
+              "summary": "Authority requests added human-factors evidence.",
+              "parties": "Kenji Watanabe",
+              "importance": 1,
+              "phase": "File",
+              "quote": "They want the attention-monitoring false-negative rate.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/032_regulator-clarification-round.txt"
+              }
+            },
+            {
+              "date": "2025-10-09",
+              "title": "Lead-market clearance",
+              "summary": "First market approves Drive Assist 3.0 for public release.",
+              "parties": "Kenji Watanabe",
+              "importance": 3,
+              "phase": "Clear",
+              "significance": "Opens the first geography for staged OTA.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/033_lead-market-clearance.txt"
+              }
+            },
+            {
+              "date": "2025-12-19",
+              "title": "Second-wave market filings",
+              "summary": "Filings lodged for the next four markets.",
+              "parties": "Kenji Watanabe",
+              "importance": 1,
+              "phase": "Clear",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/validation/034_second-wave-market-filings.txt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta",
+      "label": "4. Beta Program",
+      "heading": "Beta program",
+      "description": "Internal fleet dogfood, an invite-only early access, and the expanded public beta.",
+      "filters": true,
+      "summary": "Confidence is built in widening circles. The internal fleet dogfoods first and catches a cold-start bug; an invite-only early-access group of owners drives real roads under heavy telemetry; and the expanded beta scales to thousands, surfacing a freeway-merge complaint that drives a tuning fix. The expanded-beta safety review feeds directly into the launch decision.",
+      "groups": [
+        {
+          "id": "internalfleet",
+          "label": "Internal Fleet",
+          "category": "internalfleet",
+          "events": [
+            {
+              "date": "2025-04-24",
+              "title": "Employee fleet enrolled",
+              "summary": "300 employee vehicles opted into dogfood.",
+              "parties": "Elena Cruz",
+              "importance": 1,
+              "phase": "Dogfood",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/001_employee-fleet-enrolled.txt"
+              }
+            },
+            {
+              "date": "2025-05-18",
+              "title": "First dogfood build",
+              "summary": "rc1 pushed to the internal fleet.",
+              "parties": "Elena Cruz → Cloud",
+              "importance": 1,
+              "phase": "Dogfood",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/002_first-dogfood-build.txt"
+              }
+            },
+            {
+              "date": "2025-06-05",
+              "title": "Cold-start handover bug",
+              "summary": "Handover cue misfires in the first minute after wake.",
+              "parties": "Internal Fleet",
+              "importance": 2,
+              "phase": "Dogfood",
+              "quote": "On cold start the seat haptic fires a beat early.",
+              "significance": "Caught internally before any customer saw it.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/003_cold-start-handover-bug.txt"
+              }
+            },
+            {
+              "date": "2025-07-01",
+              "title": "Cold-start fix verified",
+              "summary": "Fix confirmed across the fleet.",
+              "parties": "Elena Cruz",
+              "importance": 1,
+              "phase": "Dogfood",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/004_cold-start-fix-verified.txt"
+              }
+            },
+            {
+              "date": "2025-07-22",
+              "title": "Dogfood survey",
+              "summary": "Employees rate trust and comfort weekly.",
+              "parties": "Elena Cruz",
+              "importance": 0,
+              "phase": "Dogfood",
+              "attachments": [
+                "dogfood_survey.csv"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/005_dogfood-survey.txt"
+              }
+            },
+            {
+              "date": "2025-08-12",
+              "title": "Internal go for early access",
+              "summary": "Fleet metrics clear the bar to invite customers.",
+              "parties": "Elena Cruz, Lena Ortiz",
+              "importance": 2,
+              "phase": "Dogfood",
+              "significance": "Opens the door to the first external drivers.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/006_internal-go-for-early-access.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "earlyaccess",
+          "label": "Early Access",
+          "category": "earlyaccess",
+          "events": [
+            {
+              "date": "2025-07-18",
+              "title": "Early-access cohort selected",
+              "summary": "500 owners chosen across climates and road types.",
+              "parties": "Elena Cruz",
+              "importance": 1,
+              "phase": "Invite",
+              "attachments": [
+                "cohort_criteria.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/007_early-access-cohort-selected.txt"
+              }
+            },
+            {
+              "date": "2025-07-27",
+              "title": "Consent & onboarding",
+              "summary": "Cohort completes the in-app consent and tutorial.",
+              "parties": "Early Access → Mobile",
+              "importance": 1,
+              "phase": "Invite",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/008_consent-onboarding.txt"
+              }
+            },
+            {
+              "date": "2025-08-03",
+              "title": "First customer miles",
+              "summary": "Drive Assist 3.0 on public roads with real owners.",
+              "parties": "Early Access",
+              "importance": 2,
+              "phase": "Drive",
+              "significance": "First non-employee exposure on real roads.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/009_first-customer-miles.txt"
+              }
+            },
+            {
+              "date": "2025-08-17",
+              "title": "Telematics consent refresh",
+              "summary": "Cohort re-consents to expanded data capture.",
+              "parties": "Early Access → Legal",
+              "importance": 0,
+              "phase": "Drive",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/010_telematics-consent-refresh.txt"
+              }
+            },
+            {
+              "date": "2025-08-31",
+              "title": "Weekly telemetry review",
+              "summary": "Disengagements triaged with engineering each week.",
+              "parties": "Elena Cruz, Tomás Vidal",
+              "importance": 1,
+              "phase": "Drive",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/011_weekly-telemetry-review.txt"
+              }
+            },
+            {
+              "date": "2025-09-29",
+              "title": "Cold-climate sub-cohort",
+              "summary": "Snow-market owners added to stress winter conditions.",
+              "parties": "Elena Cruz",
+              "importance": 1,
+              "phase": "Drive",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/012_cold-climate-sub-cohort.txt"
+              }
+            },
+            {
+              "date": "2025-10-07",
+              "title": "Construction-zone reports",
+              "summary": "Owners report hesitancy in long construction zones.",
+              "parties": "Early Access",
+              "importance": 1,
+              "phase": "Drive",
+              "quote": "Cones with no lane lines make it over-cautious.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/013_construction-zone-reports.txt"
+              }
+            },
+            {
+              "date": "2025-11-12",
+              "title": "Construction tuning shipped",
+              "summary": "Targeted update improves cone-zone behavior.",
+              "parties": "Vehicle Software",
+              "importance": 2,
+              "phase": "Drive",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/014_construction-tuning-shipped.txt"
+              }
+            },
+            {
+              "date": "2025-11-20",
+              "title": "Roundabout edge cases",
+              "summary": "Owners report odd lane choice at multi-lane roundabouts.",
+              "parties": "Early Access",
+              "importance": 1,
+              "phase": "Drive",
+              "quote": "Multi-lane roundabouts confuse lane choice on exit.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/015_roundabout-edge-cases.txt"
+              }
+            },
+            {
+              "date": "2025-12-07",
+              "title": "Trust scores trending up",
+              "summary": "Cohort trust metric climbs week over week.",
+              "parties": "Mia Chen",
+              "importance": 1,
+              "phase": "Drive",
+              "quote": "Week-6 trust up 18 points versus week 1.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/016_trust-scores-trending-up.txt"
+              }
+            },
+            {
+              "date": "2025-12-17",
+              "title": "Early-access exit review",
+              "summary": "Cohort metrics support expanding the beta.",
+              "parties": "Elena Cruz, Aisha Bello",
+              "importance": 2,
+              "phase": "Review",
+              "significance": "Greenlights the jump to thousands of cars.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/017_early-access-exit-review.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "expandedbeta",
+          "label": "Expanded Beta",
+          "category": "expandedbeta",
+          "events": [
+            {
+              "date": "2025-10-13",
+              "title": "Expanded beta opens",
+              "summary": "Beta scales from 500 to 8,000 vehicles.",
+              "parties": "Elena Cruz",
+              "importance": 2,
+              "phase": "Scale",
+              "significance": "Largest pre-launch exposure of the feature.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/018_expanded-beta-opens.txt"
+              }
+            },
+            {
+              "date": "2025-10-18",
+              "title": "Onboarding load spike",
+              "summary": "Surge of enrollments stresses the consent service.",
+              "parties": "Cloud Platform",
+              "importance": 1,
+              "phase": "Scale",
+              "quote": "Consent service hit 6x normal; autoscaled cleanly.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/019_onboarding-load-spike.txt"
+              }
+            },
+            {
+              "date": "2025-10-27",
+              "title": "Freeway-merge complaints",
+              "summary": "A cluster of reports about timid freeway merges.",
+              "parties": "Expanded Beta",
+              "importance": 2,
+              "phase": "Scale",
+              "quote": "It waits for huge gaps on busy merges; feels unnatural.",
+              "significance": "The top issue to resolve before public launch.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/020_freeway-merge-complaints.txt"
+              }
+            },
+            {
+              "date": "2025-11-05",
+              "title": "Merge-aggressiveness tuning",
+              "summary": "Calibrated a more natural merge gap-acceptance.",
+              "parties": "Vehicle Software",
+              "importance": 2,
+              "phase": "Scale",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/021_merge-aggressiveness-tuning.txt"
+              }
+            },
+            {
+              "date": "2025-11-10",
+              "title": "Referral waitlist opens",
+              "summary": "Beta owners can refer others; the waitlist swells.",
+              "parties": "Marketing, Beta",
+              "importance": 0,
+              "phase": "Scale",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/022_referral-waitlist-opens.txt"
+              }
+            },
+            {
+              "date": "2025-12-23",
+              "title": "Merge fix validated in beta",
+              "summary": "Complaint rate drops sharply after the update.",
+              "parties": "Elena Cruz",
+              "importance": 1,
+              "phase": "Scale",
+              "quote": "Merge complaints down 80% week over week.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/023_merge-fix-validated-in-beta.txt"
+              }
+            },
+            {
+              "date": "2025-12-29",
+              "title": "Night-merge follow-up",
+              "summary": "Targeted check that the merge fix held at night.",
+              "parties": "Expanded Beta",
+              "importance": 1,
+              "phase": "Scale",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/024_night-merge-follow-up.txt"
+              }
+            },
+            {
+              "date": "2026-01-13",
+              "title": "A/B on cue timing",
+              "summary": "Two handover-timing variants tested in the field.",
+              "parties": "Mia Chen, Vehicle SW",
+              "importance": 1,
+              "phase": "Scale",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/025_a-b-on-cue-timing.txt"
+              }
+            },
+            {
+              "date": "2026-02-11",
+              "title": "Beta safety metrics report",
+              "summary": "Miles-per-disengagement up 4.6x with stable hard-braking.",
+              "parties": "Aisha Bello",
+              "importance": 2,
+              "phase": "Review",
+              "quote": "4.6x MPD, hard-brake events flat — within launch criteria.",
+              "attachments": [
+                {
+                  "name": "beta_metrics.pdf",
+                  "href": "files/beta_metrics.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/026_beta-safety-metrics-report.txt"
+              }
+            },
+            {
+              "date": "2026-02-15",
+              "title": "Comfort survey wave",
+              "summary": "Large survey on ride comfort and trust.",
+              "parties": "Mia Chen",
+              "importance": 1,
+              "phase": "Review",
+              "attachments": [
+                "comfort_survey.csv"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/027_comfort-survey-wave.txt"
+              }
+            },
+            {
+              "date": "2026-03-02",
+              "title": "Expanded-beta sign-off",
+              "summary": "Beta meets every go criterion for staged rollout.",
+              "parties": "Elena Cruz, Lena Ortiz",
+              "importance": 3,
+              "phase": "Review",
+              "significance": "Feeds straight into the launch go/no-go.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/beta/028_expanded-beta-sign-off.txt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rollout",
+      "label": "5. Rollout & Launch",
+      "heading": "Rollout & launch",
+      "description": "The staged production OTA, marketing, support readiness, and external comms.",
+      "filters": true,
+      "summary": "The production rollout goes out in widening rings — 1% → 10% → 50% → 100% — each gated on live safety telemetry, with a brief pause at 10% to chase a metric blip. Marketing builds the story and reveals on launch day, support staffs and trains for the wave, and comms manages press and a measured response to early scrutiny. Reaching 100% availability is the finish line of the program.",
+      "groups": [
+        {
+          "id": "ota",
+          "label": "Staged OTA",
+          "category": "ota",
+          "events": [
+            {
+              "date": "2025-11-16",
+              "title": "Rollout runbook finalized",
+              "summary": "Step-by-step plan with halt criteria per ring.",
+              "parties": "Dev Anand, Aisha Bello",
+              "importance": 1,
+              "phase": "Prep",
+              "attachments": [
+                {
+                  "name": "rollout_runbook.pdf",
+                  "href": "files/rollout_runbook.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/001_rollout-runbook-finalized.txt"
+              }
+            },
+            {
+              "date": "2025-11-19",
+              "title": "1% canary live",
+              "summary": "First production ring receives Drive Assist 3.0.",
+              "parties": "Staged OTA",
+              "importance": 3,
+              "phase": "1%",
+              "quote": "Canary safety metrics matched beta within noise.",
+              "significance": "The feature is now in customers' hands in production.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/002_1-canary-live.txt"
+              }
+            },
+            {
+              "date": "2025-11-22",
+              "title": "10% ring",
+              "summary": "Rollout widens to 10% of eligible vehicles.",
+              "parties": "Staged OTA",
+              "importance": 2,
+              "phase": "10%",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/003_10-ring.txt"
+              }
+            },
+            {
+              "date": "2026-01-03",
+              "title": "Auto-halt at 10%",
+              "summary": "A disengagement-rate blip trips the auto-halt.",
+              "parties": "Cloud Platform",
+              "importance": 2,
+              "phase": "10%",
+              "quote": "A regional weather event spiked disengagements; auto-halt worked.",
+              "significance": "First real test of the self-stopping rollout.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/004_auto-halt-at-10.txt"
+              }
+            },
+            {
+              "date": "2026-01-09",
+              "title": "Resumed after analysis",
+              "summary": "Blip traced to fog, not the build; rollout resumes.",
+              "parties": "Dev Anand, Tomás Vidal",
+              "importance": 1,
+              "phase": "10%",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/005_resumed-after-analysis.txt"
+              }
+            },
+            {
+              "date": "2026-01-14",
+              "title": "50% ring",
+              "summary": "Half the eligible fleet now updated.",
+              "parties": "Staged OTA",
+              "importance": 2,
+              "phase": "50%",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/006_50-ring.txt"
+              }
+            },
+            {
+              "date": "2026-01-30",
+              "title": "Hold for holiday traffic",
+              "summary": "Brief planned hold over peak travel days.",
+              "parties": "Staged OTA",
+              "importance": 0,
+              "phase": "50%",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/007_hold-for-holiday-traffic.txt"
+              }
+            },
+            {
+              "date": "2026-02-07",
+              "title": "100% availability",
+              "summary": "Drive Assist 3.0 available to the full eligible fleet.",
+              "parties": "Staged OTA",
+              "importance": 3,
+              "phase": "100%",
+              "significance": "Rollout complete — the program's finish line.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/008_100-availability.txt",
+                "by": "Dev Anand",
+                "at": "2025-12-19 12:05"
+              }
+            }
+          ]
+        },
+        {
+          "id": "marketing",
+          "label": "Marketing",
+          "category": "marketing",
+          "events": [
+            {
+              "date": "2025-10-12",
+              "title": "Positioning & narrative",
+              "summary": "Story centers on 'calmer, more trustworthy assist'.",
+              "parties": "Marcus Hale",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/009_positioning-narrative.txt"
+              }
+            },
+            {
+              "date": "2025-11-13",
+              "title": "Demo film shoot",
+              "summary": "Hero film capturing the handover experience.",
+              "parties": "Marketing",
+              "importance": 1,
+              "phase": "Build",
+              "attachments": [
+                "film_brief.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/010_demo-film-shoot.txt"
+              }
+            },
+            {
+              "date": "2026-01-13",
+              "title": "Site & release assets",
+              "summary": "Launch page and creative locked.",
+              "parties": "Marketing",
+              "importance": 1,
+              "phase": "Build",
+              "attachments": [
+                {
+                  "name": "press_kit.zip",
+                  "href": "files/press_kit.zip"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/011_site-release-assets.txt"
+              }
+            },
+            {
+              "date": "2026-02-04",
+              "title": "Owner email sequence",
+              "summary": "Staged email plan matched to the OTA rings.",
+              "parties": "Marketing → CRM",
+              "importance": 0,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/012_owner-email-sequence.txt"
+              }
+            },
+            {
+              "date": "2026-02-18",
+              "title": "Launch-day reveal",
+              "summary": "Feature announced as the canary goes live.",
+              "parties": "Marcus Hale",
+              "importance": 3,
+              "phase": "Launch",
+              "quote": "Reveal drove record traffic to the configurator.",
+              "significance": "Public unveiling of Drive Assist 3.0.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/013_launch-day-reveal.txt"
+              }
+            },
+            {
+              "date": "2026-02-27",
+              "title": "Owner explainer push",
+              "summary": "How-it-works content to the updated fleet.",
+              "parties": "Marketing",
+              "importance": 1,
+              "phase": "Launch",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/014_owner-explainer-push.txt"
+              }
+            },
+            {
+              "date": "2026-03-14",
+              "title": "Availability moment",
+              "summary": "Full-availability announcement to all owners.",
+              "parties": "Marcus Hale",
+              "importance": 2,
+              "phase": "Launch",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/015_availability-moment.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "support",
+          "label": "Support",
+          "category": "support",
+          "events": [
+            {
+              "date": "2025-12-12",
+              "title": "Support readiness plan",
+              "summary": "Staffing and tooling plan for the rollout wave.",
+              "parties": "Priya Iyer",
+              "importance": 1,
+              "phase": "Ready",
+              "attachments": [
+                "support_plan.xlsx"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/016_support-readiness-plan.txt"
+              }
+            },
+            {
+              "date": "2026-01-07",
+              "title": "Agent training",
+              "summary": "Agents trained on the feature and handover model.",
+              "parties": "Priya Iyer",
+              "importance": 1,
+              "phase": "Ready",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/017_agent-training.txt"
+              }
+            },
+            {
+              "date": "2026-01-25",
+              "title": "Knowledge base published",
+              "summary": "Owner-facing articles and an internal runbook live.",
+              "parties": "Priya Iyer → Web",
+              "importance": 1,
+              "phase": "Ready",
+              "attachments": [
+                {
+                  "name": "kb_runbook.pdf",
+                  "href": "files/kb_runbook.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/018_knowledge-base-published.txt"
+              }
+            },
+            {
+              "date": "2026-02-04",
+              "title": "Day-1 contact spike",
+              "summary": "Questions surge as the canary lands; within forecast.",
+              "parties": "Support",
+              "importance": 2,
+              "phase": "Live",
+              "quote": "Contacts +35% day one, staffed for +50%; no backlog.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/019_day-1-contact-spike.txt"
+              }
+            },
+            {
+              "date": "2026-02-11",
+              "title": "Top issue: handover confusion",
+              "summary": "Most contacts are about why the car handed back.",
+              "parties": "Priya Iyer → Product",
+              "importance": 2,
+              "phase": "Live",
+              "quote": "People want to know why it handed control back in fog.",
+              "significance": "Drives an in-app explainer and a KB update.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/020_top-issue-handover-confusion.txt"
+              }
+            },
+            {
+              "date": "2026-02-16",
+              "title": "In-app explainer shipped",
+              "summary": "Contextual explanation reduces repeat contacts.",
+              "parties": "Mobile App",
+              "importance": 1,
+              "phase": "Live",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/021_in-app-explainer-shipped.txt"
+              }
+            },
+            {
+              "date": "2026-02-24",
+              "title": "Support load normalizes",
+              "summary": "Contact rate settles to baseline post-100%.",
+              "parties": "Priya Iyer",
+              "importance": 1,
+              "phase": "Live",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/022_support-load-normalizes.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pr",
+          "label": "Comms / PR",
+          "category": "pr",
+          "events": [
+            {
+              "date": "2025-12-04",
+              "title": "Press strategy locked",
+              "summary": "Embargoed briefings and Q&A prepared.",
+              "parties": "Marcus Hale, Legal",
+              "importance": 1,
+              "phase": "Prep",
+              "attachments": [
+                "press_strategy.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/023_press-strategy-locked.txt"
+              }
+            },
+            {
+              "date": "2026-01-02",
+              "title": "Analyst pre-briefs",
+              "summary": "Background sessions with industry analysts.",
+              "parties": "Comms",
+              "importance": 0,
+              "phase": "Prep",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/024_analyst-pre-briefs.txt"
+              }
+            },
+            {
+              "date": "2026-01-09",
+              "title": "Embargo lifts",
+              "summary": "Coverage goes live alongside the canary.",
+              "parties": "Marcus Hale",
+              "importance": 2,
+              "phase": "Launch",
+              "quote": "Largely positive; several outlets praised the calmer handover.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/025_embargo-lifts.txt"
+              }
+            },
+            {
+              "date": "2026-01-13",
+              "title": "Scrutiny on auto-halt",
+              "summary": "A report questions the 10% pause.",
+              "parties": "Comms",
+              "importance": 2,
+              "phase": "Manage",
+              "quote": "Outlet framed the auto-halt as a 'stumble'.",
+              "significance": "Tests the comms response to rollout transparency.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/026_scrutiny-on-auto-halt.txt"
+              }
+            },
+            {
+              "date": "2026-01-14",
+              "title": "Transparency post",
+              "summary": "Engineering blog explains the auto-halt as designed.",
+              "parties": "Marcus Hale, Dev Anand",
+              "importance": 2,
+              "phase": "Manage",
+              "quote": "We framed the halt as the safety net working, not failing.",
+              "attachments": [
+                {
+                  "name": "eng_blog_autohalt.pdf",
+                  "href": "files/eng_blog_autohalt.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/027_transparency-post.txt"
+              }
+            },
+            {
+              "date": "2026-01-19",
+              "title": "Narrative recovers",
+              "summary": "Follow-up coverage adopts the 'safety net' framing.",
+              "parties": "Comms",
+              "importance": 1,
+              "phase": "Manage",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/028_narrative-recovers.txt"
+              }
+            },
+            {
+              "date": "2026-02-01",
+              "title": "Availability press note",
+              "summary": "Short note marks full availability.",
+              "parties": "Comms",
+              "importance": 1,
+              "phase": "Manage",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/rollout/029_availability-press-note.txt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "postlaunch",
+      "label": "6. Post-Launch",
+      "heading": "Post-launch",
+      "description": "Fleet telemetry, incident response, and the first iteration cycle.",
+      "filters": true,
+      "summary": "After 100%, the work shifts to watching and improving. Telemetry confirms the headline metric holds at fleet scale; an incident track handles a localized phantom-braking cluster and a CDN-related update stall with published post-mortems; and iteration kicks off 3.1, including the auto lane-change that was cut from launch. The 3.1 kickoff closes the loop back to product.",
+      "groups": [
+        {
+          "id": "telemetry",
+          "label": "Telemetry",
+          "category": "telemetry",
+          "events": [
+            {
+              "date": "2026-01-18",
+              "title": "Live safety dashboard",
+              "summary": "Real-time MPD and hard-brake metrics per ring.",
+              "parties": "Sofia Marenko",
+              "importance": 1,
+              "phase": "Watch",
+              "attachments": [
+                "metrics_dashboard.png"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/001_live-safety-dashboard.txt"
+              }
+            },
+            {
+              "date": "2026-01-29",
+              "title": "Fleet metric holds",
+              "summary": "Miles-per-disengagement at 100% matches beta.",
+              "parties": "Telemetry",
+              "importance": 2,
+              "phase": "Watch",
+              "quote": "Fleet MPD 4.5x — beta held at scale.",
+              "significance": "Confirms the core bet survived going wide.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/002_fleet-metric-holds.txt"
+              }
+            },
+            {
+              "date": "2026-02-14",
+              "title": "Weather-correlation study",
+              "summary": "Disengagements correlate with heavy precipitation, as expected.",
+              "parties": "Telemetry",
+              "importance": 1,
+              "phase": "Watch",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/003_weather-correlation-study.txt"
+              }
+            },
+            {
+              "date": "2026-02-26",
+              "title": "New-year traffic baseline",
+              "summary": "Metrics re-baselined after holiday traffic patterns.",
+              "parties": "Telemetry",
+              "importance": 0,
+              "phase": "Watch",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/004_new-year-traffic-baseline.txt"
+              }
+            },
+            {
+              "date": "2026-03-06",
+              "title": "Long-tail intersection report",
+              "summary": "Rare multi-way-stop hesitations flagged for iteration.",
+              "parties": "Telemetry → Iteration",
+              "importance": 1,
+              "phase": "Watch",
+              "attachments": [
+                {
+                  "name": "longtail_report.pdf",
+                  "href": "files/longtail_report.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/005_long-tail-intersection-report.txt"
+              }
+            },
+            {
+              "date": "2026-04-04",
+              "title": "Per-market metric split",
+              "summary": "Safety metrics broken out by market for regulators.",
+              "parties": "Telemetry → Regulatory",
+              "importance": 1,
+              "phase": "Report",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/006_per-market-metric-split.txt"
+              }
+            },
+            {
+              "date": "2026-04-18",
+              "title": "Monthly safety report",
+              "summary": "First full month at full availability summarized.",
+              "parties": "Aisha Bello",
+              "importance": 2,
+              "phase": "Report",
+              "attachments": [
+                {
+                  "name": "monthly_safety.pdf",
+                  "href": "files/monthly_safety.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/007_monthly-safety-report.txt"
+              }
+            },
+            {
+              "date": "2026-06-11",
+              "title": "Comfort-metric regression watch",
+              "summary": "New tuning watched for comfort side effects.",
+              "parties": "Telemetry",
+              "importance": 0,
+              "phase": "Watch",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/008_comfort-metric-regression-watch.txt"
+              }
+            },
+            {
+              "date": "2026-06-19",
+              "title": "Disengagement taxonomy v2",
+              "summary": "Refined labels for why drivers take over.",
+              "parties": "Sofia Marenko",
+              "importance": 1,
+              "phase": "Report",
+              "attachments": [
+                {
+                  "name": "disengagement_taxonomy.pdf",
+                  "href": "files/disengagement_taxonomy.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/009_disengagement-taxonomy-v2.txt"
+              }
+            },
+            {
+              "date": "2026-06-26",
+              "title": "Quarter retro metrics",
+              "summary": "Quarter-over-quarter trends compiled for leadership.",
+              "parties": "Sofia Marenko",
+              "importance": 1,
+              "phase": "Report",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/010_quarter-retro-metrics.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "incidents",
+          "label": "Incidents",
+          "category": "incidents",
+          "events": [
+            {
+              "date": "2025-12-24",
+              "title": "Phantom-braking cluster",
+              "summary": "A localized spike near one overpass design.",
+              "parties": "On-call",
+              "importance": 2,
+              "phase": "Respond",
+              "quote": "Repeated hard-brakes at one overpass; geofenced within hours.",
+              "significance": "First post-launch incident; contained without a recall.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/011_phantom-braking-cluster.txt"
+              }
+            },
+            {
+              "date": "2026-01-02",
+              "title": "Overpass mitigation",
+              "summary": "Geofence plus a perception patch in shadow mode.",
+              "parties": "Perception ML",
+              "importance": 1,
+              "phase": "Respond",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/012_overpass-mitigation.txt"
+              }
+            },
+            {
+              "date": "2026-01-11",
+              "title": "Phantom-braking post-mortem",
+              "summary": "Blameless review; data campaign queued for 3.1.",
+              "parties": "Aisha Bello",
+              "importance": 2,
+              "phase": "Review",
+              "attachments": [
+                {
+                  "name": "postmortem_overpass.pdf",
+                  "href": "files/postmortem_overpass.pdf"
+                }
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/013_phantom-braking-post-mortem.txt"
+              }
+            },
+            {
+              "date": "2026-01-26",
+              "title": "Update-stall incident",
+              "summary": "A CDN edge fault stalls updates in one region.",
+              "parties": "Cloud Platform",
+              "importance": 2,
+              "phase": "Respond",
+              "quote": "3% of a region stuck mid-update; rolled forward cleanly.",
+              "significance": "No driving impact, but a delivery-reliability gap.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/014_update-stall-incident.txt"
+              }
+            },
+            {
+              "date": "2026-01-28",
+              "title": "Stall mitigation",
+              "summary": "Failover to a second CDN; stuck cars recovered.",
+              "parties": "Dev Anand",
+              "importance": 1,
+              "phase": "Respond",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/015_stall-mitigation.txt"
+              }
+            },
+            {
+              "date": "2026-02-02",
+              "title": "Update-stall post-mortem",
+              "summary": "Adds multi-CDN as a launch-blocker for future OTAs.",
+              "parties": "Dev Anand",
+              "importance": 1,
+              "phase": "Review",
+              "attachments": [
+                "postmortem_cdn.pdf"
+              ],
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/016_update-stall-post-mortem.txt"
+              }
+            },
+            {
+              "date": "2026-03-17",
+              "title": "Incident trend review",
+              "summary": "Two incidents in two months, both contained; trend flat.",
+              "parties": "Aisha Bello",
+              "importance": 1,
+              "phase": "Review",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/017_incident-trend-review.txt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "iteration",
+          "label": "Iteration",
+          "category": "iteration",
+          "events": [
+            {
+              "date": "2025-12-26",
+              "title": "3.1 backlog groomed",
+              "summary": "Beta and incident learnings sorted into the next cycle.",
+              "parties": "Lena Ortiz",
+              "importance": 1,
+              "phase": "Plan",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/018_3-1-backlog-groomed.txt"
+              }
+            },
+            {
+              "date": "2026-01-11",
+              "title": "Auto lane-change resumes",
+              "summary": "The launch-cut behavior re-enters active development.",
+              "parties": "Vehicle Software",
+              "importance": 2,
+              "phase": "Build",
+              "quote": "Full auto lane-change is the headline of 3.1.",
+              "significance": "Brings back the feature deferred to protect the launch date.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/019_auto-lane-change-resumes.txt"
+              }
+            },
+            {
+              "date": "2026-01-19",
+              "title": "Overpass data campaign",
+              "summary": "Targeted collection from the post-mortem ships to labeling.",
+              "parties": "Perception ML",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/020_overpass-data-campaign.txt"
+              }
+            },
+            {
+              "date": "2026-01-26",
+              "title": "Comfort tuning experiment",
+              "summary": "Field experiment on smoother deceleration profiles.",
+              "parties": "Vehicle SW, Mia Chen",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/021_comfort-tuning-experiment.txt"
+              }
+            },
+            {
+              "date": "2026-02-02",
+              "title": "Intersection-handling spike",
+              "summary": "Engineering spike on the long-tail intersection cases.",
+              "parties": "Vehicle Software",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/022_intersection-handling-spike.txt"
+              }
+            },
+            {
+              "date": "2026-03-01",
+              "title": "Auto lane-change sim gauntlet",
+              "summary": "The 3.1 behavior enters the simulation suite.",
+              "parties": "Simulation, Vehicle SW",
+              "importance": 1,
+              "phase": "Build",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/023_auto-lane-change-sim-gauntlet.txt"
+              }
+            },
+            {
+              "date": "2026-04-17",
+              "title": "3.1 scope review",
+              "summary": "Cross-functional review sets the 3.1 commitment.",
+              "parties": "Lena Ortiz, Raj Patel",
+              "importance": 2,
+              "phase": "Plan",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/024_3-1-scope-review.txt"
+              }
+            },
+            {
+              "date": "2026-05-01",
+              "title": "3.1 design spike",
+              "summary": "Design explores the auto lane-change cues.",
+              "parties": "Sora Kim",
+              "importance": 1,
+              "phase": "Plan",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/025_3-1-design-spike.txt"
+              }
+            },
+            {
+              "date": "2026-05-08",
+              "title": "3.1 kickoff",
+              "summary": "Next release formally kicks off; cycle begins again.",
+              "parties": "Lena Ortiz",
+              "importance": 3,
+              "phase": "Plan",
+              "significance": "Closes the loop from launch learnings back into product.",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/026_3-1-kickoff.txt"
+              }
+            },
+            {
+              "date": "2026-05-11",
+              "title": "3.1 safety pre-read",
+              "summary": "Early safety framing for the 3.1 behaviors.",
+              "parties": "Aisha Bello",
+              "importance": 1,
+              "phase": "Plan",
+              "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": "examples/evidence/postlaunch/027_3-1-safety-pre-read.txt"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

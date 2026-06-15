@@ -1,0 +1,12 @@
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-11-08 11:20
+Subject: RE: BMS 2.0 sign-off
+
+Safety concurs. No open items on the pack side.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-09-24 10:00
+Subject: BMS 2.0 sign-off
+Attachments: bms_validation.pdf
+
+BMS 2.0 passed validation. Recommending it for the next OTA train.

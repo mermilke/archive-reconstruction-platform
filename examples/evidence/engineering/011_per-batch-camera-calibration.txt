@@ -1,0 +1,5 @@
+From: Perception ML
+Sent: 2025-11-14
+Subject: Per-batch camera calibration
+
+Calibration across camera batches removes a model bias.

@@ -1,0 +1,8 @@
+From: Sora Kim → Eng
+Sent: 2025-05-10
+Subject: Design freeze
+Attachments: design_spec_final.pdf
+
+Interaction and visual spec frozen for build.
+
+Significance: The spec engineering builds to; later changes need a variance.

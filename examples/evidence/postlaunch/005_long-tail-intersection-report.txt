@@ -1,0 +1,6 @@
+From: Telemetry → Iteration
+Sent: 2026-03-06
+Subject: Long-tail intersection report
+Attachments: longtail_report.pdf
+
+Rare multi-way-stop hesitations flagged for iteration.

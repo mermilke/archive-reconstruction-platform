@@ -1,0 +1,6 @@
+From: Raj Patel, Aisha Bello
+Sent: 2025-06-16
+Subject: Fail-safe & fallback paths
+Attachments: failsafe_design.pdf
+
+Graceful degradation when a sensor drops out.

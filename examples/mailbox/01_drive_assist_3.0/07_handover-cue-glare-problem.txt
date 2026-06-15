@@ -1,0 +1,17 @@
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-03-15 11:20
+Subject: RE: Handover cue - glare problem
+
+That resolves the finding for me. Thanks.
+
+From: Sora Kim <sora.kim@voltera.example>
+Sent: 2025-03-14 09:40
+Subject: RE: Handover cue - glare problem
+
+Adding a haptic seat cue as a redundant channel so it survives glare.
+
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-01-27 14:15
+Subject: Handover cue - glare problem
+
+Two cues could be missed in direct sunlight. High glare washes out the amber handover cue.

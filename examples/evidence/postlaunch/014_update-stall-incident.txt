@@ -1,0 +1,9 @@
+From: Cloud Platform
+Sent: 2026-01-26
+Subject: Update-stall incident
+
+A CDN edge fault stalls updates in one region.
+
+"3% of a region stuck mid-update; rolled forward cleanly."
+
+Significance: No driving impact, but a delivery-reliability gap.

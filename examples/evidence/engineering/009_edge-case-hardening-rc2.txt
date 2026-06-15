@@ -1,0 +1,5 @@
+From: Perception ML
+Sent: 2025-09-10
+Subject: Edge-case hardening (rc2)
+
+Long-tail cases — debris, animals — addressed.

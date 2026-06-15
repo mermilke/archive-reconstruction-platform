@@ -1,0 +1,9 @@
+From: Internal Fleet
+Sent: 2025-06-05
+Subject: Cold-start handover bug
+
+Handover cue misfires in the first minute after wake.
+
+"On cold start the seat haptic fires a beat early."
+
+Significance: Caught internally before any customer saw it.

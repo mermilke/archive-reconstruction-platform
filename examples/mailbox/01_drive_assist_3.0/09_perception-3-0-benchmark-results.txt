@@ -1,0 +1,11 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2024-11-01 16:05
+Subject: RE: Perception 3.0 - benchmark results
+
+Strong. Let's schedule the architecture review for the fusion design.
+
+From: Tomás Vidal <tomas.vidal@voltera.example>
+Sent: 2024-11-01 15:20
+Subject: Perception 3.0 - benchmark results
+
+New backbone beats production by 7% mAP on the night/rain slice, latency within budget.

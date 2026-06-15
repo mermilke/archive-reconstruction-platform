@@ -1,0 +1,23 @@
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2026-01-22 09:00
+Subject: RE: BMS 2.0 - rolling status
+
+Shipped with the rollout. Watching field telemetry for thermal margins.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-09-21 09:00
+Subject: RE: BMS 2.0 - rolling status
+
+Validation in progress; targeting the next OTA train.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-06-17 09:00
+Subject: RE: BMS 2.0 - rolling status
+
+Range and cold-weather issues addressed; firmware next.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-02-12 09:00
+Subject: BMS 2.0 - rolling status
+
+Rolling status for BMS 2.0. Thermal model and fast-charge work starting.

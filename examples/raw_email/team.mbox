@@ -1,0 +1,50 @@
+From MAILER-DAEMON Mon Jun 15 19:24:46 2026
+From: Dev Anand <dev.anand@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Date: Tue, 06 May 2025 15:40:00 -0800
+Subject: Rollback drill results
+Message-ID: <rollback-drill@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Game-day done. Full-fleet rollback completed in 22 minutes end to end. Dev
+
+From MAILER-DAEMON Mon Jun 15 19:24:46 2026
+From: Aisha Bello <aisha.bello@voltera.example>
+To: Dana Olsen <dana.olsen@voltera.example>
+Date: Fri, 19 Sep 2025 11:15:00 -0800
+Subject: Safety case approved
+Message-ID: <safety-approved@voltera.example>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============6921294445749295305=="
+
+--===============6921294445749295305==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Safety leadership has approved the case for staged rollout. Aisha
+
+--===============6921294445749295305==
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="safety_case_final.pdf"
+MIME-Version: 1.0
+
+U0FGRVRZIENBU0UgdjMgLSBhcHByb3ZlZA==
+
+--===============6921294445749295305==--
+
+From MAILER-DAEMON Mon Jun 15 19:24:46 2026
+From: Marco Ruiz <marco.ruiz@voltera.example>
+To: Program <program@voltera.example>
+Date: Mon, 01 Dec 2025 08:05:00 -0800
+Subject: 1% canary live
+Message-ID: <canary-live@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+First production ring received Drive Assist 3.0. Canary metrics matched beta.=
+ Marco
+

@@ -1,0 +1,5 @@
+From: Sofia Marenko
+Sent: 2025-06-04
+Subject: Rare-event resampling
+
+Suite reweighted toward the long tail.

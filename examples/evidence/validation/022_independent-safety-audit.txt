@@ -1,0 +1,9 @@
+From: External Auditor
+Sent: 2025-07-27
+Subject: Independent safety audit
+
+Third-party reviewer probes the argument; two findings.
+
+"Auditor: strengthen the evidence for the degraded-sensor claim."
+
+Significance: External findings must close before approval.

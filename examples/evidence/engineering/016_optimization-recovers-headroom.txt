@@ -1,0 +1,7 @@
+From: Raj Patel
+Sent: 2025-03-20
+Subject: Optimization recovers headroom
+
+Operator fusion and quantization bring peak under budget.
+
+"Back to 86% peak; older HW3 cars stay in scope."

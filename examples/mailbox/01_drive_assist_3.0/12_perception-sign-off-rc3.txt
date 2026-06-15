@@ -1,0 +1,11 @@
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-08-31 12:15
+Subject: RE: Perception sign-off rc3
+
+Confirmed from safety. Nice work closing the long tail.
+
+From: Tomás Vidal <tomas.vidal@voltera.example>
+Sent: 2025-08-01 11:30
+Subject: Perception sign-off rc3
+
+Validation accepts rc3. Perception is signed off for the beta program.

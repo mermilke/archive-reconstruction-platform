@@ -1,0 +1,12 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-26 16:45
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Drive Assist 3.0 - canary go/no-go
+Attachments: rollout_runbook.pdf
+
+Runbook attached. The auto-halt trips if the canary disengagement rate regresses beyond the beta baseline.
+
+--
+Raj Patel
+Staff Engineer, Autonomy Platform
+Voltera

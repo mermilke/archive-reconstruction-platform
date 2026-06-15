@@ -1,0 +1,18 @@
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-02-22 09:05
+Subject: RE: Fast-charge curve calibration
+
+Added a cold-pack taper. It holds the cell temperature ceiling.
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-02-07 13:40
+Subject: RE: Fast-charge curve calibration
+
+Nice. Make sure it degrades gracefully when the pack is cold.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-02-07 10:15
+Subject: Fast-charge curve calibration
+Attachments: charge_curve.csv
+
+First fast-charge curve is calibrated. 10-80% is down to 28 minutes on the test pack.

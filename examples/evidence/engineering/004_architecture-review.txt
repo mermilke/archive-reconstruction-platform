@@ -1,0 +1,6 @@
+From: Tomás Vidal, Raj Patel
+Sent: 2025-02-21
+Subject: Architecture review
+Attachments: perception_arch.pdf
+
+Cross-team review approves multi-camera fusion.

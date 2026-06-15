@@ -1,0 +1,9 @@
+From: Mia Chen
+Sent: 2026-03-14
+Subject: Pre-launch perception study
+
+Owners rate the near-final experience; trust scores up sharply.
+
+"Net trust score moved from +12 to +41 versus today's assist."
+
+Significance: Validates the handover model right before staged rollout.

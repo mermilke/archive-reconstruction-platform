@@ -1,0 +1,7 @@
+From: Dev Anand → Perception
+Sent: 2024-12-20
+Subject: Shadow-mode telemetry
+
+Pipeline to log model decisions without acting on them.
+
+"Shadow mode lets us measure a build on real roads before it drives."

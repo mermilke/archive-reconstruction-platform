@@ -1,0 +1,11 @@
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-02-02 11:00
+Subject: RE: BMS 2.0 - thermal model kickoff
+
+I'll wire the telemetry so we can validate against real pack data.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-01-24 09:30
+Subject: BMS 2.0 - thermal model kickoff
+
+Kicking off the new thermal model for BMS 2.0. Goal is tighter pack temperature control under fast charge.

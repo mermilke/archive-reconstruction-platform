@@ -1,0 +1,5 @@
+From: Telemetry
+Sent: 2026-02-26
+Subject: New-year traffic baseline
+
+Metrics re-baselined after holiday traffic patterns.

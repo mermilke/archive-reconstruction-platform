@@ -1,0 +1,12 @@
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-08-13 09:25
+Subject: RE: Charging reliability targets
+
+Wired alerts so a down stall pages within five minutes.
+
+From: Omar Haddad <omar.haddad@voltera.example>
+Sent: 2025-08-12 16:10
+Subject: Charging reliability targets
+Attachments: uptime_plan.pdf
+
+Setting a 99% uptime target per site. Monitoring plan attached.

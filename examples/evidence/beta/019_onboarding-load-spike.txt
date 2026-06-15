@@ -1,0 +1,7 @@
+From: Cloud Platform
+Sent: 2025-10-18
+Subject: Onboarding load spike
+
+Surge of enrollments stresses the consent service.
+
+"Consent service hit 6x normal; autoscaled cleanly."

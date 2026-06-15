@@ -1,0 +1,17 @@
+From: Elena Cruz <elena.cruz@voltera.example>
+Sent: 2025-12-12 10:35
+Subject: RE: Expanded beta - freeway merge complaints
+
+Merge complaints down 80% week over week. The fix held.
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-30 17:20
+Subject: RE: Expanded beta - freeway merge complaints
+
+Calibrated a more natural merge gap-acceptance. Pushing to beta.
+
+From: Elena Cruz <elena.cruz@voltera.example>
+Sent: 2025-11-18 15:00
+Subject: Expanded beta - freeway merge complaints
+
+Cluster of reports: merges feel timid. It waits for huge gaps on busy freeways.

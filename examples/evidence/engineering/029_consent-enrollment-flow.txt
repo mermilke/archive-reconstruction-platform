@@ -1,0 +1,5 @@
+From: Nora Fischer → Legal
+Sent: 2024-12-12
+Subject: Consent & enrollment flow
+
+In-app flow to opt into the beta and accept terms.

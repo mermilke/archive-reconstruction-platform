@@ -1,0 +1,8 @@
+From: Marcus Hale, Dev Anand
+Sent: 2026-01-14
+Subject: Transparency post
+Attachments: eng_blog_autohalt.pdf
+
+Engineering blog explains the auto-halt as designed.
+
+"We framed the halt as the safety net working, not failing."

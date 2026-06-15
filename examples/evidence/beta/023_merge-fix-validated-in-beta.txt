@@ -1,0 +1,7 @@
+From: Elena Cruz
+Sent: 2025-12-23
+Subject: Merge fix validated in beta
+
+Complaint rate drops sharply after the update.
+
+"Merge complaints down 80% week over week."

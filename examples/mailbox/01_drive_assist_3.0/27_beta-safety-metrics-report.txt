@@ -1,0 +1,12 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2026-02-10 17:00
+Subject: RE: Beta safety metrics report
+
+That's the number. Taking it to the go/no-go.
+
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-12-27 16:15
+Subject: Beta safety metrics report
+Attachments: beta_metrics.pdf
+
+Beta is at 4.6x miles-per-disengagement with hard-braking flat. Within launch criteria.

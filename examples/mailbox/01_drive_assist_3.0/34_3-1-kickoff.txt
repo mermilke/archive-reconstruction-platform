@@ -1,0 +1,11 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2026-02-28 11:20
+Subject: RE: 3.1 kickoff
+
+Engineering is ready. Sim gauntlet for the new behavior is already standing up.
+
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2026-02-19 10:00
+Subject: 3.1 kickoff
+
+3.1 formally kicks off. Headline is the auto lane-change we cut from launch.

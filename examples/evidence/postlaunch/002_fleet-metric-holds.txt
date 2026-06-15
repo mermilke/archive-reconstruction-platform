@@ -1,0 +1,9 @@
+From: Telemetry
+Sent: 2026-01-29
+Subject: Fleet metric holds
+
+Miles-per-disengagement at 100% matches beta.
+
+"Fleet MPD 4.5x — beta held at scale."
+
+Significance: Confirms the core bet survived going wide.

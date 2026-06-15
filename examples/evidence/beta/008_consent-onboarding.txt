@@ -1,0 +1,5 @@
+From: Early Access → Mobile
+Sent: 2025-07-27
+Subject: Consent & onboarding
+
+Cohort completes the in-app consent and tutorial.

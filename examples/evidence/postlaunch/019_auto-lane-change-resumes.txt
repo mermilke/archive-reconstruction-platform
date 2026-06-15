@@ -1,0 +1,9 @@
+From: Vehicle Software
+Sent: 2026-01-11
+Subject: Auto lane-change resumes
+
+The launch-cut behavior re-enters active development.
+
+"Full auto lane-change is the headline of 3.1."
+
+Significance: Brings back the feature deferred to protect the launch date.

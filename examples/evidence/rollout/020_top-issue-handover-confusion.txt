@@ -1,0 +1,9 @@
+From: Priya Iyer → Product
+Sent: 2026-02-11
+Subject: Top issue: handover confusion
+
+Most contacts are about why the car handed back.
+
+"People want to know why it handed control back in fog."
+
+Significance: Drives an in-app explainer and a KB update.

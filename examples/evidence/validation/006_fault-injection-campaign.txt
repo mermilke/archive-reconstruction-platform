@@ -1,0 +1,6 @@
+From: Sofia Marenko
+Sent: 2025-06-25
+Subject: Fault-injection campaign
+Attachments: fault_injection.pdf
+
+Sensor dropouts and degraded compute injected at scale.

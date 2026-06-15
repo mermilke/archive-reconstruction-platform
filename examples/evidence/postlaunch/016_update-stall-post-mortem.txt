@@ -1,0 +1,6 @@
+From: Dev Anand
+Sent: 2026-02-02
+Subject: Update-stall post-mortem
+Attachments: postmortem_cdn.pdf
+
+Adds multi-CDN as a launch-blocker for future OTAs.

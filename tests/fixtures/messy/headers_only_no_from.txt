@@ -1,0 +1,4 @@
+Subject: Orphaned note with no From line
+To: someone@voltera.example
+
+This block never names a sender, so it does not anchor a message.

@@ -1,0 +1,6 @@
+From: Sora Kim → Localization
+Sent: 2025-10-05
+Subject: Localization handoff
+Attachments: loc_kit.zip
+
+Strings and cues handed to localization for 14 markets.

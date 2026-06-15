@@ -1,0 +1,9 @@
+From: On-call
+Sent: 2025-12-24
+Subject: Phantom-braking cluster
+
+A localized spike near one overpass design.
+
+"Repeated hard-brakes at one overpass; geofenced within hours."
+
+Significance: First post-launch incident; contained without a recall.

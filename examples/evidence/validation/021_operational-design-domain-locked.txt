@@ -1,0 +1,8 @@
+From: Aisha Bello
+Sent: 2025-06-09
+Subject: Operational design domain locked
+Attachments: odd_definition.pdf
+
+The exact conditions the feature may engage in.
+
+Significance: Bounds where the feature operates — central to the case.

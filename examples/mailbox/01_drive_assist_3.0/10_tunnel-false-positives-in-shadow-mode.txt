@@ -1,0 +1,17 @@
+From: Tomás Vidal <tomas.vidal@voltera.example>
+Sent: 2025-03-18 13:10
+Subject: RE: Tunnel false positives in shadow mode
+
+Retrained on the new tunnel data; false positives down 90%.
+
+From: Sofia Marenko <sofia.marenko@voltera.example>
+Sent: 2025-02-08 10:30
+Subject: RE: Tunnel false positives in shadow mode
+
+Sim reproduces it. We'll need a targeted tunnel data campaign.
+
+From: Tomás Vidal <tomas.vidal@voltera.example>
+Sent: 2025-02-05 08:55
+Subject: Tunnel false positives in shadow mode
+
+Shadow mode is flagging phantom braking entering tunnels. Looks like an exposure shift.

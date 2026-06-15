@@ -1,0 +1,5 @@
+From: Aisha Bello, Mia Chen
+Sent: 2025-10-15
+Subject: Driver-monitoring threshold set
+
+Attention thresholds tuned with human-factors data.

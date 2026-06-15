@@ -1,0 +1,5 @@
+From: Dev Anand, Tomás Vidal
+Sent: 2026-01-09
+Subject: Resumed after analysis
+
+Blip traced to fog, not the build; rollout resumes.

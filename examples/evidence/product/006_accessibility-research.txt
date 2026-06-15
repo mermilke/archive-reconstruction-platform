@@ -1,0 +1,6 @@
+From: Mia Chen → Design
+Sent: 2025-06-23
+Subject: Accessibility research
+Attachments: a11y_findings.pdf
+
+Findings on cues for low-vision and hard-of-hearing drivers.

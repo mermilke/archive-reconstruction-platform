@@ -1,0 +1,7 @@
+From: Cloud Platform
+Sent: 2025-04-08
+Subject: Load test: 1M vehicles
+
+Simulated fleet check-in storm; one bottleneck found and fixed.
+
+"Check-in p99 held under 400ms at 1M simulated cars."

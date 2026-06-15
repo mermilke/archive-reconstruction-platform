@@ -1,0 +1,6 @@
+From: Simulation → Safety
+Sent: 2025-08-08
+Subject: Coverage report
+Attachments: coverage_report.pdf
+
+Scenario coverage mapped to the safety case claims.

@@ -1,0 +1,9 @@
+From: Cloud Platform
+Sent: 2026-01-03
+Subject: Auto-halt at 10%
+
+A disengagement-rate blip trips the auto-halt.
+
+"A regional weather event spiked disengagements; auto-halt worked."
+
+Significance: First real test of the self-stopping rollout.

@@ -1,0 +1,7 @@
+From: Tomás Vidal, Aisha Bello
+Sent: 2026-01-01
+Subject: Perception sign-off (rc3)
+
+Validation accepts rc3 for the beta program.
+
+Significance: Unblocks beta for the perception stack.

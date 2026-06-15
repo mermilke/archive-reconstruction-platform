@@ -1,0 +1,5 @@
+From: Mia Chen, Lena Ortiz
+Sent: 2025-03-26
+Subject: Trust & handover model
+
+A model for how the car should ask for and return control.

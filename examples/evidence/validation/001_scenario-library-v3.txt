@@ -1,0 +1,6 @@
+From: Sofia Marenko
+Sent: 2025-01-10
+Subject: Scenario library v3
+Attachments: scenario_list.xlsx
+
+Expanded library covering the new behaviors.

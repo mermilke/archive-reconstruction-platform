@@ -1,0 +1,9 @@
+From: Dev Anand
+Sent: 2025-06-03
+Subject: Rollback drill
+
+Game-day proves a bad build can be pulled fleet-wide fast.
+
+"Full-fleet rollback completed in 22 minutes end to end."
+
+Significance: The safety net that makes a staged production rollout acceptable.

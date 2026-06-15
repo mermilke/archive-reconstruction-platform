@@ -1,0 +1,13 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-25 14:20
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: FW: Drive Assist 3.0 - safety sign-off
+
+Lena, forwarding the signed safety case for the record before the canary. Raj
+-----Original Message-----
+From: Compliance Desk <compliance@voltera.example>
+Sent: 2025-11-21 08:00
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Safety case approved
+
+The Drive Assist 3.0 safety case is approved. Proceed to canary planning.

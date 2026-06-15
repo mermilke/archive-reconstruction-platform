@@ -1,0 +1,11 @@
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-12-16 13:35
+Subject: RE: Canary auto-halt criteria
+
+Approve. The rollout being able to stop itself without a human is the point.
+
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-12-07 11:00
+Subject: Canary auto-halt criteria
+
+Proposing the OTA auto-pauses if canary safety metrics regress beyond the beta baseline.

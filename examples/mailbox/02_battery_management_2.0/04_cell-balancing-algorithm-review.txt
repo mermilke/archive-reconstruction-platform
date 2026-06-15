@@ -1,0 +1,12 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-05-01 10:25
+Subject: RE: Cell-balancing algorithm review
+
+Looks right. Confirm it doesn't fight the thermal controller.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-04-29 15:00
+Subject: Cell-balancing algorithm review
+Attachments: balancing_spec.pdf
+
+New passive-balancing logic attached for review.

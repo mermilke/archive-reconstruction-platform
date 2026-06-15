@@ -1,0 +1,7 @@
+From: Simulation
+Sent: 2025-02-23
+Subject: First full-stack sim run
+
+rc1 driven through 2M scenario miles overnight.
+
+"2.1M sim miles; one cluster of failures at unprotected lefts."

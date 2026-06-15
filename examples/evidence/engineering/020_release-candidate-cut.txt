@@ -1,0 +1,8 @@
+From: Raj Patel
+Sent: 2025-09-29
+Subject: Release candidate cut
+Attachments: release_notes.md, ota_manifest.json
+
+rc build assembled with frozen perception and planner.
+
+Significance: The exact build beta and validation run against.

@@ -1,0 +1,5 @@
+From: Telemetry → Regulatory
+Sent: 2026-04-04
+Subject: Per-market metric split
+
+Safety metrics broken out by market for regulators.

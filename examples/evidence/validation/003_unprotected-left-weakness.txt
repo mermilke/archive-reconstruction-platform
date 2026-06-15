@@ -1,0 +1,9 @@
+From: Sofia Marenko → Vehicle SW
+Sent: 2025-03-27
+Subject: Unprotected-left weakness
+
+Sim isolates a gap-acceptance bug on unprotected left turns.
+
+"The planner accepts gaps a cautious human would reject."
+
+Significance: Becomes the headline issue track testing must clear.

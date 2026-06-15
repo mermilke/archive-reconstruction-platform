@@ -1,0 +1,6 @@
+From: Tomás Vidal → Data Ops
+Sent: 2024-11-21
+Subject: Dataset expansion plan
+Attachments: dataset_plan.xlsx
+
+Plan to triple the labeled night-driving set; new labeling vendor engaged.

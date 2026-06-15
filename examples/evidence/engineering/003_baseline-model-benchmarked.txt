@@ -1,0 +1,7 @@
+From: Perception ML
+Sent: 2025-01-25
+Subject: Baseline model benchmarked
+
+New backbone beats production on the internal benchmark.
+
+"+7% mAP on the night/rain slice; latency within budget."

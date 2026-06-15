@@ -1,0 +1,8 @@
+From: Aisha Bello
+Sent: 2026-02-11
+Subject: Beta safety metrics report
+Attachments: beta_metrics.pdf
+
+Miles-per-disengagement up 4.6x with stable hard-braking.
+
+"4.6x MPD, hard-brake events flat — within launch criteria."

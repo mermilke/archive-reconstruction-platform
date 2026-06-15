@@ -1,0 +1,7 @@
+From: Kenji Watanabe
+Sent: 2025-08-26
+Subject: Regulator clarification round
+
+Authority requests added human-factors evidence.
+
+"They want the attention-monitoring false-negative rate."

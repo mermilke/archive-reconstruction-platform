@@ -1,0 +1,24 @@
+From: =?utf-8?q?Tom=C3=A1s?= Vidal <tomas.vidal@voltera.example>
+To: Aisha Bello <aisha.bello@voltera.example>
+Date: Tue, 08 Jul 2025 11:30:00 -0800
+Subject: Perception sign-off (rc3)
+Message-ID: <perception-rc3@voltera.example>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============0333390042588019169=="
+
+--===============0333390042588019169==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Validation accepts rc3. Perception is signed off for the beta program.
+
+--===============0333390042588019169==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<html><body><p>Validation accepts <b>rc3</b>. Perception is <i>signed off</i>=
+ for the beta program.</p></body></html>
+
+--===============0333390042588019169==--

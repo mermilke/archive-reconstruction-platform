@@ -1,0 +1,5 @@
+From: Mia Chen, Vehicle SW
+Sent: 2026-01-13
+Subject: A/B on cue timing
+
+Two handover-timing variants tested in the field.

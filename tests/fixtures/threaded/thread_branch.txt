@@ -1,0 +1,37 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-25 14:20
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: FW: Drive Assist 3.0 - safety sign-off
+Message-ID: <c1-fwd@voltera.example>
+In-Reply-To: <c1-ask@voltera.example>
+References: <c1-open@voltera.example> <c1-eng@voltera.example> <c1-ask@voltera.example>
+Attachments: safety_case_final.pdf
+
+Lena, forwarding the signed safety case for the record before the canary. Let me know if leadership needs the full evidence pack. Raj
+
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-11-25 10:10
+To: Raj Patel <raj.patel@voltera.example>
+Subject: RE: Drive Assist 3.0 - canary go/no-go
+Message-ID: <c1-ask@voltera.example>
+References: <c1-open@voltera.example> <c1-eng@voltera.example>
+
+Great. For the leadership review I will need the rollout runbook and the auto-halt criteria attached. Can you send those over? Lena
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-24 15:30
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Drive Assist 3.0 - canary go/no-go
+Message-ID: <c1-eng@voltera.example>
+In-Reply-To: <c1-open@voltera.example>
+References: <c1-open@voltera.example>
+
+Lena, perception rc3 is signed off and the release candidate build is cut. The safety case approval landed Friday. From engineering we are go for the canary. Raj
+
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-11-24 09:00
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Drive Assist 3.0 - canary go/no-go
+Message-ID: <c1-open@voltera.example>
+
+Raj, are we go for the 1% canary next week? I need confirmation that perception rc3 and the safety case are both signed off before I brief leadership. Lena

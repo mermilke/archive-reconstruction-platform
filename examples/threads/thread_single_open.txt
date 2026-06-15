@@ -1,0 +1,6 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-11-24 09:00
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Drive Assist 3.0 - canary go/no-go
+
+Raj, are we go for the 1% canary next week? I need confirmation that perception rc3 and the safety case are both signed off before I brief leadership. Lena

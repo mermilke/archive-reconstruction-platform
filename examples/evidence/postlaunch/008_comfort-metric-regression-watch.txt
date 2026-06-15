@@ -1,0 +1,5 @@
+From: Telemetry
+Sent: 2026-06-11
+Subject: Comfort-metric regression watch
+
+New tuning watched for comfort side effects.

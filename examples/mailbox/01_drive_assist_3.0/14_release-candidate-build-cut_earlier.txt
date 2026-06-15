@@ -1,0 +1,12 @@
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-09-08 18:40
+Subject: RE: Release candidate build cut
+
+Pulled it into the staging channel. Shadow telemetry is flowing.
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-09-03 18:10
+Subject: Release candidate build cut
+Attachments: release_notes.md, ota_manifest.json
+
+rc build is assembled with frozen perception and planner. Notes and manifest attached.

@@ -1,0 +1,5 @@
+From: Mobile App
+Sent: 2025-05-25
+Subject: Push: update available
+
+Notifies eligible cars an update is ready.

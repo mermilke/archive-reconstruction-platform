@@ -1,0 +1,7 @@
+From: Early Access
+Sent: 2025-11-20
+Subject: Roundabout edge cases
+
+Owners report odd lane choice at multi-lane roundabouts.
+
+"Multi-lane roundabouts confuse lane choice on exit."

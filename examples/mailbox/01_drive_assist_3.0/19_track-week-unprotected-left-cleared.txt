@@ -1,0 +1,17 @@
+From: Aisha Bello <aisha.bello@voltera.example>
+Sent: 2025-06-28 16:00
+Subject: RE: Track week - unprotected left cleared
+
+Logged against the safety case. Thanks Caleb.
+
+From: Caleb Reed <caleb.reed@voltera.example>
+Sent: 2025-06-27 15:10
+Subject: RE: Track week - unprotected left cleared
+
+After the fix: 200/200 clean runs. Clearing the headline issue for beta.
+
+From: Caleb Reed <caleb.reed@voltera.example>
+Sent: 2025-04-20 16:50
+Subject: Track week - unprotected left cleared
+
+Reproduced the gap-acceptance issue on track with the foam vehicle. Matches sim exactly.

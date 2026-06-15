@@ -1,0 +1,6 @@
+From: Kenji Watanabe
+Sent: 2025-02-25
+Subject: Market applicability matrix
+Attachments: reg_matrix.xlsx
+
+Which behaviors are allowed in which launch markets.

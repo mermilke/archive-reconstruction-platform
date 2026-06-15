@@ -1,0 +1,12 @@
+From: Dev Anand <dev.anand@voltera.example>
+Sent: 2025-05-15 09:15
+Subject: RE: BMS firmware rc1
+
+Telemetry looks clean. No thermal events overnight.
+
+From: Yuki Tanaka <yuki.tanaka@voltera.example>
+Sent: 2025-05-14 16:30
+Subject: BMS firmware rc1
+Attachments: bms_rc1_notes.md
+
+BMS firmware rc1 is cut and on the test fleet.

@@ -1,0 +1,9 @@
+From: Lena Ortiz
+Sent: 2025-01-14
+Subject: Scope cut: no auto lane-change at launch
+
+Auto lane-change deferred to a fast-follow to protect the date.
+
+"We ship driver-confirmed lane changes first; full auto is a 3.1 item."
+
+Significance: De-risks the launch date by removing the hardest behavior.

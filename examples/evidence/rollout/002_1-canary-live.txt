@@ -1,0 +1,9 @@
+From: Staged OTA
+Sent: 2025-11-19
+Subject: 1% canary live
+
+First production ring receives Drive Assist 3.0.
+
+"Canary safety metrics matched beta within noise."
+
+Significance: The feature is now in customers' hands in production.
