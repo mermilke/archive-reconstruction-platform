@@ -6,6 +6,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- **"Open thread" / attachment links work in the web UI.** Timeline cards in
+  `arc web` linked to `file://` URLs, which browsers block from an `http://`
+  page, so clicking did nothing. The preview now serves the source files over
+  HTTP (a `/source/<name>` route, `link_base="/source"`) and links attachment
+  chips to the matching uploaded file, so both open in a new tab.
+- **Focus and Fullscreen are mutually exclusive in the web UI.** They are two
+  ways to view the timeline bigger; entering one now exits the other, so they
+  can't both be active at once.
+
 ### Added
 
 - **Timeline focus & fullscreen in the local web UI.** The `arc web` timeline

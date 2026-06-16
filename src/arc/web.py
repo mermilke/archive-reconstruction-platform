@@ -157,12 +157,40 @@ class Session:
         subtitle = ("%d selected file(s); %d unique message(s) after dedup "
                     "(%d duplicate%s collapsed)."
                     % (len(paths), len(uniques), duplicates, "" if duplicates == 1 else "s"))
+        # link_base="/source" makes each card's "Open thread" link point at this
+        # server (served over HTTP) instead of a file:// URL the browser blocks.
         data = timeline_data_from_messages(
-            uniques, total=total, title="Selected threads",
+            uniques, total=total, title="Selected threads", link_base="/source",
             directory=self.dir, label="Conversations", subtitle=subtitle,
         )
+        self._linkify_attachments(data)
         self.timeline_html = render_timeline(data)
         return {"ok": True, "count": count_events(data), "subtitle": subtitle}
+
+    def _linkify_attachments(self, node: Any) -> None:
+        """Walk the timeline data and turn each attachment name into a clickable
+        link when a file of that name was uploaded (so it opens over HTTP). Names
+        with no matching uploaded file stay plain chips — we don't have the bytes."""
+        if isinstance(node, dict):
+            atts = node.get("attachments")
+            if isinstance(atts, list):
+                node["attachments"] = [self._att_link(a) for a in atts]
+            for key, value in node.items():
+                if key != "attachments":
+                    self._linkify_attachments(value)
+        elif isinstance(node, list):
+            for value in node:
+                self._linkify_attachments(value)
+
+    def _att_link(self, att: Any) -> Any:
+        from urllib.parse import quote
+        if isinstance(att, dict):
+            return att  # already carries an href
+        name = str(att)
+        base = os.path.basename(name)
+        if base and os.path.isfile(os.path.join(self.dir, base)):
+            return {"name": name, "href": "/source/" + quote(base)}
+        return att
 
     def file_view(self, name: str) -> Dict[str, Any]:
         """The parsed messages of one stored file, each tagged with its dedup
@@ -245,6 +273,19 @@ class _Handler(BaseHTTPRequestHandler):
             name = (parse_qs(parsed.query).get("name") or [""])[0]
             with sess.lock:
                 self._send_json(sess.file_view(name))
+        elif path.startswith("/source/"):
+            # Serve an uploaded source file so a timeline card's "Open thread" /
+            # attachment link opens it over HTTP. basename-only -> no traversal.
+            from urllib.parse import unquote
+            import mimetypes
+            name = os.path.basename(unquote(path[len("/source/"):]))
+            fp = os.path.join(sess.dir, name)
+            if name and os.path.isfile(fp):
+                ctype = mimetypes.guess_type(fp)[0] or "application/octet-stream"
+                with open(fp, "rb") as fh:
+                    self._send(200, fh.read(), ctype)
+            else:
+                self._send(404, b"Not found", "text/plain; charset=utf-8")
         else:
             self._send(404, b"Not found", "text/plain; charset=utf-8")
 
@@ -833,19 +874,28 @@ PAGE_HTML = r"""<!doctype html>
   });
 
   // Focus mode: collapse the uploader + files panel to give the timeline room.
+  var tlCard = document.getElementById("tlCard");
+  var fullBtn = document.getElementById("full");
+
+  function setFocus(on){
+    document.body.classList.toggle("focusMode", on);
+    focusBtn.title = on ? "Show the files panel" : "Focus timeline — hide the files panel";
+  }
+
+  // Focus and fullscreen are two ways to view the timeline bigger — only one at a
+  // time. Turning one on turns the other off.
   var focusBtn = document.getElementById("focus");
   focusBtn.onclick = function(){
-    var on = document.body.classList.toggle("focusMode");
-    focusBtn.title = on ? "Show the files panel" : "Focus timeline — hide the files panel";
+    if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+    setFocus(!document.body.classList.contains("focusMode"));
   };
 
   // True browser fullscreen for the timeline card (Esc exits natively).
-  var tlCard = document.getElementById("tlCard");
-  var fullBtn = document.getElementById("full");
   fullBtn.onclick = function(){
     if(document.fullscreenElement){
       if(document.exitFullscreen) document.exitFullscreen();
     } else if(tlCard.requestFullscreen){
+      setFocus(false);                 // leave focus mode before going fullscreen
       tlCard.requestFullscreen();
     }
   };
