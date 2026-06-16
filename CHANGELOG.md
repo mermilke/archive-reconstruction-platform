@@ -40,7 +40,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   (`pip install "archive-reconstruction-platform[pdf]"`, adds `pypdf`) gives more
   robust extraction. A PDF whose text can't be read is skipped — never flagged
   for deletion — with a one-line hint to install the extra. New module
-  `src/arc/pdf_in.py`, covered by `tests/test_pdf_in.py`.
+  `src/arc/pdf_in.py`, covered by `tests/test_pdf_in.py`. The local web UI
+  (`arc web`) reads PDFs too — binary files are uploaded base64-encoded and
+  decoded server-side. New example folder `examples/pdf_emails/` (emails saved to
+  PDF) to drag in or `arc dedup`.
 
 ### Fixed
 

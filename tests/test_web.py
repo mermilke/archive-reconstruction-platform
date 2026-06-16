@@ -27,6 +27,10 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 from arc import web  # noqa: E402
 from arc.dedup import dedup_directory  # noqa: E402
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import base64  # noqa: E402
+from test_pdf_in import EMAIL_A, EMAIL_B, _email_pdf  # noqa: E402
+
 EXAMPLES = os.path.join(ROOT, "examples", "threads")
 
 
@@ -77,15 +81,41 @@ def test_session_matches_dedup_directory():
 def test_skips_unsupported_and_sanitizes_names():
     sess = web.Session()
     saved, skipped = sess.save_uploads([
-        {"name": "notes.pdf", "content": "binary-ish"},
+        {"name": "notes.docx", "content": "binary-ish"},
         {"name": "../../escape.txt", "content": "From: a@b\nSubject: x\n\nhi\n"},
     ])
     assert saved == 1, "only the .txt should be saved"
-    assert skipped == ["notes.pdf"], "the .pdf is reported as skipped"
+    assert skipped == ["notes.docx"], "the .docx is reported as skipped"
     # Path traversal in the name must not write outside the working dir.
     written = os.listdir(sess.dir)
     assert written == ["escape.txt"], "name is reduced to a safe basename"
     print("OK - unsupported types skipped and filenames sanitized.")
+
+
+def test_pdf_upload_reads_and_dedups():
+    """A binary PDF uploaded as base64 is decoded, read, and deduped — two PDF
+    copies of one email collapse to a single keeper in the web UI."""
+    sess = web.Session()
+
+    def pdf_rec(name, lines, compress=False):
+        data = _email_pdf(lines, compress=compress)
+        return {"name": name, "encoding": "base64",
+                "content": base64.b64encode(data).decode("ascii")}
+
+    saved, skipped = sess.save_uploads([
+        pdf_rec("canary_go.pdf", EMAIL_A),
+        pdf_rec("canary_go_resaved.pdf", EMAIL_A, compress=True),
+        pdf_rec("approval.pdf", EMAIL_B),
+    ])
+    assert saved == 3 and not skipped, "all three PDFs should be saved"
+    state = sess.state()
+    names = {f["name"] for f in state["files"]}
+    assert names == {"canary_go.pdf", "canary_go_resaved.pdf", "approval.pdf"}
+    assert state["summary"]["kept"] == 2, state["summary"]
+    assert state["summary"]["redundant"] == 1, state["summary"]
+    redundant = [f["name"] for f in state["files"] if f["redundant"]]
+    assert redundant and redundant[0] in ("canary_go.pdf", "canary_go_resaved.pdf")
+    print("OK - PDF (base64) upload is read and deduped in the web UI.")
 
 
 def test_build_timeline_from_selection():
@@ -181,6 +211,7 @@ def test_http_round_trip():
 if __name__ == "__main__":
     test_session_matches_dedup_directory()
     test_skips_unsupported_and_sanitizes_names()
+    test_pdf_upload_reads_and_dedups()
     test_build_timeline_from_selection()
     test_file_view_and_compare()
     test_http_round_trip()

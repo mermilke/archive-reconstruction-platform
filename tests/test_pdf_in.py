@@ -141,12 +141,30 @@ def test_unreadable_pdf_is_skipped_and_hints():
     assert "scanned.pdf" not in {r.name for r in dedup_directory(tmp).reports}
 
 
+def test_example_pdf_emails_folder():
+    """The committed examples/pdf_emails/ folder dedups as documented: two copies
+    of one email collapse, a saved thread is kept, an excerpt of it is flagged."""
+    folder = os.path.join(ROOT, "examples", "pdf_emails")
+    if not os.path.isdir(folder):
+        return  # generated on demand; skip if not present
+    result = dedup_directory(folder)
+    assert len(result.reports) == 5, "expected 5 PDFs scanned, got %d" % len(result.reports)
+    assert len(result.keep) == 3, "expected 3 kept, got %s" % sorted(result.keep)
+    assert len(result.delete) == 2, "expected 2 redundant, got %s" % sorted(result.delete)
+    by_name = {r.name: r for r in result.reports}
+    assert by_name["canary_go_phone_export.pdf"].redundant
+    assert "canary_go.pdf" in by_name["canary_go_phone_export.pdf"].superseded_by
+    assert by_name["runbook_excerpt.pdf"].redundant
+    assert "runbook_thread.pdf" in by_name["runbook_excerpt.pdf"].superseded_by
+
+
 def main():
     test_stdlib_extracts_uncompressed_and_flate()
     test_saved_as_pdf_parses_into_a_message()
     test_two_pdf_copies_of_one_email_dedup()
     test_attachment_named_pdf_is_not_scanned_as_input()
     test_unreadable_pdf_is_skipped_and_hints()
+    test_example_pdf_emails_folder()
     print("OK - best-effort PDF reading: stdlib extraction (uncompressed + Flate), "
           "saved-as-PDF emails dedup, attachment PDFs stay attachments, unreadable "
           "PDFs are skipped with a hint.")

@@ -21,6 +21,8 @@ as text and POSTs a small JSON payload instead — no third-party parser needed.
 """
 from __future__ import annotations
 
+import base64
+import binascii
 import hashlib
 import json
 import os
@@ -33,7 +35,7 @@ from urllib.parse import parse_qs, urlparse
 
 from .bridge import collect_unique_messages, timeline_data_from_messages
 from .dedup import analyze, content_keys, message_key
-from .parse import SUPPORTED_EXTS, find_message_files, parse_path
+from .parse import SUPPORTED_EXTS, collect_directory_messages, find_message_files, parse_path
 from .timeline import count_events, render_timeline
 
 
@@ -64,21 +66,33 @@ class Session:
 
     # -- mutations ------------------------------------------------------- #
     def save_uploads(self, files: List[Dict[str, str]]) -> Tuple[int, List[str]]:
-        """Write uploaded ``{name, content}`` records into the working dir.
+        """Write uploaded ``{name, content[, encoding]}`` records into the working
+        dir. Text formats arrive as UTF-8 text; ``.pdf`` arrives base64-encoded
+        (it's binary) with ``encoding == "base64"``.
 
         Returns ``(saved_count, skipped_names)``; unsupported extensions are
         skipped so the folder pipeline only ever sees files it understands.
         """
+        allowed = set(SUPPORTED_EXTS) | {".pdf"}
         saved = 0
         skipped: List[str] = []
         for f in files:
             name = _safe_name(f.get("name", ""))
             ext = os.path.splitext(name)[1].lower()
-            if ext not in SUPPORTED_EXTS:
+            if ext not in allowed:
                 skipped.append(f.get("name", name))
                 continue
-            with open(os.path.join(self.dir, name), "w", encoding="utf-8", newline="") as fh:
-                fh.write(f.get("content", ""))
+            if f.get("encoding") == "base64":
+                try:
+                    data = base64.b64decode(f.get("content", "") or "")
+                except (ValueError, binascii.Error):
+                    skipped.append(f.get("name", name))
+                    continue
+                with open(os.path.join(self.dir, name), "wb") as fh:
+                    fh.write(data)
+            else:
+                with open(os.path.join(self.dir, name), "w", encoding="utf-8", newline="") as fh:
+                    fh.write(f.get("content", ""))
             saved += 1
         return saved, skipped
 
@@ -93,12 +107,11 @@ class Session:
     # -- reads ----------------------------------------------------------- #
     def state(self) -> Dict[str, Any]:
         """Per-file dedup verdict + counts, plus a headline summary."""
-        paths = find_message_files(self.dir)
+        items = collect_directory_messages(self.dir)
         file_keys = []
         info_by_name: Dict[str, Dict[str, Any]] = {}
-        for p in paths:
+        for p, msgs in items:
             name = os.path.basename(p)
-            msgs = parse_path(p)
             keys = content_keys(msgs)
             atts = sorted({a.strip() for m in msgs for a in m.attachments if a.strip()})
             file_keys.append((name, keys))
@@ -117,7 +130,7 @@ class Session:
             info.update({"redundant": r.redundant, "coveredBy": covered_by})
             files.append(info)
 
-        uniques, total = collect_unique_messages(paths)
+        uniques, total = collect_unique_messages([p for p, _ in items])
         return {
             "files": files,
             "summary": {
@@ -132,7 +145,8 @@ class Session:
     def build_timeline(self, selected: List[str]) -> Dict[str, Any]:
         """Render a timeline from just the selected files; store the HTML."""
         chosen = set(selected)
-        paths = [p for p in find_message_files(self.dir) if os.path.basename(p) in chosen]
+        paths = [p for p, _ in collect_directory_messages(self.dir)
+                 if os.path.basename(p) in chosen]
         if not paths:
             self.timeline_html = None
             return {"ok": False, "error": "No threads selected."}
@@ -396,8 +410,8 @@ PAGE_HTML = r"""<!doctype html>
 <main>
   <label class="drop" id="drop">
     <div><b>Drag &amp; drop</b> your exported email files here, or click to browse.</div>
-    <div class="hint">Supports .txt, .eml and .mbox &mdash; nothing is uploaded anywhere; it stays on this machine.</div>
-    <input type="file" id="picker" multiple accept=".txt,.eml,.mbox">
+    <div class="hint">Supports .txt, .eml, .mbox and .pdf &mdash; nothing is uploaded anywhere; it stays on this machine.</div>
+    <input type="file" id="picker" multiple accept=".txt,.eml,.mbox,.pdf">
   </label>
 
   <section class="grid" id="workspace" style="display:none">
@@ -450,12 +464,25 @@ PAGE_HTML = r"""<!doctype html>
   var buildStatus = document.getElementById("buildStatus");
   var frame = document.getElementById("frame");
 
+  function isBinary(name){ return /\.pdf$/i.test(name || ""); }
+
   function readFile(file){
     return new Promise(function(resolve){
       var r = new FileReader();
-      r.onload = function(){ resolve({name:file.name, content:String(r.result||"")}); };
-      r.onerror = function(){ resolve({name:file.name, content:""}); };
-      r.readAsText(file);
+      if(isBinary(file.name)){
+        // PDFs are binary — send base64 so the bytes survive the round-trip.
+        r.onload = function(){
+          var s = String(r.result||"");
+          var comma = s.indexOf(",");           // strip the "data:...;base64," prefix
+          resolve({name:file.name, encoding:"base64", content: comma >= 0 ? s.slice(comma+1) : s});
+        };
+        r.onerror = function(){ resolve({name:file.name, encoding:"base64", content:""}); };
+        r.readAsDataURL(file);
+      } else {
+        r.onload = function(){ resolve({name:file.name, content:String(r.result||"")}); };
+        r.onerror = function(){ resolve({name:file.name, content:""}); };
+        r.readAsText(file);
+      }
     });
   }
 

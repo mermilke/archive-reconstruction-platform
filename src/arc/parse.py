@@ -21,7 +21,7 @@ import glob
 import os
 import re
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 # Input formats the toolkit can read from a folder.
 SUPPORTED_EXTS = (".txt", ".eml", ".mbox")
@@ -125,6 +125,43 @@ def find_message_files(directory: str, recursive: bool = False, pattern: Optiona
         root = os.path.join(directory, "**", "*" + ext) if recursive else os.path.join(directory, "*" + ext)
         found.extend(glob.glob(root, recursive=recursive))
     return sorted(set(found))
+
+
+def collect_directory_messages(
+    directory: str, recursive: bool = False, pattern: Optional[str] = None
+) -> List[Tuple[str, List["Message"]]]:
+    """Return ``[(path, messages)]`` for every readable input under ``directory``.
+
+    This is the one place that decides what counts as an input, so dedup, the web
+    UI, and the timeline all agree. It reads ``.txt``/``.eml``/``.mbox`` and, with
+    the default scan, also standalone ``.pdf`` files (emails saved/printed to PDF)
+    — *except* a PDF whose name matches an attachment referenced by another
+    message, which stays an attachment. An unreadable PDF (no extractable text)
+    is omitted, so it is never treated as empty/redundant. With an explicit
+    ``pattern`` the matched files are returned as-is (no PDF auto-scan).
+    """
+    paths = find_message_files(directory, recursive=recursive, pattern=pattern)
+    out: List[Tuple[str, List["Message"]]] = []
+    attachment_names = set()
+    for p in paths:
+        msgs = parse_path(p)
+        for m in msgs:
+            for a in m.attachments:
+                attachment_names.add(os.path.basename(a).strip().lower())
+        out.append((p, msgs))
+
+    if not pattern:
+        seen = {os.path.basename(p) for p in paths}
+        root = os.path.join(directory, "**", "*.pdf") if recursive else os.path.join(directory, "*.pdf")
+        for pp in sorted(glob.glob(root, recursive=recursive)):
+            base = os.path.basename(pp)
+            if base in seen or base.strip().lower() in attachment_names:
+                continue
+            msgs = parse_path(pp)
+            if not msgs:            # unreadable PDF — skip, don't risk deleting it
+                continue
+            out.append((pp, msgs))
+    return out
 
 
 def _parse_block(block: List[str]) -> Optional[Message]:
