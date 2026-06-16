@@ -61,9 +61,10 @@ the deduplication **branch-aware** instead of a size heuristic.
 ## Screenshots
 
 <!--
-  TODO (pre-publish): drop real images in docs/img/ and uncomment.
-  Capture with `arc web` (the keep/delete panel) and an example timeline
-  (`arc timeline examples/events.json -o timeline.html`).
+  To add still images: capture the web UI keep/delete panel (`arc web`) and a
+  rendered timeline (`arc timeline examples/events.json -o timeline.html`), save
+  them as docs/img/web-ui.png and docs/img/timeline.png, then uncomment the two
+  lines below.
 
 ![The local web UI: drag-drop an export, see keep vs. redundant, pick threads](docs/img/web-ui.png)
 ![A rendered timeline: tabs, an SVG overview axis, filters, and expandable cards](docs/img/timeline.png)
@@ -85,10 +86,9 @@ the deduplication **branch-aware** instead of a size heuristic.
   self-contained page. It's [`docs/timeline.html`](docs/timeline.html),
   regenerated with `arc timeline examples/events.json -o docs/timeline.html`.
 
-> To turn these on after pushing: repo **Settings → Pages → Build and deployment →
-> Source: Deploy from a branch → `main` / `/docs` → Save**. The links go live in
-> a minute. (The earlier local `arc web` server still works too — it adds the
-> live timeline preview the static dedup page leaves out.)
+> Both pages are static and self-contained — no backend, nothing to install. The
+> local `arc web` server works too, and adds a live timeline preview the static
+> dedup page leaves out (see [Quick start](#quick-start)).
 
 ## Requirements
 
@@ -139,6 +139,27 @@ After `pip install -e .` (see [Install](#install)) the `arc` command is on your
 PATH, so you can drop the `PYTHONPATH=src python -m arc.cli` prefix entirely and
 just run `arc dedup examples/threads`, `arc web`, and so on. There's also a
 one-shot test runner — `python tests/run_all.py` — and `make test` / `.\tasks.ps1 test`.
+
+## Testing
+
+Every feature ships with a test, and every "messy input" feature ships with a
+messy fixture. The suite is **nine test files** covering parsing and parser
+hardening, branch-aware dedup, thread-tree reconstruction, the `.eml`/`.mbox`
+adapter, the SQLite store, the local web UI, and the timeline bridge:
+
+```sh
+python tests/run_all.py        # or: make test  /  .\tasks.ps1 test
+```
+
+It runs on every push and pull request via GitHub Actions (the **tests** badge
+above), across a matrix of **Linux and Windows on Python 3.9–3.13**, plus a
+byte-compile check over every module and a smoke test of the `arc` entry point.
+
+One test earns its keep in particular. The dedup core is implemented twice — in
+Python, and in JavaScript for the zero-install [browser tool](#screenshots) —
+and a **cross-language parity test** (`tests/test_js_parity.py`) runs the JS port
+under Node over the same corpus and asserts it reaches the *identical*
+keep/delete verdict, so the two implementations can't silently drift.
 
 ## How dedup works (the key idea)
 
