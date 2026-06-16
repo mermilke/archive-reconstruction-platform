@@ -60,6 +60,13 @@ the deduplication **branch-aware** instead of a size heuristic.
 
 ## Screenshots
 
+Drag in an export folder, see the branch-aware **keep / redundant** verdict
+across `.txt`/`.eml`/`.mbox`/`.pdf`, open any thread to read it inline, pick the
+threads you want, and build an interactive timeline — all local, nothing
+uploaded:
+
+![Demo: drop an export folder, see the branch-aware dedup verdict, open a thread to read it inline, then build an interactive timeline](docs/img/demo.gif)
+
 The local web UI: drag in an export and the **branch-aware dedup** verdict
 appears instantly — which files to keep, which are redundant, and *why* (each
 redundant file names the keeper it's a subset of). Attachments are first-class,
