@@ -42,8 +42,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   for deletion — with a one-line hint to install the extra. New module
   `src/arc/pdf_in.py`, covered by `tests/test_pdf_in.py`. The local web UI
   (`arc web`) reads PDFs too — binary files are uploaded base64-encoded and
-  decoded server-side. New example folder `examples/pdf_emails/` (emails saved to
-  PDF) to drag in or `arc dedup`.
+  decoded server-side. New example folder `examples/pdf_emails/` holds the same
+  emails saved across **every** readable format (`.pdf`/`.eml`/`.mbox`/`.txt`) so
+  one folder-drag shows format-blind dedup: two PDF copies and an `.eml` of one
+  email all collapse together, and a `.txt` export of a message is flagged as a
+  subset of the `.mbox` archive that contains it (8 files → 4 kept / 4 redundant).
 
 ### Fixed
 

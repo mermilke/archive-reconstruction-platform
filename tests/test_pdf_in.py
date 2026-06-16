@@ -142,20 +142,32 @@ def test_unreadable_pdf_is_skipped_and_hints():
 
 
 def test_example_pdf_emails_folder():
-    """The committed examples/pdf_emails/ folder dedups as documented: two copies
-    of one email collapse, a saved thread is kept, an excerpt of it is flagged."""
+    """The committed examples/pdf_emails/ folder mixes every readable format
+    (.pdf/.eml/.mbox/.txt) and dedups as documented, format-blind: two PDF copies
+    of one email collapse and an .eml of that same email folds in with them; a
+    saved thread PDF is kept while an excerpt is flagged; a .mbox archive is a
+    fresh branch while a .txt export of one of its messages is a subset."""
     folder = os.path.join(ROOT, "examples", "pdf_emails")
     if not os.path.isdir(folder):
         return  # generated on demand; skip if not present
     result = dedup_directory(folder)
-    assert len(result.reports) == 5, "expected 5 PDFs scanned, got %d" % len(result.reports)
-    assert len(result.keep) == 3, "expected 3 kept, got %s" % sorted(result.keep)
-    assert len(result.delete) == 2, "expected 2 redundant, got %s" % sorted(result.delete)
+    assert len(result.reports) == 8, "expected 8 files scanned, got %d" % len(result.reports)
+    assert len(result.keep) == 4, "expected 4 kept, got %s" % sorted(result.keep)
+    assert len(result.delete) == 4, "expected 4 redundant, got %s" % sorted(result.delete)
     by_name = {r.name: r for r in result.reports}
+    # Two PDF copies + an .eml of the same email all collapse onto canary_go.pdf.
     assert by_name["canary_go_phone_export.pdf"].redundant
     assert "canary_go.pdf" in by_name["canary_go_phone_export.pdf"].superseded_by
+    assert by_name["canary_go_mobile.eml"].redundant, "the .eml copy should fold in cross-format"
+    assert "canary_go.pdf" in by_name["canary_go_mobile.eml"].superseded_by
+    # Saved thread kept; its excerpt is redundant.
     assert by_name["runbook_excerpt.pdf"].redundant
     assert "runbook_thread.pdf" in by_name["runbook_excerpt.pdf"].superseded_by
+    # The .mbox archive is a kept branch; a .txt export of one of its messages
+    # is a cross-format subset of it.
+    assert not by_name["weekly_sync.mbox"].redundant, "the .mbox archive is a fresh branch"
+    assert by_name["safety_case.txt"].redundant
+    assert "weekly_sync.mbox" in by_name["safety_case.txt"].superseded_by
 
 
 def main():

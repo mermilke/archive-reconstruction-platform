@@ -364,7 +364,7 @@ src/arc/
 examples/
   threads/      6 synthetic files (2 branches + 4 subsets) proving the logic
   archive/      85-file mixed pile (.txt/.eml/.mbox + .pdf/.csv/.png attachments) deduped together
-  pdf_emails/   a few emails saved/printed to PDF (drag into `arc web`, or `arc dedup` it)
+  pdf_emails/   the same emails saved across every format (.pdf/.eml/.mbox/.txt), deduped together (drag into `arc web`)
   raw_email/    synthetic .eml/.mbox fixtures (some carry threading headers for `tree`)
   events.json   synthetic timeline data
 tests/
