@@ -133,6 +133,7 @@ class Session:
         uniques, total = collect_unique_messages([p for p, _ in items])
         return {
             "files": files,
+            "hasTimeline": self.timeline_html is not None,
             "summary": {
                 "files": len(result.reports),
                 "kept": len(result.keep),
@@ -261,6 +262,16 @@ class _Handler(BaseHTTPRequestHandler):
         elif path == "/api/build":
             with sess.lock:
                 self._send_json(sess.build_timeline(payload.get("selected", []) or []))
+        elif path == "/api/load_timeline":
+            # Reopen a timeline the user downloaded earlier: store its HTML so it
+            # serves at /timeline exactly like a freshly built one (same origin,
+            # so its in-page editor keeps working). Local file, local server.
+            html = payload.get("html") or ""
+            with sess.lock:
+                ok = bool(html.strip())
+                if ok:
+                    sess.timeline_html = html
+                self._send_json({"ok": ok})
         elif path == "/api/reset":
             with sess.lock:
                 sess.reset()
@@ -367,9 +378,9 @@ PAGE_HTML = r"""<!doctype html>
   .framewrap{height:78vh;min-height:480px}
   iframe{width:100%;height:100%;border:0;border-radius:0 0 var(--radius) var(--radius);background:#fff}
   .note{color:var(--muted);font-size:12.5px;margin-top:16px;text-align:center}
-  .buildbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .buildbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
   .buildbar .status{font-size:12.5px;color:var(--muted);min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  #focus{margin-left:auto}
+  #download{margin-left:auto}
   /* Focus mode: collapse the uploader + files panel so the timeline fills the width. */
   body.focusMode #drop{display:none}
   body.focusMode #filesCard{display:none}
@@ -447,8 +458,11 @@ PAGE_HTML = r"""<!doctype html>
       <div class="buildbar">
         <button id="build" class="primary">Build timeline from selected</button>
         <span class="status" id="buildStatus"></span>
+        <button id="download" title="Save this timeline as a self-contained HTML file you can reopen later" disabled>Download</button>
+        <button id="openSaved" title="Open a timeline HTML you saved earlier">Open saved&hellip;</button>
         <button id="focus" title="Hide the uploader and file list so the timeline gets the full width">Focus timeline</button>
         <button id="full" title="Open the timeline in full screen (Esc to exit)">Fullscreen</button>
+        <input type="file" id="tlPicker" accept=".html,.htm" style="display:none">
       </div>
       <div class="framewrap"><iframe id="frame" src="/timeline" title="Timeline preview"></iframe></div>
     </div>
@@ -508,6 +522,43 @@ PAGE_HTML = r"""<!doctype html>
       body:JSON.stringify(body||{})}).then(function(r){ return r.json(); });
   }
 
+  var SUPPORTED_RE = /\.(txt|eml|mbox|pdf)$/i;
+
+  // Recurse a dropped directory entry, collecting every File inside it.
+  function gatherEntry(entry, out){
+    return new Promise(function(resolve){
+      if(entry.isFile){
+        entry.file(function(file){ out.push(file); resolve(); }, function(){ resolve(); });
+      } else if(entry.isDirectory){
+        var reader = entry.createReader(), seen = [];
+        (function readBatch(){
+          reader.readEntries(function(entries){
+            if(!entries.length){
+              Promise.all(seen.map(function(e){ return gatherEntry(e, out); })).then(resolve);
+            } else { seen = seen.concat(entries); readBatch(); }  // dirs come in batches
+          }, function(){ resolve(); });
+        })();
+      } else { resolve(); }
+    });
+  }
+
+  // Files from a drop — recursing into folders when the browser supports it,
+  // so dropping a whole export folder (not just loose files) works.
+  function filesFromDrop(dt){
+    var items = dt.items, entries = [];
+    if(items && items.length && items[0].webkitGetAsEntry){
+      for(var i=0;i<items.length;i++){
+        var en = items[i].webkitGetAsEntry();
+        if(en) entries.push(en);
+      }
+    }
+    if(entries.length){
+      var out = [];
+      return Promise.all(entries.map(function(e){ return gatherEntry(e, out); })).then(function(){ return out; });
+    }
+    return Promise.resolve(Array.prototype.slice.call(dt.files || []));
+  }
+
   function upload(fileObjs){
     if(!fileObjs.length) return;
     Promise.all(Array.prototype.map.call(fileObjs, readFile)).then(function(files){
@@ -534,6 +585,7 @@ PAGE_HTML = r"""<!doctype html>
       return;
     }
     workspace.style.display = "";
+    if(typeof downloadBtn !== "undefined" && downloadBtn) downloadBtn.disabled = !state.hasTimeline;
     var s = state.summary || {};
     chips.innerHTML = "";
     chips.appendChild(chip(s.files + " file(s)"));
@@ -697,10 +749,15 @@ PAGE_HTML = r"""<!doctype html>
   document.getElementById("selKeep").onclick = function(){ setAll(function(cb){ return cb.dataset.redundant !== "1"; }); };
   document.getElementById("selAll").onclick  = function(){ setAll(function(){ return true; }); };
   document.getElementById("selNone").onclick = function(){ setAll(function(){ return false; }); };
+  var downloadBtn = document.getElementById("download");
+  var openSavedBtn = document.getElementById("openSaved");
+  var tlPicker = document.getElementById("tlPicker");
+
   document.getElementById("reset").onclick = function(){
     postJSON("/api/reset", {}).then(render);
     frame.src = "/timeline?ts=" + Date.now();
     buildStatus.textContent = "";
+    downloadBtn.disabled = true;
   };
 
   document.getElementById("build").onclick = function(){
@@ -712,11 +769,48 @@ PAGE_HTML = r"""<!doctype html>
       if(res.ok){
         buildStatus.textContent = res.count + " event(s) · " + res.subtitle;
         frame.src = "/timeline?ts=" + Date.now();
+        downloadBtn.disabled = false;
       } else {
         buildStatus.textContent = res.error || "Nothing to show.";
       }
     });
   };
+
+  // Save the current timeline as a self-contained HTML file.
+  downloadBtn.onclick = function(){
+    fetch("/timeline").then(function(r){ return r.text(); }).then(function(html){
+      var blob = new Blob([html], {type:"text/html"});
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "timeline.html";
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+    });
+  };
+
+  // Reopen a timeline saved earlier: load its HTML back into the preview.
+  openSavedBtn.onclick = function(){ tlPicker.click(); };
+  tlPicker.addEventListener("change", function(){
+    var file = tlPicker.files && tlPicker.files[0];
+    tlPicker.value = "";
+    if(!file) return;
+    var r = new FileReader();
+    r.onload = function(){
+      postJSON("/api/load_timeline", {html:String(r.result||"")}).then(function(res){
+        if(!res.ok){ buildStatus.textContent = "That file didn't look like a saved timeline."; return; }
+        workspace.style.display = "";               // show the preview even with no files loaded
+        if(!document.body.classList.contains("focusMode")){
+          document.body.classList.add("focusMode"); // collapse the (empty) file panel to just the timeline
+          focusBtn.textContent = "Show files";
+        }
+        frame.src = "/timeline?ts=" + Date.now();
+        downloadBtn.disabled = false;
+        buildStatus.textContent = "Opened saved timeline: " + file.name;
+      });
+    };
+    r.readAsText(file);
+  });
 
   // Focus mode: collapse the uploader + files panel to give the timeline room.
   var focusBtn = document.getElementById("focus");
@@ -747,7 +841,18 @@ PAGE_HTML = r"""<!doctype html>
     drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove("hover"); });
   });
   drop.addEventListener("drop", function(e){
-    if(e.dataTransfer && e.dataTransfer.files) upload(e.dataTransfer.files);
+    if(!e.dataTransfer) return;
+    filesFromDrop(e.dataTransfer).then(function(files){
+      // Only send files we can read; folders often carry junk (.DS_Store, etc.).
+      var keep = files.filter(function(f){ return SUPPORTED_RE.test(f.name || ""); });
+      if(!keep.length){
+        buildStatus.textContent = files.length
+          ? "No .txt/.eml/.mbox/.pdf files found in what you dropped."
+          : "Nothing to read in that drop.";
+        return;
+      }
+      upload(keep);
+    });
   });
   picker.addEventListener("change", function(){ upload(picker.files); picker.value = ""; });
 

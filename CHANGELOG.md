@@ -13,6 +13,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   files/dedup panel so the timeline spans the full width and height) and a
   **Fullscreen** button (true browser fullscreen for the timeline; Esc exits) —
   for reading a built timeline without the dedup chrome in the way.
+- **Folder drag-and-drop in the local web UI.** Dropping a whole export *folder*
+  (e.g. `examples/archive`) now works — the browser recurses into the directory
+  and uploads every `.txt`/`.eml`/`.mbox`/`.pdf` inside (junk like `.DS_Store` is
+  ignored). Previously only loose files dropped one-by-one were read.
+- **Save & reopen a timeline.** The web UI gains a **Download** button (saves the
+  built timeline as a self-contained `.html`) and **Open saved…** (load a
+  previously downloaded timeline back into the preview), so you can keep a
+  timeline and reopen it later without re-running the dedup.
+- **Back-to-top button on timelines.** Long timelines (standalone and in the web
+  UI preview) get a floating up-arrow that appears once you scroll down and jumps
+  smoothly back to the top.
 
 - **In-browser dedup tool** (`docs/try.html`) — a zero-install web page that runs
   the branch-aware dedup entirely client-side: drag in `.txt` thread exports (or

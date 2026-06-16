@@ -802,6 +802,9 @@ section.summary-filtered .stat b{color:#7A5B00}
 .manual-del:hover{color:var(--red,#d62027);background:rgba(0,0,0,.05)}
 .add-event-btn{position:fixed;right:22px;bottom:22px;z-index:300;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:12px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .add-event-btn:hover{background:#16264a}
+.to-top-btn{position:fixed;left:22px;bottom:22px;z-index:300;width:42px;height:42px;border-radius:999px;background:var(--card);color:var(--accent);border:1px solid var(--line);font-size:20px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);display:none;align-items:center;justify-content:center;padding:0}
+.to-top-btn:hover{background:var(--accent-soft)}
+.to-top-btn.show{display:flex}
 .ett-modal{position:fixed;inset:0;z-index:400;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:20px}
 .ett-modal.open{display:flex}
 .ett-dialog{background:var(--card);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.3);width:min(520px,100%);max-height:90vh;overflow:auto;padding:20px 22px}
@@ -816,7 +819,7 @@ section.summary-filtered .stat b{color:#7A5B00}
 .ett-actions button{font-family:inherit;font-size:13px;font-weight:600;border-radius:7px;padding:8px 16px;cursor:pointer;border:1px solid var(--line)}
 .ett-actions .ett-cancel{background:var(--card);color:var(--ink-soft)}
 .ett-actions .ett-save{background:var(--accent);color:#fff;border-color:var(--accent)}
-@media print{.add-event-btn,.ett-modal{display:none!important}}
+@media print{.add-event-btn,.to-top-btn,.ett-modal{display:none!important}}
 .event.filtered-out,.group-section.filtered-out,.phase.filtered-out{display:none}
 .tooltip{position:absolute;background:var(--ink);color:#fff;padding:6px 10px;border-radius:4px;font-size:11px;pointer-events:none;opacity:0;transition:opacity .1s;z-index:100;max-width:280px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .tooltip.visible{opacity:1}
@@ -1154,6 +1157,13 @@ function switchTab(tabId, btn){
     var n=document.getElementById('ett-newcat'); if(n) n.style.display=(catSel.value==='__new__')?'flex':'none';
   });
   if(addBtn) addBtn.addEventListener('click', function(){ openModal('add'); });
+  var topBtn=document.getElementById('ett-top-btn');
+  if(topBtn){
+    var onScroll=function(){ topBtn.classList.toggle('show', (window.pageYOffset||document.documentElement.scrollTop||0) > 300); };
+    window.addEventListener('scroll', onScroll, {passive:true});
+    topBtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+    onScroll();
+  }
   var cancelBtn=document.getElementById('ett-cancel'); if(cancelBtn) cancelBtn.addEventListener('click', closeModal);
   if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
 
@@ -1222,6 +1232,7 @@ function switchTab(tabId, btn){
 """.strip()
 
 _ADD_UI = """
+<button class="to-top-btn" id="ett-top-btn" title="Back to top" aria-label="Back to top">&#8593;</button>
 <button class="add-event-btn" id="ett-add-btn">➕ Add event</button>
 <div class="ett-modal" id="ett-modal">
   <div class="ett-dialog">
