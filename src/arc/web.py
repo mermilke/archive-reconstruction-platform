@@ -375,12 +375,15 @@ PAGE_HTML = r"""<!doctype html>
   body.focusMode #filesCard{display:none}
   body.focusMode main{max-width:none}
   body.focusMode .grid{grid-template-columns:1fr}
-  body.focusMode .framewrap{height:calc(100vh - 188px)}
+  body.focusMode .framewrap{height:calc(100vh - 210px)}
   body.focusMode .note{display:none}
-  /* True browser fullscreen for just the timeline card. */
+  /* True browser fullscreen for just the timeline card. The iframe is sized via
+     flex (not height:100%) so it fills the screen — a percentage height can't
+     resolve against an auto-height flex parent, which would collapse the iframe
+     and clip the floating "Add event" button. */
   #tlCard:fullscreen{width:100vw;height:100vh;border-radius:0;display:flex;flex-direction:column}
-  #tlCard:fullscreen .framewrap{flex:1 1 auto;height:auto;min-height:0}
-  #tlCard:fullscreen iframe{border-radius:0}
+  #tlCard:fullscreen .framewrap{flex:1 1 auto;min-height:0;height:auto;display:flex;flex-direction:column}
+  #tlCard:fullscreen iframe{flex:1 1 auto;min-height:0;height:auto;border-radius:0}
   /* file viewer / compare modal */
   .fname-btn{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:0;
     cursor:pointer;text-align:left;word-break:break-all}
