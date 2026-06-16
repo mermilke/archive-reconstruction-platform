@@ -95,7 +95,8 @@ def parse_path(path: str) -> List[Message]:
     """Parse a file into messages, dispatching by extension.
 
     ``.eml`` and ``.mbox`` are read with the stdlib email/mailbox modules (one or
-    many messages); anything else is treated as the stacked ``.txt`` export.
+    many messages); ``.pdf`` is read best-effort (see :mod:`arc.pdf_in`);
+    anything else is treated as the stacked ``.txt`` export.
     """
     ext = os.path.splitext(path)[1].lower()
     if ext == ".eml":
@@ -104,6 +105,9 @@ def parse_path(path: str) -> List[Message]:
     if ext == ".mbox":
         from .email_in import parse_mbox
         return parse_mbox(path)
+    if ext == ".pdf":
+        from .pdf_in import parse_pdf
+        return parse_pdf(path)
     return parse_file(path)
 
 

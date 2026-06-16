@@ -3,7 +3,7 @@
 [![tests](https://github.com/mermilke/archive-reconstruction-platform/actions/workflows/tests.yml/badge.svg)](https://github.com/mermilke/archive-reconstruction-platform/actions/workflows/tests.yml)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![dependencies: zero](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#requirements)
+[![core dependencies: zero](https://img.shields.io/badge/core%20deps-0-brightgreen.svg)](#requirements)
 
 > **When a conversation forks, the biggest file isn't always a superset.** A
 > smaller export can hold a reply — or an attachment — the big one never had.
@@ -96,7 +96,11 @@ source email, quoted context, attachments, and significance).
 
 ## Requirements
 
-- Python **3.9+** — **zero third-party packages** for everything in the core.
+- Python **3.9+** — **zero required third-party packages**; the entire core runs
+  on the standard library. There is one *optional* extra, `pdf`, that only makes
+  PDF text extraction more robust (`pip install
+  "archive-reconstruction-platform[pdf]"`); without it, PDFs are read with a
+  built-in stdlib reader. Nothing else ever needs it.
 
 ## Install
 
@@ -255,6 +259,16 @@ by default — point them at a real mailbox export:
 | `.txt` | The stacked thread-export format above |
 | `.eml` | A single exported email (Gmail/Outlook/Thunderbird "save as") |
 | `.mbox`| A mailbox archive of many messages (Gmail Takeout, Thunderbird, Apple Mail) |
+| `.pdf` | An email **saved/printed to PDF** (or a text document) — read best-effort |
+
+`.pdf` files in a folder are read as inputs *only* when they aren't an
+attachment named by another message (those stay attachments). PDF text
+extraction is best-effort: the built-in reader is standard-library-only (it
+inflates FlateDecode streams and pulls text from the content streams), which
+handles most "saved to PDF" emails and simple documents but little from scanned
+or unusually-encoded PDFs. For robust extraction, install the optional extra
+(`pip install "archive-reconstruction-platform[pdf]"`, which adds `pypdf`); a PDF
+the reader can't make sense of is skipped, never silently flagged for deletion.
 
 `.eml`/`.mbox` are read with the standard-library `email`/`mailbox` modules
 (still zero-dependency); RFC 2047-encoded subjects, attachments, and HTML-only

@@ -133,12 +133,39 @@ def analyze(file_keys: Sequence[Tuple[str, Set[Key]]]) -> DedupResult:
 def dedup_directory(path: str, pattern: Optional[str] = None) -> DedupResult:
     """Parse every readable file under ``path`` and run the dedup analysis.
 
-    With no ``pattern``, reads all supported formats (.txt/.eml/.mbox).
+    With no ``pattern``, reads ``.txt``/``.eml``/``.mbox`` and also any
+    standalone ``.pdf`` (emails saved/printed to PDF) — *except* a PDF whose name
+    matches an attachment referenced by another message, which stays an
+    attachment rather than being scanned as its own input. A PDF whose text
+    can't be read is skipped (never silently flagged for deletion). PDF reading
+    is best-effort and improves with the optional ``[pdf]`` extra; see
+    :mod:`arc.pdf_in`.
     """
+    import glob
     import os
+
     paths = find_message_files(path, pattern=pattern)
     file_keys: List[Tuple[str, Set[Key]]] = []
+    attachment_names: Set[str] = set()
     for p in paths:
         messages = parse_path(p)
+        for msg in messages:
+            for att in msg.attachments:
+                attachment_names.add(os.path.basename(att).strip().lower())
         file_keys.append((os.path.basename(p), content_keys(messages)))
+
+    # With the default scan, also read standalone PDFs (saved-as-PDF emails),
+    # skipping ones that are really attachments of the messages above. With an
+    # explicit pattern, find_message_files already returned exactly what matched.
+    if not pattern:
+        seen = {os.path.basename(p) for p in paths}
+        for pp in sorted(glob.glob(os.path.join(path, "*.pdf"))):
+            base = os.path.basename(pp)
+            if base in seen or base.strip().lower() in attachment_names:
+                continue
+            messages = parse_path(pp)
+            if not messages:          # unreadable PDF — skip, don't risk deleting it
+                continue
+            file_keys.append((base, content_keys(messages)))
+
     return analyze(file_keys)

@@ -31,6 +31,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `.mbox` and stays zero-dependency. Covered by `tests/test_archive_example.py`.
 - **Screenshots in the README** — the web UI dedup verdict and a rendered
   timeline (`docs/img/`).
+- **PDF reading (best-effort)** — emails saved/printed to PDF can now be deduped.
+  `arc dedup` reads standalone `.pdf` files (a PDF named as another message's
+  attachment stays an attachment), parsing a saved email back into messages or
+  treating a document as one. The built-in reader is **standard-library only**
+  (inflates FlateDecode via `zlib`, extracts text from the content streams), so
+  the core stays zero-dependency; an optional extra
+  (`pip install "archive-reconstruction-platform[pdf]"`, adds `pypdf`) gives more
+  robust extraction. A PDF whose text can't be read is skipped — never flagged
+  for deletion — with a one-line hint to install the extra. New module
+  `src/arc/pdf_in.py`, covered by `tests/test_pdf_in.py`.
 
 ### Fixed
 

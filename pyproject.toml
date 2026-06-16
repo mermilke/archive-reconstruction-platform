@@ -21,8 +21,14 @@ classifiers = [
     "Topic :: Communications :: Email",
     "Topic :: Utilities",
 ]
-# ZERO third-party runtime dependencies — standard library only.
+# ZERO third-party runtime dependencies for the core — standard library only.
 dependencies = []
+
+# Optional extras. The core never requires these; they only enhance one thing:
+#   pdf — more robust PDF text extraction (the built-in reader is stdlib-only and
+#         best-effort). Install with:  pip install "archive-reconstruction-platform[pdf]"
+[project.optional-dependencies]
+pdf = ["pypdf>=4"]
 
 [project.scripts]
 arc = "arc.cli:main"
