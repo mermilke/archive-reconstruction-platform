@@ -62,6 +62,12 @@
     border:1px solid #ddd6fe;border-radius:6px;padding:1px 7px;margin:3px 4px 0 0}
   .note{color:var(--muted);font-size:12.5px;margin-top:16px;text-align:center}
   .note a{color:var(--accent)}
+  .fmtnote{max-width:70ch;margin:16px auto 0;background:#f0f9ff;border:1px solid #bae6fd;
+    border-left:4px solid var(--accent);border-radius:10px;padding:12px 15px;font-size:13px;color:#334155}
+  .fmtnote b{color:var(--ink)}
+  .fmtnote a{color:var(--accent);font-weight:600;text-decoration:none}
+  .fmtnote a:hover{text-decoration:underline}
+  .fmtnote code{background:#e0f2fe;border-radius:4px;padding:1px 5px;font-size:12px}
   /* file viewer / compare modal */
   .fname-btn{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:0;
     cursor:pointer;text-align:left;word-break:break-all}
@@ -116,6 +122,14 @@
     <input type="file" id="picker" multiple accept=".txt">
   </label>
   <p class="sampleline">No exports handy? <button type="button" class="linkbtn" id="loadSample">Load the sample data</button> to see it work.</p>
+
+  <div class="fmtnote">
+    <b>This is a <code>.txt</code>-only demo.</b> The installable tool reads real mailbox exports
+    too &mdash; <code>.eml</code> and <code>.mbox</code> from Gmail, Outlook, Apple&nbsp;Mail, and
+    Thunderbird &mdash; and treats attachments such as PDFs as first-class content, so a forward
+    carrying a unique PDF is never marked redundant. Everything still runs locally, with zero
+    dependencies. <a href="https://github.com/mermilke/archive-reconstruction-platform#install">Get the full version &rarr;</a>
+  </div>
 
   <section class="card" id="workspace" style="display:none">
     <h2>Files &amp; dedup verdict</h2>
@@ -174,12 +188,12 @@
     var usable = records.filter(function(f){ return isText(f.name); });
     if(!usable.length){
       currentState = null;
-      render(null, records.length ? "Only .txt thread exports are supported in the browser demo." : "");
+      render(null, records.length ? "Only .txt thread exports work in this browser demo — the installable tool also reads .eml and .mbox. See “Get the full version” above." : "");
       return;
     }
     currentState = ArcDedup.computeState(usable);
     var skipped = records.length - usable.length;
-    render(currentState, skipped ? (skipped + " non-.txt file(s) skipped.") : "");
+    render(currentState, skipped ? (skipped + " non-.txt file(s) skipped — the installable tool reads .eml/.mbox too.") : "");
   }
 
   function loadFiles(fileObjs){
