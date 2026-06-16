@@ -18,6 +18,7 @@ Stdlib only (``urllib`` drives the live HTTP round-trip). Run directly:
 import json
 import os
 import sys
+import urllib.parse
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -107,6 +108,36 @@ def test_build_timeline_from_selection():
           % (len(keepers), res["count"]))
 
 
+def test_file_view_and_compare():
+    """The file viewer returns parsed messages keyed for comparison, and a
+    redundant file's message keys are a subset of its keeper's — the invariant
+    the side-by-side 'why it's redundant' view relies on."""
+    sess = web.Session()
+    sess.save_uploads(_example_uploads())
+    state = sess.state()
+
+    redundant = next(f for f in state["files"] if f["redundant"] and f["coveredBy"])
+    keeper = redundant["coveredBy"][0]
+
+    a = sess.file_view(redundant["name"])
+    b = sess.file_view(keeper)
+    assert a["ok"] and b["ok"], "both files should be viewable"
+    assert a["messages"] and all("key" in m and "body" in m for m in a["messages"])
+
+    a_keys = {m["key"] for m in a["messages"]}
+    b_keys = {m["key"] for m in b["messages"]}
+    assert a_keys <= b_keys, "every message in a redundant file must appear in its keeper"
+    assert b_keys - a_keys or any(
+        att not in {x.lower() for msg in a["messages"] for x in msg["attachments"]}
+        for msg in b["messages"] for att in (x.lower() for x in msg["attachments"])
+    ), "the keeper should carry at least one extra message or attachment"
+
+    # Path-safety: a missing or traversing name is rejected, not served.
+    assert sess.file_view("does_not_exist.txt")["ok"] is False
+    assert sess.file_view("../../secret.txt")["ok"] is False
+    print("OK - file viewer: redundant keys subset of keeper; bad names rejected.")
+
+
 def _post(url, obj):
     req = urllib.request.Request(url, data=json.dumps(obj).encode("utf-8"),
                                  headers={"Content-Type": "application/json"}, method="POST")
@@ -134,6 +165,9 @@ def test_http_round_trip():
         built = _post(base + "/api/build", {"selected": keepers})
         assert built["ok"] is True and built["count"] > 0
 
+        fv = json.loads(_get(base + "/api/file?name=" + urllib.parse.quote(keepers[0])))
+        assert fv["ok"] is True and fv["messages"], "/api/file returns parsed messages"
+
         tl = _get(base + "/timeline")
         assert "<html" in tl.lower()
 
@@ -148,5 +182,6 @@ if __name__ == "__main__":
     test_session_matches_dedup_directory()
     test_skips_unsupported_and_sanitizes_names()
     test_build_timeline_from_selection()
+    test_file_view_and_compare()
     test_http_round_trip()
     print("OK - local web UI: dedup verdict, selection, and HTTP surface all verified.")

@@ -21,6 +21,7 @@ as text and POSTs a small JSON payload instead — no third-party parser needed.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -28,11 +29,18 @@ import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Dict, List, Optional, Tuple
+from urllib.parse import parse_qs, urlparse
 
 from .bridge import collect_unique_messages, timeline_data_from_messages
-from .dedup import analyze, content_keys
+from .dedup import analyze, content_keys, message_key
 from .parse import SUPPORTED_EXTS, find_message_files, parse_path
 from .timeline import count_events, render_timeline
+
+
+def _key_id(key) -> str:
+    """A short, stable id for a message's dedup key — lets the browser tell which
+    messages two files share without shipping the raw fingerprint."""
+    return hashlib.sha1(json.dumps(list(key)).encode("utf-8")).hexdigest()[:16]
 
 _SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
 
@@ -141,6 +149,28 @@ class Session:
         self.timeline_html = render_timeline(data)
         return {"ok": True, "count": count_events(data), "subtitle": subtitle}
 
+    def file_view(self, name: str) -> Dict[str, Any]:
+        """The parsed messages of one stored file, each tagged with its dedup
+        key. The browser uses the keys to compare a redundant file against its
+        keeper and highlight exactly what the keeper has that this file doesn't.
+        """
+        safe = os.path.basename((name or "").replace("\\", "/"))
+        path = os.path.join(self.dir, safe)
+        if not safe or not os.path.isfile(path):
+            return {"ok": False, "error": "No such file."}
+        messages = []
+        for msg in parse_path(path):
+            messages.append({
+                "from": msg.sender,
+                "to": msg.recipient,
+                "date": msg.timestamp,
+                "subject": msg.subject,
+                "body": msg.body,
+                "attachments": [a.strip() for a in msg.attachments if a.strip()],
+                "key": _key_id(message_key(msg)),
+            })
+        return {"ok": True, "name": safe, "messages": messages}
+
 
 # --------------------------------------------------------------------------- #
 # HTTP handler
@@ -186,7 +216,8 @@ class _Handler(BaseHTTPRequestHandler):
 
     # -- routes ---------------------------------------------------------- #
     def do_GET(self) -> None:  # noqa: N802
-        path = self.path.split("?", 1)[0]
+        parsed = urlparse(self.path)
+        path = parsed.path
         sess = self.server.session  # type: ignore[attr-defined]
         if path == "/":
             self._send_html(PAGE_HTML)
@@ -195,6 +226,10 @@ class _Handler(BaseHTTPRequestHandler):
         elif path == "/api/state":
             with sess.lock:
                 self._send_json(sess.state())
+        elif path == "/api/file":
+            name = (parse_qs(parsed.query).get("name") or [""])[0]
+            with sess.lock:
+                self._send_json(sess.file_view(name))
         else:
             self._send(404, b"Not found", "text/plain; charset=utf-8")
 
@@ -320,6 +355,36 @@ PAGE_HTML = r"""<!doctype html>
   .note{color:var(--muted);font-size:12.5px;margin-top:16px;text-align:center}
   .buildbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
   .buildbar .status{font-size:12.5px;color:var(--muted)}
+  /* file viewer / compare modal */
+  .fname-btn{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:0;
+    cursor:pointer;text-align:left;word-break:break-all}
+  .fname-btn:hover{color:var(--accent);text-decoration:underline}
+  .modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;z-index:50;
+    align-items:flex-start;justify-content:center;padding:30px 16px;overflow:auto}
+  .modal.open{display:flex}
+  .modal-dialog{background:var(--panel);border-radius:var(--radius);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);width:min(1120px,100%)}
+  .modal-head{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid var(--line)}
+  .modal-head h3{margin:0;font-size:15px}
+  .modal-head .x{margin-left:auto}
+  .modal-note{padding:11px 18px;font-size:12.5px;color:#475569;background:#f8fafc;
+    border-bottom:1px solid var(--line)}
+  .modal-note b{color:var(--ink)}
+  .cols{display:grid;grid-template-columns:1fr 1fr}
+  .cols.one{grid-template-columns:1fr}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .col{padding:14px 16px;overflow:auto;max-height:72vh}
+  .col + .col{border-left:1px solid var(--line)}
+  .col h4{margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .msg{position:relative;border:1px solid var(--line);border-radius:9px;padding:10px 12px;
+    margin-bottom:10px;background:#fff}
+  .msg.extra{border-color:#86efac;background:#f0fdf4}
+  .msg .who{font-size:12px;color:var(--muted)}
+  .msg .subj{font-weight:600;margin:3px 0 6px}
+  .msg .body{white-space:pre-wrap;font-size:13px;color:#334155;max-height:170px;overflow:auto}
+  .msg .onlyhere{position:absolute;top:9px;right:10px;font-size:9.5px;font-weight:700;
+    color:#15803d;background:#dcfce7;border-radius:5px;padding:1px 6px;text-transform:uppercase}
+  .att.extra-att{color:#15803d;background:#dcfce7;border-color:#86efac;font-weight:600}
 </style>
 </head>
 <body>
@@ -359,8 +424,20 @@ PAGE_HTML = r"""<!doctype html>
   </section>
 
   <p class="note">The tool only <b>recommends</b> which files are redundant &mdash; it never deletes anything.
-  Keepers are the branches that, together, preserve every message and attachment.</p>
+  Keepers are the branches that, together, preserve every message and attachment.
+  <br>Click any file name to read it &mdash; redundant files open side-by-side with their keeper.</p>
 </main>
+
+<div class="modal" id="viewer">
+  <div class="modal-dialog">
+    <div class="modal-head">
+      <h3 id="viewerTitle"></h3>
+      <button class="x" id="viewerClose">Close</button>
+    </div>
+    <div class="modal-note" id="viewerNote" style="display:none"></div>
+    <div class="cols" id="viewerCols"></div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -435,7 +512,13 @@ PAGE_HTML = r"""<!doctype html>
       meta.className = "fmeta";
       var nm = document.createElement("div");
       nm.className = "fname";
-      nm.textContent = f.name;
+      var nameBtn = document.createElement("button");
+      nameBtn.type = "button";
+      nameBtn.className = "fname-btn";
+      nameBtn.textContent = f.name;
+      nameBtn.title = f.redundant ? "View and compare with its keeper" : "View contents";
+      nameBtn.onclick = function(){ openViewer(f); };
+      nm.appendChild(nameBtn);
       var badge = document.createElement("span");
       badge.className = "badge " + (f.redundant ? "del" : "keep");
       badge.textContent = f.redundant ? "redundant" : "keep";
@@ -463,6 +546,104 @@ PAGE_HTML = r"""<!doctype html>
       fileList.appendChild(li);
     });
   }
+
+  // ---- file viewer / compare ----------------------------------------- //
+  var viewer = document.getElementById("viewer");
+  var viewerTitle = document.getElementById("viewerTitle");
+  var viewerNote = document.getElementById("viewerNote");
+  var viewerCols = document.getElementById("viewerCols");
+
+  function esc(s){ var d = document.createElement("div"); d.textContent = (s == null ? "" : String(s)); return d.innerHTML; }
+
+  function fetchFile(name){
+    return fetch("/api/file?name=" + encodeURIComponent(name)).then(function(r){ return r.json(); });
+  }
+
+  function attSet(messages){
+    var s = new Set();
+    messages.forEach(function(m){ (m.attachments || []).forEach(function(a){ s.add(a.toLowerCase()); }); });
+    return s;
+  }
+
+  function msgCard(m, isExtra, extraAtts){
+    var d = document.createElement("div");
+    d.className = "msg" + (isExtra ? " extra" : "");
+    if(isExtra){
+      var tag = document.createElement("span");
+      tag.className = "onlyhere"; tag.textContent = "only here";
+      d.appendChild(tag);
+    }
+    var who = document.createElement("div");
+    who.className = "who";
+    who.textContent = (m.from || "(unknown)") + (m.to ? (" → " + m.to) : "") + (m.date ? ("  ·  " + m.date) : "");
+    var subj = document.createElement("div");
+    subj.className = "subj"; subj.textContent = m.subject || "(no subject)";
+    var body = document.createElement("div");
+    body.className = "body"; body.textContent = m.body || "";
+    d.appendChild(who); d.appendChild(subj); d.appendChild(body);
+    (m.attachments || []).forEach(function(a){
+      var c = document.createElement("span");
+      c.className = "att" + (extraAtts && extraAtts.has(a.toLowerCase()) ? " extra-att" : "");
+      c.textContent = a;
+      d.appendChild(c);
+    });
+    return d;
+  }
+
+  function column(title, messages, extraKeys, extraAtts){
+    var col = document.createElement("div");
+    col.className = "col";
+    var h = document.createElement("h4");
+    h.textContent = title;
+    col.appendChild(h);
+    messages.forEach(function(m){
+      col.appendChild(msgCard(m, extraKeys ? extraKeys.has(m.key) : false, extraAtts));
+    });
+    return col;
+  }
+
+  function openViewer(f){
+    viewerCols.innerHTML = "";
+    viewerNote.style.display = "none";
+    if(f.redundant && f.coveredBy && f.coveredBy.length){
+      var keeper = f.coveredBy[0];
+      Promise.all([fetchFile(f.name), fetchFile(keeper)]).then(function(res){
+        var a = res[0], b = res[1];
+        if(!a.ok || !b.ok) return;
+        var aKeys = new Set(a.messages.map(function(m){ return m.key; }));
+        var aAtts = attSet(a.messages);
+        var extraKeys = new Set();
+        b.messages.forEach(function(m){ if(!aKeys.has(m.key)) extraKeys.add(m.key); });
+        // attachments the keeper has that this file does not — those get highlighted
+        var extraAtts = new Set();
+        b.messages.forEach(function(m){
+          (m.attachments || []).forEach(function(x){ if(!aAtts.has(x.toLowerCase())) extraAtts.add(x.toLowerCase()); });
+        });
+        viewerTitle.textContent = "Why " + f.name + " is redundant";
+        viewerNote.style.display = "";
+        viewerNote.innerHTML = "Every message in <b>" + esc(f.name) + "</b> also appears in <b>" +
+          esc(keeper) + "</b>. The keeper additionally has the <b>highlighted</b> message(s) and " +
+          "attachment(s) — which is why " + esc(f.name) + " is safe to delete.";
+        viewerCols.className = "cols";
+        viewerCols.appendChild(column(f.name + " — " + a.messages.length + " message(s)", a.messages, null, null));
+        viewerCols.appendChild(column("Keeper: " + keeper + " — " + b.messages.length + " message(s)", b.messages, extraKeys, extraAtts));
+        viewer.classList.add("open");
+      });
+    } else {
+      fetchFile(f.name).then(function(a){
+        if(!a.ok) return;
+        viewerTitle.textContent = f.name + " — " + a.messages.length + " message(s)";
+        viewerCols.className = "cols one";
+        viewerCols.appendChild(column("Messages", a.messages, null, null));
+        viewer.classList.add("open");
+      });
+    }
+  }
+
+  function closeViewer(){ viewer.classList.remove("open"); }
+  document.getElementById("viewerClose").onclick = closeViewer;
+  viewer.addEventListener("click", function(e){ if(e.target === viewer) closeViewer(); });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeViewer(); });
 
   function checkboxes(){ return fileList.querySelectorAll("input[type=checkbox]"); }
   function setAll(pred){
