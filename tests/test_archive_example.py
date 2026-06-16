@@ -63,17 +63,27 @@ def test_roles_match_keep_and_delete():
 
 def test_counts():
     result = dedup_directory(ARCHIVE)
-    assert len(result.reports) == 73, "expected 73 scanned threads, got %d" % len(result.reports)
-    assert len(result.keep) == 23, "expected 23 kept branches, got %d" % len(result.keep)
-    assert len(result.delete) == 50, "expected 50 redundant files, got %d" % len(result.delete)
+    assert len(result.reports) == 77, "expected 77 scanned threads, got %d" % len(result.reports)
+    assert len(result.keep) == 25, "expected 25 kept branches, got %d" % len(result.keep)
+    assert len(result.delete) == 52, "expected 52 redundant files, got %d" % len(result.delete)
 
 
-def test_pdf_and_binary_files_are_attachments_not_inputs():
-    """The .pdf/.csv/.png files in the folder are never scanned as threads (the
-    engine reads .txt/.eml/.mbox only), so they appear in no dedup report."""
+def test_attachment_files_stay_attachments_but_saved_pdf_emails_are_read():
+    """A .pdf/.csv/.png named as another message's *attachment* rides along
+    matched by name and is never scanned as input. But an email genuinely
+    *saved/printed to PDF* (the c15/c16 files) is read by the best-effort PDF
+    reader and deduped like any other export."""
     scanned = set(_reports())
-    assert not any(n.endswith((".pdf", ".csv", ".png")) for n in scanned), \
-        "a non-thread file was scanned as input: %s" % sorted(scanned)
+    # .csv/.png are only ever attachments — never scanned as input.
+    assert not any(n.endswith((".csv", ".png")) for n in scanned), \
+        "a binary attachment was scanned as input: %s" % sorted(scanned)
+    # A .pdf named as another message's attachment stays an attachment...
+    for att_pdf in ("c01_perception_eval.pdf", "c03_runbook_v3.pdf", "spec_v1.pdf"):
+        assert att_pdf not in scanned, "attachment PDF scanned as input: %s" % att_pdf
+    # ...but an email saved/printed to PDF is read and deduped.
+    for saved_pdf in ("c15_pdfsaved_open.pdf", "c15_pdfsaved_early.pdf",
+                      "c16_pdfonly_full.pdf"):
+        assert saved_pdf in scanned, "saved-to-PDF email was not read: %s" % saved_pdf
 
 
 def test_eml_can_be_a_subset_of_a_txt_thread():
@@ -142,10 +152,26 @@ def test_large_mbox_is_kept_as_its_own_branch():
     assert not r["c14_mailbox_full.mbox"].redundant
 
 
+def test_saved_to_pdf_email_is_a_cross_format_subset_of_a_txt_thread():
+    """An email saved/printed to PDF is read by the best-effort PDF reader and
+    recognized as a subset of the .txt thread that contains those messages."""
+    r = _reports()
+    for excerpt in ("c15_pdfsaved_open.pdf", "c15_pdfsaved_early.pdf"):
+        assert r[excerpt].redundant, "%s should be read and flagged redundant" % excerpt
+        assert "c15_pdfsaved_full.txt" in r[excerpt].superseded_by, (
+            "%s should be superseded by the .txt thread" % excerpt)
+
+
+def test_pdf_only_conversation_is_read_and_kept_as_a_branch():
+    """A conversation that exists ONLY as a saved PDF is read from the PDF and
+    kept as its own branch — proof a saved-to-PDF email isn't silently lost."""
+    assert not _reports()["c16_pdfonly_full.pdf"].redundant
+
+
 def main():
     test_roles_match_keep_and_delete()
     test_counts()
-    test_pdf_and_binary_files_are_attachments_not_inputs()
+    test_attachment_files_stay_attachments_but_saved_pdf_emails_are_read()
     test_eml_can_be_a_subset_of_a_txt_thread()
     test_three_way_branch_keeps_every_fork()
     test_normalization_collapses_requoted_signed_and_html_reexports()
@@ -153,9 +179,12 @@ def main():
     test_attachment_carrying_thread_supersedes_its_plain_copy()
     test_timezone_shifted_duplicate_collapses()
     test_large_mbox_is_kept_as_its_own_branch()
-    print("OK - mixed-format archive: 73 threads -> 23 kept branches, 50 redundant; "
-          "covers 3-way forks, normalization collapse, attachment branching, and a "
-          "large .mbox, with .pdf/.csv/.png attachments riding along.")
+    test_saved_to_pdf_email_is_a_cross_format_subset_of_a_txt_thread()
+    test_pdf_only_conversation_is_read_and_kept_as_a_branch()
+    print("OK - mixed-format archive: 77 threads -> 25 kept branches, 52 redundant; "
+          "covers 3-way forks, normalization collapse, attachment branching, a large "
+          ".mbox, and emails saved/printed to PDF read as inputs, with .pdf/.csv/.png "
+          "attachments riding along.")
 
 
 if __name__ == "__main__":

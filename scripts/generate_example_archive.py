@@ -25,7 +25,12 @@ It exercises everything the dedup core handles, including the tricky cases:
   *different* attachments are both kept; attachments come in several types
   (``.pdf``/``.csv``/``.png``), matched by name;
 * a large multi-message ``.mbox`` (a Takeout-style digest) kept as its own
-  branch.
+  branch;
+* emails saved/printed to PDF, read as inputs by the best-effort PDF reader —
+  saved-to-PDF excerpts of a thread fold in as cross-format subsets, and a
+  conversation that exists *only* as a PDF is read and kept as a branch. (A PDF
+  named as another message's *attachment* still stays an attachment — the two
+  kinds of PDF coexist in this one folder.)
 
 The corpus is generated from a declarative spec, so each file's role is explicit
 and the dedup verdict is deterministic. Filenames encode the role — branches to
@@ -176,6 +181,17 @@ SPECIAL = [
              (PRIYA, "Support: ticket volume nominal, one macro updated this week. Priya"),
              (MARA, "Cloud: telemetry latency p95 is under ninety seconds. Mara"),
              (KENJI, "Regulatory: two markets confirmed for the limited launch profile. Kenji")]),
+
+    dict(slug="c15_pdfsaved", subject="Drive Assist 3.0 exec summary", to=LENA,
+         base="2026-01-22 09:00", msgs=[
+             (LENA, "Pulling the Drive Assist 3.0 exec summary together for the board read-out. Lena"),
+             (RAJ, "Engineering section is accurate: rc3 shipped and the canary held at target. Raj"),
+             (LENA, "Final exec summary locked; saving a PDF for the board packet. Lena")]),
+
+    dict(slug="c16_pdfonly", subject="Pre-launch legal sign-off", to=KENJI,
+         base="2026-01-26 10:00", msgs=[
+             (KENJI, "Legal has cleared the launch disclosures for all but the two restricted markets. Kenji"),
+             (LENA, "Noted; ship those two markets with the lane-change assist disabled at launch. Lena")]),
 ]
 
 # Build the canonical message table: each logical message defined once, reused
@@ -290,6 +306,52 @@ def write_pdf(name):
         fh.write(_attachment_bytes(name))
 
 
+def _email_pdf_bytes(lines):
+    """A one-page PDF whose selectable text is ``lines`` (one per source line).
+
+    Unlike the attachment stubs from :func:`_minimal_pdf`, this renders a full
+    exported-email block, so the stdlib PDF reader recovers 'From:/Sent:/Subject:'
+    and the file parses back into the same Message a .txt export would — i.e. an
+    email genuinely *saved/printed to PDF*, read as an input and deduped."""
+    ops = ["BT", "/F1 11 Tf", "72 730 Td"]
+    for i, ln in enumerate(lines):
+        if i:
+            ops.append("0 -14 Td")
+        esc = ln.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+        ops.append("(%s) Tj" % esc)
+    ops.append("ET")
+    stream = " ".join(ops).encode("latin-1", "replace")
+    objs = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+        b"/Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+        b"<< /Length %d >>\nstream\n%s\nendstream" % (len(stream), stream),
+    ]
+    out = bytearray(b"%PDF-1.4\n")
+    offsets = []
+    for i, body in enumerate(objs, start=1):
+        offsets.append(len(out))
+        out += b"%d 0 obj\n" % i + body + b"\nendobj\n"
+    xref_pos = len(out)
+    n = len(objs) + 1
+    out += b"xref\n0 %d\n0000000000 65535 f \n" % n
+    for off in offsets:
+        out += b"%010d 00000 n \n" % off
+    out += b"trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (n, xref_pos)
+    return bytes(out)
+
+
+def write_email_pdf(name, keys):
+    """Write several canonical messages as one exported-email PDF (read as input)."""
+    lines = []
+    for k in reversed(keys):  # newest-first, like the .txt exports
+        lines += _txt_block(k).split("\n")
+    with open(os.path.join(OUT, name), "wb") as fh:
+        fh.write(_email_pdf_bytes(lines))
+
+
 def _write_thread(name, fmt, keys, attachments_on_last=None, tz="-0800"):
     if fmt == "mbox":
         write_mbox(name, keys, attachments_on_last=attachments_on_last, tz=tz)
@@ -367,6 +429,18 @@ def main():
     write_mbox("c14_mailbox_full.mbox", k)                         # KEEP (6 unique messages)
     write_eml("c14_mailbox_open.eml", k[0])                        # subset -> DELETE
     write_txt("c14_mailbox_early.txt", [k[0], k[1]])              # subset -> DELETE
+
+    # --- c15: emails saved/printed to PDF, read as inputs and deduped ---
+    # The thread also lives as a .txt branch; the saved-to-PDF excerpts are read
+    # by the stdlib PDF reader and recognized as cross-format subsets of it.
+    k = _keys("c15_pdfsaved", 3)
+    write_txt("c15_pdfsaved_full.txt", k)                          # KEEP (full thread)
+    write_email_pdf("c15_pdfsaved_open.pdf", [k[0]])              # saved PDF, subset -> DELETE
+    write_email_pdf("c15_pdfsaved_early.pdf", [k[0], k[1]])       # saved PDF, subset -> DELETE
+
+    # --- c16: a conversation that exists ONLY as a saved PDF (kept branch) ---
+    k = _keys("c16_pdfonly", 2)
+    write_email_pdf("c16_pdfonly_full.pdf", k)                     # KEEP (read from PDF, unique)
 
     for nm in sorted(attachments):
         write_pdf(nm)

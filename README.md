@@ -277,8 +277,8 @@ bodies are handled. Pass `--pattern '*.eml'` to restrict to one format.
 For a taste of a *real* archive — many conversations exported several times
 over, in different formats, with the attachments saved alongside —
 `examples/archive/` mixes `.txt`, `.eml`, `.mbox`, `.pdf`, `.csv`, and `.png` in
-one folder (85 files: 73 threads + 12 attachments; dedup keeps 23 branches and
-flags 50 as redundant):
+one folder (89 files: 77 readable exports + 12 attachments; dedup keeps 25
+branches and flags 52 as redundant):
 
 ```sh
 arc dedup examples/archive    # or: PYTHONPATH=src python -m arc.cli dedup examples/archive
@@ -296,12 +296,17 @@ branch-aware dedup non-trivial:
   all three are kept — the case "keep the biggest file" gets wrong;
 - **attachment branching** — two files sharing their messages but carrying
   *different* attachments are both kept, and a forward whose only unique content
-  is an attachment is never dropped.
+  is an attachment is never dropped;
+- **emails saved/printed to PDF** — read by the best-effort PDF reader: saved-to-PDF
+  excerpts of a thread fold in as cross-format subsets, and a conversation that
+  exists *only* as a PDF is read and kept as a branch (never lost).
 
-The `.pdf`/`.csv`/`.png` files ride along as attachments (matched by name, a
-first-class part of the dedup key); the engine only ever *parses*
-`.txt`/`.eml`/`.mbox`, so the zero-dependency promise holds — there's no
-PDF/spreadsheet text-extraction library pulled in.
+The same folder holds **both kinds of PDF**: a `.pdf` named as another message's
+attachment (alongside `.csv`/`.png`) rides along matched by name — a first-class
+part of the dedup key, never parsed — while an email *saved/printed* to PDF is
+read as an input. PDF text reading uses a **standard-library** reader, so the
+core stays zero-dependency (an optional `[pdf]` extra adds `pypdf` for tougher
+real-world PDFs; it's never required).
 
 ## Timeline data format
 
@@ -363,7 +368,7 @@ src/arc/
   cli.py        `arc dedup <dir>` / `arc tree <dir>` / `arc store add|dedup|timeline|stats` / `arc timeline ...` / `arc web`
 examples/
   threads/      6 synthetic files (2 branches + 4 subsets) proving the logic
-  archive/      85-file mixed pile (.txt/.eml/.mbox + .pdf/.csv/.png attachments) deduped together
+  archive/      89-file mixed pile (.txt/.eml/.mbox threads + emails saved to .pdf + .pdf/.csv/.png attachments) deduped together
   pdf_emails/   the same emails saved across every format (.pdf/.eml/.mbox/.txt), deduped together (drag into `arc web`)
   raw_email/    synthetic .eml/.mbox fixtures (some carry threading headers for `tree`)
   events.json   synthetic timeline data

@@ -1,0 +1,20 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2026-01-24 11:00
+To: Raj Patel <raj.patel@voltera.example>
+Subject: RE: Drive Assist 3.0 exec summary
+
+Final exec summary locked; saving a PDF for the board packet. Lena
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2026-01-23 10:00
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Drive Assist 3.0 exec summary
+
+Engineering section is accurate: rc3 shipped and the canary held at target. Raj
+
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2026-01-22 09:00
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: Drive Assist 3.0 exec summary
+
+Pulling the Drive Assist 3.0 exec summary together for the board read-out. Lena
