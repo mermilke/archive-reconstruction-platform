@@ -60,15 +60,19 @@ the deduplication **branch-aware** instead of a size heuristic.
 
 ## Screenshots
 
-<!--
-  To add still images: capture the web UI keep/delete panel (`arc web`) and a
-  rendered timeline (`arc timeline examples/events.json -o timeline.html`), save
-  them as docs/img/web-ui.png and docs/img/timeline.png, then uncomment the two
-  lines below.
+The local web UI: drag in an export and the **branch-aware dedup** verdict
+appears instantly — which files to keep, which are redundant, and *why* (each
+redundant file names the keeper it's a subset of). Attachments are first-class,
+so a forward carrying a unique PDF is never marked redundant. Pick the threads
+you want and build a timeline from them — all offline, nothing uploaded.
 
-![The local web UI: drag-drop an export, see keep vs. redundant, pick threads](docs/img/web-ui.png)
-![A rendered timeline: tabs, an SVG overview axis, filters, and expandable cards](docs/img/timeline.png)
--->
+![The local web UI: drag-drop an export, see which files to keep vs. which are redundant and why, then pick threads to build a timeline](docs/img/web-ui.png)
+
+The rendered timeline is a single self-contained HTML file: tabbed views, an SVG
+overview axis, a category legend, filters, and expandable cards (each with the
+source email, quoted context, attachments, and significance).
+
+![A rendered timeline: tabbed views, an SVG overview axis, category filters, and expandable detail cards](docs/img/timeline.png)
 
 **Live demos** (GitHub Pages — no backend, no install). The landing page
 [`/`](https://mermilke.github.io/archive-reconstruction-platform/)
