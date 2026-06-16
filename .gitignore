@@ -14,9 +14,11 @@ dist/
 venv/
 env/
 
-# Generated output (timelines are build artifacts, not source)
-timeline.html
-threads_timeline.html
+# Generated output (timelines are build artifacts, not source).
+# Anchored to the repo root so the *published* demo at docs/timeline.html — a
+# tracked artifact served by GitHub Pages — is not swept up by these patterns.
+/timeline.html
+/threads_timeline.html
 draft_timeline.html
 draft.json
 ai_timeline.html

@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **In-browser dedup tool** (`docs/try.html`) — a zero-install web page that runs
+  the branch-aware dedup entirely client-side: drag in `.txt` thread exports (or
+  click *Load the sample data*) and get the keep/delete verdict plus a
+  side-by-side compare of any redundant file against its keeper. The dedup core
+  is ported to JavaScript (`docs/arc-dedup.js`); files never leave the browser,
+  nothing is uploaded. A parity test (`tests/test_js_parity.py`) pins the JS port
+  to the Python `arc dedup` verdict on the example corpus so the two can't drift.
+- **GitHub Pages landing page** (`docs/index.html`) linking to the dedup tool and
+  the timeline demo; the timeline moved to `docs/timeline.html`.
+
 ## [1.0.0] — 2026-06-15
 
 First public release. Zero third-party runtime dependencies — the standard

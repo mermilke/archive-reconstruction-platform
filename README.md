@@ -38,6 +38,14 @@ loses no message, and an opt-in AI categorizer. Everything runs on the Python
 **standard library** — no network, no services, no external assets in the
 generated HTML, and nothing to `pip install` to use the core.
 
+> ### ▶ Try it in your browser — no install
+> **[mermilke.github.io/archive-reconstruction-platform/try.html](https://mermilke.github.io/archive-reconstruction-platform/try.html)**
+> — drag in your `.txt` thread exports (or click **Load the sample data**) and
+> see the branch-aware keep/delete verdict instantly. The dedup engine is ported
+> to JavaScript and runs **entirely client-side**, so **your files never leave
+> the page** — nothing is uploaded anywhere. Same algorithm as the CLI, pinned to
+> it by a [parity test](tests/test_js_parity.py).
+
 ## Why this exists
 
 Archiving a mailbox — or saving a long conversation one message at a time —
@@ -61,16 +69,26 @@ the deduplication **branch-aware** instead of a size heuristic.
 ![A rendered timeline: tabs, an SVG overview axis, filters, and expandable cards](docs/img/timeline.png)
 -->
 
-**Live demo:** **https://mermilke.github.io/archive-reconstruction-platform/**
-— an interactive timeline rendered from the synthetic sample data, served as a
-single self-contained page (no backend, no install). It's the file at
-[`docs/index.html`](docs/index.html), regenerated with
-`arc timeline examples/events.json -o docs/index.html`.
+**Live demos** (GitHub Pages — no backend, no install). The landing page
+[`/`](https://mermilke.github.io/archive-reconstruction-platform/)
+([`docs/index.html`](docs/index.html)) links to both:
 
-> To turn it on after pushing: repo **Settings → Pages → Build and deployment →
-> Source: Deploy from a branch → `main` / `/docs` → Save**. The link goes live in
-> a minute. (The drag-drop dedup UI, `arc web`, runs a local server and isn't
-> part of the static demo — clone and run it to try that.)
+- **Dedup tool** —
+  [`/try.html`](https://mermilke.github.io/archive-reconstruction-platform/try.html):
+  drag-drop your thread exports and get the keep/delete verdict, with a
+  side-by-side compare of any redundant file against its keeper. Runs entirely in
+  the browser ([`docs/try.html`](docs/try.html) +
+  [`docs/arc-dedup.js`](docs/arc-dedup.js), the JS port of the dedup core).
+- **Timeline** —
+  [`/timeline.html`](https://mermilke.github.io/archive-reconstruction-platform/timeline.html):
+  an interactive timeline rendered from the synthetic sample data as a single
+  self-contained page. It's [`docs/timeline.html`](docs/timeline.html),
+  regenerated with `arc timeline examples/events.json -o docs/timeline.html`.
+
+> To turn these on after pushing: repo **Settings → Pages → Build and deployment →
+> Source: Deploy from a branch → `main` / `/docs` → Save**. The links go live in
+> a minute. (The earlier local `arc web` server still works too — it adds the
+> live timeline preview the static dedup page leaves out.)
 
 ## Requirements
 
