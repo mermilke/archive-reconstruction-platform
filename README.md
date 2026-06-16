@@ -260,6 +260,21 @@ by default — point them at a real mailbox export:
 (still zero-dependency); RFC 2047-encoded subjects, attachments, and HTML-only
 bodies are handled. Pass `--pattern '*.eml'` to restrict to one format.
 
+For a taste of a *real* archive — the same conversations exported several times
+over, in different formats, with the PDF attachments saved alongside —
+`examples/archive/` mixes `.txt`, `.eml`, `.mbox`, and `.pdf` in one folder:
+
+```sh
+arc dedup examples/archive    # or: PYTHONPATH=src python -m arc.cli dedup examples/archive
+```
+
+It dedups all three thread formats *together* — flagging an `.eml` that's a
+subset of a `.txt` thread, collapsing an `.mbox` that's only a timezone-shifted
+duplicate, and **keeping** a forwarded `.eml` whose one unique thing is a PDF.
+The `.pdf` files ride along as attachments (matched by name, a first-class part
+of the dedup key); the engine only ever *parses* `.txt`/`.eml`/`.mbox`, so the
+zero-dependency promise holds — there's no PDF text-extraction library pulled in.
+
 ## Timeline data format
 
 `timeline` reads a JSON file and produces a single self-contained HTML page:
@@ -320,6 +335,8 @@ src/arc/
   cli.py        `arc dedup <dir>` / `arc tree <dir>` / `arc store add|dedup|timeline|stats` / `arc timeline ...` / `arc web`
 examples/
   threads/      6 synthetic files (2 branches + 4 subsets) proving the logic
+  archive/      14-file mixed pile (.txt/.eml/.mbox + .pdf attachments) deduped together
+  raw_email/    synthetic .eml/.mbox fixtures (some carry threading headers for `tree`)
   events.json   synthetic timeline data
 tests/
   test_dedup.py asserts the 2 branches are kept and the 4 subsets are flagged

@@ -1,0 +1,6 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-12-02 08:45
+To: Raj Patel <raj.patel@voltera.example>
+Subject: RE: Drive Assist 3.0 - staged rollout runbook
+
+Approved. We go 1 percent, 10 percent, 50 percent, 100 percent, each ring gated on live safety telemetry. Lena

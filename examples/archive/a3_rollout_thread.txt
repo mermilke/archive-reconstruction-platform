@@ -1,0 +1,20 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-12-02 08:45
+To: Raj Patel <raj.patel@voltera.example>
+Subject: RE: Drive Assist 3.0 - staged rollout runbook
+
+Approved. We go 1 percent, 10 percent, 50 percent, 100 percent, each ring gated on live safety telemetry. Lena
+
+From: Priya Iyer <priya.iyer@voltera.example>
+Sent: 2025-12-01 13:00
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Drive Assist 3.0 - staged rollout runbook
+
+Comms is ready with the launch-day story and a holding statement if press picks it up early. Priya
+
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-12-01 09:30
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: Drive Assist 3.0 - staged rollout runbook
+
+Runbook for the staged rollout attached. The auto-halt trips if the canary disengagement rate regresses beyond the beta baseline. Raj

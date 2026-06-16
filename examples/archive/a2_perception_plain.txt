@@ -1,0 +1,20 @@
+From: Tomas Vidal <tomas.vidal@voltera.example>
+Sent: 2025-11-20 14:05
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: RE: Perception rc3 evaluation
+
+Updated the eval with the construction-zone fix and attaching the final signed evaluation. Tomas
+
+From: Sofia Marenko <sofia.marenko@voltera.example>
+Sent: 2025-11-19 10:20
+To: Tomas Vidal <tomas.vidal@voltera.example>
+Subject: RE: Perception rc3 evaluation
+
+Reviewed - the long-tail pedestrian cases look good. One note on the construction-zone scenario in section 4. Sofia
+
+From: Tomas Vidal <tomas.vidal@voltera.example>
+Sent: 2025-11-18 11:00
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: Perception rc3 evaluation
+
+Sharing the perception rc3 evaluation. Night and rain recall both clear the 3.0 bar. Tomas
