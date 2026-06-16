@@ -1,0 +1,48 @@
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Priya Iyer <priya.iyer@voltera.example>
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: Support readiness for the rollout wave
+Date: Thu, 18 Dec 2025 09:00:00 -0800
+Message-ID: <c08_support_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Drafted the support staffing and tooling plan for the rollout wave. Priya
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Lena Ortiz <lena.ortiz@voltera.example>
+To: Priya Iyer <priya.iyer@voltera.example>
+Subject: RE: Support readiness for the rollout wave
+Date: Fri, 19 Dec 2025 10:00:00 -0800
+Message-ID: <c08_support_m1@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Add a dedicated queue for disengagement reports during the canary. Lena
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Priya Iyer <priya.iyer@voltera.example>
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Support readiness for the rollout wave
+Date: Sat, 20 Dec 2025 11:00:00 -0800
+Message-ID: <c08_support_m2@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Added the queue and a macro that pulls the relevant trip id. Priya
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Priya Iyer <priya.iyer@voltera.example>
+To: Priya Iyer <priya.iyer@voltera.example>
+Subject: RE: Support readiness for the rollout wave
+Date: Sun, 21 Dec 2025 12:00:00 -0800
+Message-ID: <c08_support_m3@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Support readiness is green for Monday. Priya
+

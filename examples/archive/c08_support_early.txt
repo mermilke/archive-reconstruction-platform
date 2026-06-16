@@ -1,0 +1,13 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-12-19 10:00
+To: Priya Iyer <priya.iyer@voltera.example>
+Subject: RE: Support readiness for the rollout wave
+
+Add a dedicated queue for disengagement reports during the canary. Lena
+
+From: Priya Iyer <priya.iyer@voltera.example>
+Sent: 2025-12-18 09:00
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: Support readiness for the rollout wave
+
+Drafted the support staffing and tooling plan for the rollout wave. Priya

@@ -1,0 +1,37 @@
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Mara Lindqvist <mara.lindqvist@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Telemetry pipeline for canary gating
+Date: Wed, 12 Nov 2025 11:00:00 +0900
+Message-ID: <c06_telemetry_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+The telemetry pipeline now ingests canary disengagement events within two min=
+utes end to end. Mara
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Raj Patel <raj.patel@voltera.example>
+To: Mara Lindqvist <mara.lindqvist@voltera.example>
+Subject: RE: Telemetry pipeline for canary gating
+Date: Thu, 13 Nov 2025 12:00:00 +0900
+Message-ID: <c06_telemetry_m1@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Good; make sure the auto-halt query reads from the low-latency view. Raj
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Mara Lindqvist <mara.lindqvist@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Subject: RE: Telemetry pipeline for canary gating
+Date: Fri, 14 Nov 2025 13:00:00 +0900
+Message-ID: <c06_telemetry_m2@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Switched the query and load-tested at ten times canary volume. Mara
+

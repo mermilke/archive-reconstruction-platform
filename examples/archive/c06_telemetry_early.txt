@@ -1,0 +1,13 @@
+From: Raj Patel <raj.patel@voltera.example>
+Sent: 2025-11-13 12:00
+To: Mara Lindqvist <mara.lindqvist@voltera.example>
+Subject: RE: Telemetry pipeline for canary gating
+
+Good; make sure the auto-halt query reads from the low-latency view. Raj
+
+From: Mara Lindqvist <mara.lindqvist@voltera.example>
+Sent: 2025-11-12 11:00
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Telemetry pipeline for canary gating
+
+The telemetry pipeline now ingests canary disengagement events within two minutes end to end. Mara

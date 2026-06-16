@@ -1,0 +1,13 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-12-16 14:00
+To: Omar Haddad <omar.haddad@voltera.example>
+Subject: RE: Companion app - trip review screen
+
+Looks strong; make the hand-back moments easier to scan at a glance. Lena
+
+From: Omar Haddad <omar.haddad@voltera.example>
+Sent: 2025-12-15 13:00
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: Companion app - trip review screen
+
+The companion app's trip-review screen is ready for design review. Omar

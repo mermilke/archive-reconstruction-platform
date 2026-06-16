@@ -1,0 +1,13 @@
+From: Sofia Marenko <sofia.marenko@voltera.example>
+Sent: 2025-12-12 12:00
+To: Mara Lindqvist <mara.lindqvist@voltera.example>
+Subject: RE: Localization handoff - 14 launch markets
+
+Shortened both cues and updated the source strings. Sofia
+
+From: Mara Lindqvist <mara.lindqvist@voltera.example>
+Sent: 2025-12-11 11:00
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: RE: Localization handoff - 14 launch markets
+
+Received - flagging two cues that don't fit the German UI width. Mara

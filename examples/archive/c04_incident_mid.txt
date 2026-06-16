@@ -1,0 +1,13 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2026-01-11 00:00
+To: Tomas Vidal <tomas.vidal@voltera.example>
+Subject: RE: Beta incident - elevated handback on left turns
+
+Land the hotfix in the next beta build and add a regression scenario before we resume the rollout. Lena
+
+From: Tomas Vidal <tomas.vidal@voltera.example>
+Sent: 2026-01-09 23:00
+To: Nora Fischer <nora.fischer@voltera.example>
+Subject: RE: Beta incident - elevated handback on left turns
+
+Root-caused to the lane-change policy interacting with the turn planner; a hotfix candidate is ready. Tomas

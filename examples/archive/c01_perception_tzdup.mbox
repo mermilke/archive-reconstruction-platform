@@ -1,0 +1,39 @@
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Tomas Vidal <tomas.vidal@voltera.example>
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: Perception rc3 evaluation
+Date: Tue, 18 Nov 2025 09:00:00 +0900
+Message-ID: <c01_perception_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Sharing the perception rc3 evaluation; night and rain recall both clear the 3=
+.0 bar. Tomas
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Sofia Marenko <sofia.marenko@voltera.example>
+To: Tomas Vidal <tomas.vidal@voltera.example>
+Subject: RE: Perception rc3 evaluation
+Date: Wed, 19 Nov 2025 10:00:00 +0900
+Message-ID: <c01_perception_m1@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Reviewed - the long-tail pedestrian cases look good, one note on the construc=
+tion-zone scenario in section 4. Sofia
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Tomas Vidal <tomas.vidal@voltera.example>
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: RE: Perception rc3 evaluation
+Date: Thu, 20 Nov 2025 11:00:00 +0900
+Message-ID: <c01_perception_m2@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Pushed the construction-zone fix and re-ran the eval overnight; the numbers h=
+eld. Tomas
+

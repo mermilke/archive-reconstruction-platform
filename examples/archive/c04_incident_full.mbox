@@ -1,0 +1,51 @@
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Nora Fischer <nora.fischer@voltera.example>
+To: Tomas Vidal <tomas.vidal@voltera.example>
+Subject: Beta incident - elevated handback on left turns
+Date: Thu, 08 Jan 2026 22:00:00 -0800
+Message-ID: <c04_incident_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Beta cluster saw an elevated handback rate on unprotected left turns last nig=
+ht; pulling the traces. Nora
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Tomas Vidal <tomas.vidal@voltera.example>
+To: Nora Fischer <nora.fischer@voltera.example>
+Subject: RE: Beta incident - elevated handback on left turns
+Date: Fri, 09 Jan 2026 23:00:00 -0800
+Message-ID: <c04_incident_m1@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Root-caused to the lane-change policy interacting with the turn planner; a ho=
+tfix candidate is ready. Tomas
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Lena Ortiz <lena.ortiz@voltera.example>
+To: Tomas Vidal <tomas.vidal@voltera.example>
+Subject: RE: Beta incident - elevated handback on left turns
+Date: Sun, 11 Jan 2026 00:00:00 -0800
+Message-ID: <c04_incident_m2@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Land the hotfix in the next beta build and add a regression scenario before w=
+e resume the rollout. Lena
+
+From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From: Nora Fischer <nora.fischer@voltera.example>
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Beta incident - elevated handback on left turns
+Date: Mon, 12 Jan 2026 01:00:00 -0800
+Message-ID: <c04_incident_m3@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Hotfix verified on the replay set; the handback rate is back to baseline. Nora
+

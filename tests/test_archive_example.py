@@ -1,16 +1,17 @@
-"""Dedup correctness test against the mixed-format example archive.
+"""Dedup correctness test against the large mixed-format example archive.
 
-examples/archive/ is the realistic pile: the same Voltera conversations exported
-several times across .txt, .eml, and .mbox, with the PDF attachments saved
-alongside. It proves the dedup core works *across formats* and that attachments
-are first-class:
+examples/archive/ is the realistic pile: a dozen Voltera conversations, each
+exported several times across .txt, .eml, and .mbox, with the PDF attachments
+saved alongside. It proves the dedup core works *across formats* and that
+attachments are first-class.
 
-* an .eml that is a strict subset of a .txt thread is flagged redundant;
-* an .mbox that is only a timezone-shifted duplicate of a .txt thread collapses
-  to one (timestamps are ignored on purpose);
-* a forwarded .eml whose only unique content is a PDF is KEPT (branch-aware);
-* the .pdf files in the folder are attachments, not inputs — they are never
-  scanned as threads.
+Filenames encode each file's role (see scripts/generate_example_archive.py):
+
+* branches to KEEP   -> ``*_full`` / ``*_thread`` / ``*_forward``
+* redundant SUBSETS  -> ``*_early`` / ``*_mid`` / ``*_open`` / ``*_plain`` / ``*_tzdup``
+
+so this test classifies by suffix rather than hard-coding ~60 names — it keeps
+holding as the corpus grows.
 
 Run directly:  python tests/test_archive_example.py
 """
@@ -24,37 +25,43 @@ from arc.dedup import dedup_directory  # noqa: E402
 
 ARCHIVE = os.path.join(ROOT, "examples", "archive")
 
-EXPECTED_KEEP = {
-    "a1_canary_full.txt",
-    "a2_perception_thread.mbox",
-    "a3_rollout_thread.txt",
-    "a3_rollout_runbook.eml",
-    "a4_incident_full.txt",
-}
-EXPECTED_DELETE = {
-    "a1_canary_open.eml",
-    "a1_canary_mid.txt",
-    "a2_perception_plain.txt",
-    "a2_perception_early.eml",
-    "a3_rollout_open.txt",
-    "a4_incident_tzdup.mbox",
-    "a4_incident_open.eml",
-}
+KEEP_ROLES = {"full", "thread", "forward"}
+SUBSET_ROLES = {"early", "mid", "open", "plain", "tzdup"}
 
 
-def test_keep_and_delete_across_formats():
+def _role(name):
+    """The role suffix: the token before the extension, e.g.
+    'c01_perception_open.eml' -> 'open'."""
+    return os.path.splitext(name)[0].rsplit("_", 1)[-1]
+
+
+def test_roles_match_keep_and_delete():
     result = dedup_directory(ARCHIVE)
-    assert set(result.keep) == EXPECTED_KEEP, "keep mismatch: got %s" % sorted(result.keep)
-    assert set(result.delete) == EXPECTED_DELETE, "delete mismatch: got %s" % sorted(result.delete)
+    by_name = {r.name: r for r in result.reports}
 
-    # Every redundant file must be superseded by a kept branch.
-    for report in result.reports:
-        if report.redundant:
-            assert report.superseded_by, "%s flagged with no superseder" % report.name
-            assert EXPECTED_KEEP & set(report.superseded_by), (
+    # Every scanned file's role is one we know about (guards against typos/drift).
+    for name in by_name:
+        assert _role(name) in KEEP_ROLES | SUBSET_ROLES, "unclassified file: %s" % name
+
+    kept = set(result.keep)
+    deleted = set(result.delete)
+    for name, report in by_name.items():
+        if _role(name) in KEEP_ROLES:
+            assert name in kept, "%s is a branch but was flagged redundant" % name
+        else:
+            assert name in deleted, "%s is a subset but was kept" % name
+            # Every redundant file must be superseded by at least one kept branch.
+            assert kept & set(report.superseded_by), (
                 "%s should be superseded by a kept branch; got %s"
-                % (report.name, report.superseded_by)
+                % (name, report.superseded_by)
             )
+
+
+def test_counts():
+    result = dedup_directory(ARCHIVE)
+    assert len(result.reports) == 57, "expected 57 scanned threads, got %d" % len(result.reports)
+    assert len(result.keep) == 15, "expected 15 kept branches, got %d" % len(result.keep)
+    assert len(result.delete) == 42, "expected 42 redundant files, got %d" % len(result.delete)
 
 
 def test_pdf_files_are_attachments_not_inputs():
@@ -64,7 +71,6 @@ def test_pdf_files_are_attachments_not_inputs():
     scanned = {r.name for r in result.reports}
     assert not any(n.endswith(".pdf") for n in scanned), \
         "a .pdf was scanned as an input thread: %s" % sorted(scanned)
-    assert len(result.reports) == 12, "expected 12 scanned threads, got %d" % len(result.reports)
 
 
 def test_eml_can_be_a_subset_of_a_txt_thread():
@@ -72,9 +78,9 @@ def test_eml_can_be_a_subset_of_a_txt_thread():
     .txt thread that contains that message."""
     result = dedup_directory(ARCHIVE)
     by_name = {r.name: r for r in result.reports}
-    open_eml = by_name["a1_canary_open.eml"]
+    open_eml = by_name["c01_perception_open.eml"]
     assert open_eml.redundant
-    assert "a1_canary_full.txt" in open_eml.superseded_by
+    assert "c01_perception_full.txt" in open_eml.superseded_by
 
 
 def test_unique_attachment_keeps_a_forward_alive():
@@ -83,32 +89,46 @@ def test_unique_attachment_keeps_a_forward_alive():
     kept, and the discussion thread is kept too (neither supersedes the other)."""
     result = dedup_directory(ARCHIVE)
     by_name = {r.name: r for r in result.reports}
-    runbook = by_name["a3_rollout_runbook.eml"]
-    thread = by_name["a3_rollout_thread.txt"]
-    assert not runbook.redundant, "the forward with a unique attachment must be kept"
+    forward = by_name["c01_perception_forward.eml"]
+    full = by_name["c01_perception_full.txt"]
+    assert not forward.redundant, "the forward with a unique attachment must be kept"
+    assert not full.redundant
+    assert ("att", "", "c01_perception_eval.pdf") in forward.keys
+    assert ("att", "", "c01_perception_eval.pdf") not in full.keys
+
+
+def test_attachment_carrying_thread_supersedes_its_plain_copy():
+    """When the .mbox thread itself carries the PDF, the plain .txt re-export of
+    the same messages (no attachment) is a subset and is flagged redundant."""
+    result = dedup_directory(ARCHIVE)
+    by_name = {r.name: r for r in result.reports}
+    thread = by_name["c02_canary_thread.mbox"]
+    plain = by_name["c02_canary_plain.txt"]
     assert not thread.redundant
-    assert ("att", "", "rollout_runbook_v3.pdf") in runbook.keys
-    assert ("att", "", "rollout_runbook_v3.pdf") not in thread.keys
+    assert plain.redundant
+    assert "c02_canary_thread.mbox" in plain.superseded_by
 
 
 def test_timezone_shifted_duplicate_collapses():
-    """An .mbox that differs from a .txt thread only in timezone is redundant —
-    identity ignores timestamps."""
+    """An .mbox that differs from a thread only in timezone (and drops the last
+    message) is redundant — identity ignores timestamps."""
     result = dedup_directory(ARCHIVE)
     by_name = {r.name: r for r in result.reports}
-    tzdup = by_name["a4_incident_tzdup.mbox"]
+    tzdup = by_name["c04_incident_tzdup.mbox"]
     assert tzdup.redundant
-    assert "a4_incident_full.txt" in tzdup.superseded_by
+    assert "c04_incident_full.mbox" in tzdup.superseded_by
 
 
 def main():
-    test_keep_and_delete_across_formats()
+    test_roles_match_keep_and_delete()
+    test_counts()
     test_pdf_files_are_attachments_not_inputs()
     test_eml_can_be_a_subset_of_a_txt_thread()
     test_unique_attachment_keeps_a_forward_alive()
+    test_attachment_carrying_thread_supersedes_its_plain_copy()
     test_timezone_shifted_duplicate_collapses()
-    print("OK - mixed-format archive: kept 5 branches, flagged 7 redundant across "
-          ".txt/.eml/.mbox; PDFs ride along as attachments.")
+    print("OK - mixed-format archive: 57 threads -> kept 15 branches, flagged 42 "
+          "redundant across .txt/.eml/.mbox; 7 PDFs ride along as attachments.")
 
 
 if __name__ == "__main__":

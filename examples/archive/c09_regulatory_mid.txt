@@ -1,0 +1,13 @@
+From: Kenji Watanabe <kenji.watanabe@voltera.example>
+Sent: 2025-11-30 12:00
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Market applicability matrix
+
+Two markets require it off at launch; noted in the matrix. Kenji
+
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-11-29 11:00
+To: Kenji Watanabe <kenji.watanabe@voltera.example>
+Subject: RE: Market applicability matrix
+
+Flag any market where the lane-change behavior needs to ship disabled. Lena

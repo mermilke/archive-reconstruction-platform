@@ -1,0 +1,11 @@
+From: Mara Lindqvist <mara.lindqvist@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Telemetry pipeline for canary gating
+Date: Wed, 12 Nov 2025 11:00:00 -0800
+Message-ID: <c06_telemetry_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+The telemetry pipeline now ingests canary disengagement events within two min=
+utes end to end. Mara
