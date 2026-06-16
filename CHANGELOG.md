@@ -8,11 +8,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- **"Open thread" / attachment links work in the web UI.** Timeline cards in
-  `arc web` linked to `file://` URLs, which browsers block from an `http://`
-  page, so clicking did nothing. The preview now serves the source files over
-  HTTP (a `/source/<name>` route, `link_base="/source"`) and links attachment
-  chips to the matching uploaded file, so both open in a new tab.
+- **"Open thread" / attachments open a readable in-app preview.** Timeline cards
+  in `arc web` linked to `file://` URLs, which browsers block from an `http://`
+  page, so clicking did nothing. Now clicking **Open thread** (or an attachment
+  chip) opens the file parsed into readable message cards in a modal **in the
+  same window** — so a `.mbox`/`.eml`/`.pdf` is shown without a desktop app or a
+  new tab. (Source files are still served over HTTP via a `/source/<name>` route
+  as a no-JS fallback.)
 - **Focus and Fullscreen are mutually exclusive in the web UI.** They are two
   ways to view the timeline bigger; entering one now exits the other, so they
   can't both be active at once.

@@ -802,6 +802,27 @@ PAGE_HTML = r"""<!doctype html>
   viewer.addEventListener("click", function(e){ if(e.target === viewer) closeViewer(); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeViewer(); });
 
+  // "Open thread" / attachment links inside the timeline iframe open a readable
+  // in-app preview (same window) instead of downloading the raw file — so a
+  // .mbox/.eml/.pdf is shown as parsed messages without needing a desktop app.
+  function bindFramePreviews(){
+    var doc;
+    try { doc = frame.contentDocument; } catch(e){ return; }   // same-origin, but be safe
+    if(!doc || doc.__arcBound) return;
+    doc.__arcBound = true;
+    doc.addEventListener("click", function(e){
+      var a = e.target && e.target.closest ? e.target.closest("a.src-link, a.file-chip") : null;
+      if(!a) return;
+      var m = (a.getAttribute("href") || "").match(/\/source\/([^?#]+)/);
+      if(!m) return;
+      e.preventDefault();
+      if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+      openViewer({ name: decodeURIComponent(m[1]) });
+    });
+  }
+  frame.addEventListener("load", bindFramePreviews);
+  bindFramePreviews();
+
   function checkboxes(){ return fileList.querySelectorAll("input[type=checkbox]"); }
   function setAll(pred){
     checkboxes().forEach(function(cb){ cb.checked = pred(cb); });
