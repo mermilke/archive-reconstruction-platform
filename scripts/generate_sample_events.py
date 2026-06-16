@@ -19,12 +19,10 @@ docs/timeline.html is opened locally. Regenerate the page afterwards with
 Run:  python scripts/generate_sample_events.py
 """
 import base64
-import io
 import json
 import os
 import random
 import re
-import zipfile
 from datetime import datetime, timedelta
 
 
@@ -475,27 +473,32 @@ _PNG_1x1 = base64.b64decode(
 
 _TEXT_EXTS = {"csv", "json", "md", "txt", "log", "xml", "yaml", "yml", "html"}
 
+# Extensions a browser opens inline (rather than downloading) when served by a
+# static host like GitHub Pages, which sets Content-Type purely by extension.
+_INLINE_EXTS = {"pdf", "png"} | _TEXT_EXTS
 
-def _minimal_zip(name):
-    """A valid (minimal) ZIP archive holding a placeholder note. Used for
-    zip-based / binary attachment types (.zip, .xlsx, .fig, ...) so the link
-    downloads a structurally valid file, not a mislabelled text blob."""
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        zf.writestr("NOTE.txt",
-                    "Synthetic sample attachment: %s\n"
-                    "Archive Reconstruction Platform demo - placeholder content.\n" % name)
-    return buf.getvalue()
+
+def _attachment_ext(name):
+    return name.rsplit(".", 1)[-1].lower() if "." in name else ""
+
+
+def _href_filename(name):
+    """The on-disk/href filename for a placeholder. Inline-friendly types keep
+    their own extension; office/archive/binary types (.xlsx, .zip, .fig, ...)
+    get a ``.pdf`` appended so the link opens inline in the browser instead of
+    downloading a file that won't open in its native app. The chip still shows
+    the real name (e.g. ``roadmap.xlsx``)."""
+    safe = _safe_file(name)
+    return safe if _attachment_ext(name) in _INLINE_EXTS else safe + ".pdf"
 
 
 def _placeholder_bytes(name):
-    """Bytes for a placeholder attachment that actually opens, chosen by
-    extension: a real one-page PDF, a 1x1 PNG, readable text/CSV/JSON, or a
-    valid ZIP for archive/office formats. Never a file whose content contradicts
-    its extension (which is what made the published links fail to open)."""
-    ext = name.rsplit(".", 1)[-1].lower() if "." in name else ""
-    if ext == "pdf":
-        return _minimal_pdf(name)
+    """Bytes for a placeholder attachment that opens inline, chosen by
+    extension: a 1x1 PNG, readable text/CSV/JSON, or a real one-page PDF for
+    ``*.pdf`` and for every office/archive/binary type (served from a ``.pdf``
+    href). Never a file whose content contradicts how it's served (which is what
+    made the published links fail to open)."""
+    ext = _attachment_ext(name)
     if ext == "png":
         return _PNG_1x1
     if ext == "csv":
@@ -506,7 +509,8 @@ def _placeholder_bytes(name):
     if ext in _TEXT_EXTS:
         return ("Synthetic sample attachment: %s\n"
                 "Archive Reconstruction Platform demo - placeholder content.\n" % name).encode("utf-8")
-    return _minimal_zip(name)
+    # pdf and every office/archive/binary type -> a real one-page PDF
+    return _minimal_pdf(name)
 
 
 _SAFE_FILE_RE = re.compile(r"[^A-Za-z0-9._-]+")
@@ -544,12 +548,12 @@ def _materialize_attachments(data, docs_root):
                 norm = []
                 for a in atts:
                     nm = a["name"] if isinstance(a, dict) else a
-                    norm.append({"name": nm, "href": "files/" + _safe_file(nm)})
+                    norm.append({"name": nm, "href": "files/" + _href_filename(nm)})
                     names.add(nm)
                 e["attachments"] = norm
 
     for nm in sorted(names):
-        with open(os.path.join(files_dir, _safe_file(nm)), "wb") as fh:
+        with open(os.path.join(files_dir, _href_filename(nm)), "wb") as fh:
             fh.write(_placeholder_bytes(nm))
     return len(names)
 
