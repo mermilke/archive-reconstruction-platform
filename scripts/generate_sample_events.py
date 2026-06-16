@@ -5,12 +5,26 @@ over-the-air driver-assist software feature ("Drive Assist 3.0"). No real
 people, companies, or files. This is a one-off authoring tool, not part of the
 `arc` package; it just keeps the large sample compact to write and easy to vary.
 
+Besides examples/events.json, it writes the demo's clickable assets directly
+into docs/ (where GitHub Pages serves them, alongside docs/timeline.html):
+
+* docs/evidence/<tab>/<NNN_slug>.txt  — one source email per event ("Open email")
+* docs/files/<name>                   — a placeholder file per attachment chip
+
+The source/attachment links in events.json are therefore relative to the docs/
+directory (`evidence/...`, `files/...`), so they resolve both on Pages and when
+docs/timeline.html is opened locally. Regenerate the page afterwards with
+`arc timeline examples/events.json -o docs/timeline.html`.
+
 Run:  python scripts/generate_sample_events.py
 """
+import base64
+import io
 import json
 import os
 import random
 import re
+import zipfile
 from datetime import datetime, timedelta
 
 
@@ -414,15 +428,142 @@ def _slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", str(text).lower()).strip("-") or "x"
 
 
-def _attach_sources(data, here):
+def _pdf_escape(s):
+    return s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+
+
+def _minimal_pdf(name):
+    """Return the bytes of a tiny, valid one-page PDF labelled with ``name``.
+
+    The timeline links attachment chips to real files so the published demo is
+    clickable; since the attachments are fictional, each is a small placeholder
+    PDF that says so. Hand-built (zero dependencies) with a correct xref table so
+    browsers' built-in PDF viewers accept it.
+    """
+    title = _pdf_escape(name)
+    note = _pdf_escape("Synthetic sample attachment - Archive Reconstruction Platform demo.")
+    stream = ("BT /F1 18 Tf 72 720 Td (%s) Tj /F1 11 Tf 0 -28 Td (%s) Tj ET"
+              % (title, note)).encode("latin-1", "replace")
+    objs = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+        b"/Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+        b"<< /Length %d >>\nstream\n%s\nendstream" % (len(stream), stream),
+    ]
+    out = bytearray(b"%PDF-1.4\n")
+    offsets = []
+    for i, body in enumerate(objs, start=1):
+        offsets.append(len(out))
+        out += b"%d 0 obj\n" % i + body + b"\nendobj\n"
+    xref_pos = len(out)
+    n = len(objs) + 1
+    out += b"xref\n0 %d\n" % n
+    out += b"0000000000 65535 f \n"
+    for off in offsets:
+        out += b"%010d 00000 n \n" % off
+    out += b"trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (n, xref_pos)
+    return bytes(out)
+
+
+# A canonical 1x1 transparent PNG (valid bytes) for image attachments.
+_PNG_1x1 = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk"
+    "YPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+)
+
+_TEXT_EXTS = {"csv", "json", "md", "txt", "log", "xml", "yaml", "yml", "html"}
+
+
+def _minimal_zip(name):
+    """A valid (minimal) ZIP archive holding a placeholder note. Used for
+    zip-based / binary attachment types (.zip, .xlsx, .fig, ...) so the link
+    downloads a structurally valid file, not a mislabelled text blob."""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("NOTE.txt",
+                    "Synthetic sample attachment: %s\n"
+                    "Archive Reconstruction Platform demo - placeholder content.\n" % name)
+    return buf.getvalue()
+
+
+def _placeholder_bytes(name):
+    """Bytes for a placeholder attachment that actually opens, chosen by
+    extension: a real one-page PDF, a 1x1 PNG, readable text/CSV/JSON, or a
+    valid ZIP for archive/office formats. Never a file whose content contradicts
+    its extension (which is what made the published links fail to open)."""
+    ext = name.rsplit(".", 1)[-1].lower() if "." in name else ""
+    if ext == "pdf":
+        return _minimal_pdf(name)
+    if ext == "png":
+        return _PNG_1x1
+    if ext == "csv":
+        return ("file,note\r\n%s,synthetic placeholder\r\n" % name).encode("utf-8")
+    if ext == "json":
+        return json.dumps({"file": name, "note": "Synthetic sample attachment (demo placeholder)"},
+                          indent=2).encode("utf-8")
+    if ext in _TEXT_EXTS:
+        return ("Synthetic sample attachment: %s\n"
+                "Archive Reconstruction Platform demo - placeholder content.\n" % name).encode("utf-8")
+    return _minimal_zip(name)
+
+
+_SAFE_FILE_RE = re.compile(r"[^A-Za-z0-9._-]+")
+
+
+def _safe_file(name):
+    return _SAFE_FILE_RE.sub("_", name)
+
+
+def _materialize_attachments(data, docs_root):
+    """Make every attachment a real, openable file under ``docs/files/``.
+
+    Normalizes each event's ``attachments`` to ``{name, href}`` objects (so the
+    timeline renders them all as links, not just some) and writes a placeholder
+    file for each unique name — a tiny PDF for ``*.pdf``, a text stub otherwise.
+    Returns the number of files written.
+    """
+    files_dir = os.path.join(docs_root, "files")
+    if os.path.isdir(files_dir):
+        for f in os.listdir(files_dir):
+            if f != "README.md":
+                try:
+                    os.remove(os.path.join(files_dir, f))
+                except OSError:
+                    pass
+    os.makedirs(files_dir, exist_ok=True)
+
+    names = set()
+    for tab in data["tabs"]:
+        for g in tab["groups"]:
+            for e in g["events"]:
+                atts = e.get("attachments")
+                if not atts:
+                    continue
+                norm = []
+                for a in atts:
+                    nm = a["name"] if isinstance(a, dict) else a
+                    norm.append({"name": nm, "href": "files/" + _safe_file(nm)})
+                    names.add(nm)
+                e["attachments"] = norm
+
+    for nm in sorted(names):
+        with open(os.path.join(files_dir, _safe_file(nm)), "wb") as fh:
+            fh.write(_placeholder_bytes(nm))
+    return len(names)
+
+
+def _attach_sources(data, docs_root):
     """Give every event a source email: write a synthetic evidence email per
     event and link the card to it, so each row has a '📧 Open email' link (like
     the reference timeline). Preserves any 'added/edited by' attribution.
 
-    Links are repo-root-relative (examples/evidence/...), so they resolve when
-    timeline.html is opened from the project root.
+    Emails are written under docs/evidence/ and linked with docs-relative hrefs
+    (evidence/...), so they resolve next to docs/timeline.html — both on GitHub
+    Pages and when the page is opened locally.
     """
-    ev_root = os.path.normpath(os.path.join(here, "..", "examples", "evidence"))
+    ev_root = os.path.normpath(os.path.join(docs_root, "evidence"))
     if os.path.isdir(ev_root):
         for root, _dirs, files in os.walk(ev_root):
             for f in files:
@@ -459,7 +600,7 @@ def _attach_sources(data, here):
 
                 prev = e.get("source") or {}
                 src = {"type": "email", "label": "Open email",
-                       "href": "examples/evidence/%s/%s" % (tabid, fname)}
+                       "href": "evidence/%s/%s" % (tabid, fname)}
                 if prev.get("by"):
                     src["by"] = prev["by"]
                 if prev.get("at"):
@@ -473,14 +614,17 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(here, "..", "examples", "events.json")
     out = os.path.normpath(out)
+    docs_root = os.path.normpath(os.path.join(here, "..", "docs"))
     _disperse(DATA)
-    n_evidence = _attach_sources(DATA, here)
+    n_files = _materialize_attachments(DATA, docs_root)
+    n_evidence = _attach_sources(DATA, docs_root)
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(DATA, fh, indent=2, ensure_ascii=False)
         fh.write("\n")
     total = sum(len(g["events"]) for tab in DATA["tabs"] for g in tab["groups"])
     print("Wrote %d events across %d tabs to %s" % (total, len(DATA["tabs"]), out))
-    print("Wrote %d evidence email(s) to examples/evidence/" % n_evidence)
+    print("Wrote %d evidence email(s) to docs/evidence/" % n_evidence)
+    print("Wrote %d attachment placeholder(s) to docs/files/" % n_files)
 
 
 if __name__ == "__main__":

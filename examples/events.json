@@ -132,7 +132,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/001_discovery-kickoff.txt"
+                "href": "evidence/product/001_discovery-kickoff.txt"
               }
             },
             {
@@ -143,12 +143,15 @@
               "importance": 1,
               "phase": "Discovery",
               "attachments": [
-                "study_protocol.pdf"
+                {
+                  "name": "study_protocol.pdf",
+                  "href": "files/study_protocol.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/002_diary-study-launched.txt"
+                "href": "evidence/product/002_diary-study-launched.txt"
               }
             },
             {
@@ -168,7 +171,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/003_disengagement-themes.txt"
+                "href": "evidence/product/003_disengagement-themes.txt"
               }
             },
             {
@@ -181,7 +184,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/004_trust-handover-model.txt"
+                "href": "evidence/product/004_trust-handover-model.txt"
               }
             },
             {
@@ -195,7 +198,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/005_concept-testing-round-1.txt"
+                "href": "evidence/product/005_concept-testing-round-1.txt"
               }
             },
             {
@@ -206,12 +209,15 @@
               "importance": 1,
               "phase": "Synthesis",
               "attachments": [
-                "a11y_findings.pdf"
+                {
+                  "name": "a11y_findings.pdf",
+                  "href": "files/a11y_findings.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/006_accessibility-research.txt"
+                "href": "evidence/product/006_accessibility-research.txt"
               }
             },
             {
@@ -223,7 +229,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/007_beta-interview-program-set-up.txt"
+                "href": "evidence/product/007_beta-interview-program-set-up.txt"
               }
             },
             {
@@ -237,7 +243,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/008_pre-launch-perception-study.txt"
+                "href": "evidence/product/008_pre-launch-perception-study.txt"
               }
             }
           ]
@@ -257,7 +263,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/009_design-exploration-begins.txt"
+                "href": "evidence/product/009_design-exploration-begins.txt"
               }
             },
             {
@@ -268,12 +274,15 @@
               "importance": 1,
               "phase": "Explore",
               "attachments": [
-                "cluster_concepts.fig"
+                {
+                  "name": "cluster_concepts.fig",
+                  "href": "files/cluster_concepts.fig"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/010_cluster-hud-concepts.txt"
+                "href": "evidence/product/010_cluster-hud-concepts.txt"
               }
             },
             {
@@ -292,7 +301,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/011_interaction-spec-v1.txt"
+                "href": "evidence/product/011_interaction-spec-v1.txt"
               }
             },
             {
@@ -306,7 +315,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/012_handover-animation-prototype.txt"
+                "href": "evidence/product/012_handover-animation-prototype.txt"
               }
             },
             {
@@ -319,7 +328,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/013_sound-design-pass.txt"
+                "href": "evidence/product/013_sound-design-pass.txt"
               }
             },
             {
@@ -333,7 +342,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/014_design-review-with-safety.txt"
+                "href": "evidence/product/014_design-review-with-safety.txt"
               }
             },
             {
@@ -346,7 +355,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/015_redundant-cue-added.txt"
+                "href": "evidence/product/015_redundant-cue-added.txt"
               }
             },
             {
@@ -366,7 +375,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/016_design-freeze.txt"
+                "href": "evidence/product/016_design-freeze.txt"
               }
             },
             {
@@ -377,12 +386,15 @@
               "importance": 0,
               "phase": "Freeze",
               "attachments": [
-                "loc_kit.zip"
+                {
+                  "name": "loc_kit.zip",
+                  "href": "files/loc_kit.zip"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/017_localization-handoff.txt"
+                "href": "evidence/product/017_localization-handoff.txt"
               }
             }
           ]
@@ -402,7 +414,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/018_problem-brief-circulated.txt"
+                "href": "evidence/product/018_problem-brief-circulated.txt"
               }
             },
             {
@@ -416,7 +428,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/019_success-metrics-defined.txt"
+                "href": "evidence/product/019_success-metrics-defined.txt"
               }
             },
             {
@@ -436,7 +448,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/020_prd-signed-off.txt"
+                "href": "evidence/product/020_prd-signed-off.txt"
               }
             },
             {
@@ -451,7 +463,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/021_scope-cut-no-auto-lane-change-at-launch.txt"
+                "href": "evidence/product/021_scope-cut-no-auto-lane-change-at-launch.txt"
               }
             },
             {
@@ -462,12 +474,15 @@
               "importance": 1,
               "phase": "Plan",
               "attachments": [
-                "roadmap.xlsx"
+                {
+                  "name": "roadmap.xlsx",
+                  "href": "files/roadmap.xlsx"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/022_roadmap-milestones-locked.txt"
+                "href": "evidence/product/022_roadmap-milestones-locked.txt"
               }
             },
             {
@@ -480,7 +495,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/023_pricing-packaging-decision.txt"
+                "href": "evidence/product/023_pricing-packaging-decision.txt"
               }
             },
             {
@@ -499,7 +514,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/024_go-no-go-criteria-published.txt",
+                "href": "evidence/product/024_go-no-go-criteria-published.txt",
                 "by": "Lena Ortiz",
                 "at": "2025-05-19 11:40"
               }
@@ -513,7 +528,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/025_launch-readiness-review-1.txt"
+                "href": "evidence/product/025_launch-readiness-review-1.txt"
               }
             },
             {
@@ -526,7 +541,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/product/026_launch-readiness-review-2.txt"
+                "href": "evidence/product/026_launch-readiness-review-2.txt"
               }
             }
           ]
@@ -556,7 +571,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/001_perception-3-0-research-kickoff.txt"
+                "href": "evidence/engineering/001_perception-3-0-research-kickoff.txt"
               }
             },
             {
@@ -567,12 +582,15 @@
               "importance": 1,
               "phase": "Research",
               "attachments": [
-                "dataset_plan.xlsx"
+                {
+                  "name": "dataset_plan.xlsx",
+                  "href": "files/dataset_plan.xlsx"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/002_dataset-expansion-plan.txt"
+                "href": "evidence/engineering/002_dataset-expansion-plan.txt"
               }
             },
             {
@@ -586,7 +604,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/003_baseline-model-benchmarked.txt"
+                "href": "evidence/engineering/003_baseline-model-benchmarked.txt"
               }
             },
             {
@@ -605,7 +623,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/004_architecture-review.txt"
+                "href": "evidence/engineering/004_architecture-review.txt"
               }
             },
             {
@@ -620,7 +638,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/005_regression-tunnel-false-positives.txt"
+                "href": "evidence/engineering/005_regression-tunnel-false-positives.txt"
               }
             },
             {
@@ -633,7 +651,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/006_tunnel-dataset-retrain.txt"
+                "href": "evidence/engineering/006_tunnel-dataset-retrain.txt"
               }
             },
             {
@@ -653,7 +671,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/007_model-frozen-for-validation-rc1.txt"
+                "href": "evidence/engineering/007_model-frozen-for-validation-rc1.txt"
               }
             },
             {
@@ -667,7 +685,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/008_quantization-accuracy-check.txt"
+                "href": "evidence/engineering/008_quantization-accuracy-check.txt"
               }
             },
             {
@@ -680,7 +698,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/009_edge-case-hardening-rc2.txt"
+                "href": "evidence/engineering/009_edge-case-hardening-rc2.txt"
               }
             },
             {
@@ -694,7 +712,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/010_shadow-a-b-vs-production.txt"
+                "href": "evidence/engineering/010_shadow-a-b-vs-production.txt"
               }
             },
             {
@@ -707,7 +725,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/011_per-batch-camera-calibration.txt"
+                "href": "evidence/engineering/011_per-batch-camera-calibration.txt"
               }
             },
             {
@@ -721,7 +739,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/012_perception-sign-off-rc3.txt"
+                "href": "evidence/engineering/012_perception-sign-off-rc3.txt"
               }
             }
           ]
@@ -741,7 +759,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/013_planner-integration-branch-opened.txt"
+                "href": "evidence/engineering/013_planner-integration-branch-opened.txt"
               }
             },
             {
@@ -752,12 +770,15 @@
               "importance": 2,
               "phase": "Integrate",
               "attachments": [
-                "handover_fsm.pdf"
+                {
+                  "name": "handover_fsm.pdf",
+                  "href": "files/handover_fsm.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/014_handover-state-machine.txt"
+                "href": "evidence/engineering/014_handover-state-machine.txt"
               }
             },
             {
@@ -772,7 +793,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/015_compute-budget-exceeded.txt"
+                "href": "evidence/engineering/015_compute-budget-exceeded.txt"
               }
             },
             {
@@ -786,7 +807,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/016_optimization-recovers-headroom.txt"
+                "href": "evidence/engineering/016_optimization-recovers-headroom.txt"
               }
             },
             {
@@ -799,7 +820,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/017_driver-confirmed-lane-change.txt"
+                "href": "evidence/engineering/017_driver-confirmed-lane-change.txt"
               }
             },
             {
@@ -818,7 +839,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/018_fail-safe-fallback-paths.txt"
+                "href": "evidence/engineering/018_fail-safe-fallback-paths.txt"
               }
             },
             {
@@ -831,7 +852,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/019_feature-flagged-for-beta.txt"
+                "href": "evidence/engineering/019_feature-flagged-for-beta.txt"
               }
             },
             {
@@ -842,7 +863,10 @@
               "importance": 3,
               "phase": "Stabilize",
               "attachments": [
-                "release_notes.md",
+                {
+                  "name": "release_notes.md",
+                  "href": "files/release_notes.md"
+                },
                 {
                   "name": "ota_manifest.json",
                   "href": "files/ota_manifest.json"
@@ -852,7 +876,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/020_release-candidate-cut.txt"
+                "href": "evidence/engineering/020_release-candidate-cut.txt"
               }
             }
           ]
@@ -878,7 +902,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/021_ota-pipeline-design.txt"
+                "href": "evidence/engineering/021_ota-pipeline-design.txt"
               }
             },
             {
@@ -892,7 +916,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/022_shadow-mode-telemetry.txt"
+                "href": "evidence/engineering/022_shadow-mode-telemetry.txt"
               }
             },
             {
@@ -905,7 +929,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/023_staged-rollout-flag-service.txt"
+                "href": "evidence/engineering/023_staged-rollout-flag-service.txt"
               }
             },
             {
@@ -919,7 +943,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/024_load-test-1m-vehicles.txt"
+                "href": "evidence/engineering/024_load-test-1m-vehicles.txt"
               }
             },
             {
@@ -934,7 +958,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/025_rollback-drill.txt"
+                "href": "evidence/engineering/025_rollback-drill.txt"
               }
             },
             {
@@ -947,7 +971,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/026_region-failover.txt"
+                "href": "evidence/engineering/026_region-failover.txt"
               }
             },
             {
@@ -959,7 +983,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/027_capacity-reserved-for-launch.txt"
+                "href": "evidence/engineering/027_capacity-reserved-for-launch.txt"
               }
             },
             {
@@ -973,7 +997,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/028_canary-metrics-auto-halt.txt"
+                "href": "evidence/engineering/028_canary-metrics-auto-halt.txt"
               }
             }
           ]
@@ -993,7 +1017,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/029_consent-enrollment-flow.txt"
+                "href": "evidence/engineering/029_consent-enrollment-flow.txt"
               }
             },
             {
@@ -1004,12 +1028,15 @@
               "importance": 2,
               "phase": "Build",
               "attachments": [
-                "trip_review.fig"
+                {
+                  "name": "trip_review.fig",
+                  "href": "files/trip_review.fig"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/030_trip-review-screen.txt"
+                "href": "evidence/engineering/030_trip-review-screen.txt"
               }
             },
             {
@@ -1023,7 +1050,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/031_feedback-capture.txt"
+                "href": "evidence/engineering/031_feedback-capture.txt"
               }
             },
             {
@@ -1036,7 +1063,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/032_push-update-available.txt"
+                "href": "evidence/engineering/032_push-update-available.txt"
               }
             },
             {
@@ -1050,7 +1077,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/033_app-store-review-friction.txt"
+                "href": "evidence/engineering/033_app-store-review-friction.txt"
               }
             },
             {
@@ -1063,7 +1090,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/034_beta-build-approved.txt"
+                "href": "evidence/engineering/034_beta-build-approved.txt"
               }
             },
             {
@@ -1076,7 +1103,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/035_localized-release.txt"
+                "href": "evidence/engineering/035_localized-release.txt"
               }
             },
             {
@@ -1090,7 +1117,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/engineering/036_launch-app-live.txt"
+                "href": "evidence/engineering/036_launch-app-live.txt"
               }
             }
           ]
@@ -1118,12 +1145,15 @@
               "importance": 1,
               "phase": "Build",
               "attachments": [
-                "scenario_list.xlsx"
+                {
+                  "name": "scenario_list.xlsx",
+                  "href": "files/scenario_list.xlsx"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/001_scenario-library-v3.txt"
+                "href": "evidence/validation/001_scenario-library-v3.txt"
               }
             },
             {
@@ -1137,7 +1167,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/002_first-full-stack-sim-run.txt"
+                "href": "evidence/validation/002_first-full-stack-sim-run.txt"
               }
             },
             {
@@ -1152,7 +1182,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/003_unprotected-left-weakness.txt"
+                "href": "evidence/validation/003_unprotected-left-weakness.txt"
               }
             },
             {
@@ -1165,7 +1195,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/004_regression-suite-green.txt"
+                "href": "evidence/validation/004_regression-suite-green.txt"
               }
             },
             {
@@ -1178,7 +1208,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/005_rare-event-resampling.txt"
+                "href": "evidence/validation/005_rare-event-resampling.txt"
               }
             },
             {
@@ -1197,7 +1227,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/006_fault-injection-campaign.txt"
+                "href": "evidence/validation/006_fault-injection-campaign.txt"
               }
             },
             {
@@ -1208,12 +1238,15 @@
               "importance": 1,
               "phase": "Report",
               "attachments": [
-                "coverage_report.pdf"
+                {
+                  "name": "coverage_report.pdf",
+                  "href": "files/coverage_report.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/007_coverage-report.txt"
+                "href": "evidence/validation/007_coverage-report.txt"
               }
             },
             {
@@ -1227,7 +1260,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/008_replay-of-beta-disengagements.txt"
+                "href": "evidence/validation/008_replay-of-beta-disengagements.txt"
               }
             },
             {
@@ -1238,12 +1271,15 @@
               "importance": 1,
               "phase": "Report",
               "attachments": [
-                "sim_track_correlation.pdf"
+                {
+                  "name": "sim_track_correlation.pdf",
+                  "href": "files/sim_track_correlation.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/009_sim-to-track-correlation.txt"
+                "href": "evidence/validation/009_sim-to-track-correlation.txt"
               }
             },
             {
@@ -1257,7 +1293,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/010_final-sim-sign-off.txt"
+                "href": "evidence/validation/010_final-sim-sign-off.txt"
               }
             }
           ]
@@ -1283,7 +1319,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/011_test-plan-approved.txt"
+                "href": "evidence/validation/011_test-plan-approved.txt"
               }
             },
             {
@@ -1296,7 +1332,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/012_first-track-week.txt"
+                "href": "evidence/validation/012_first-track-week.txt"
               }
             },
             {
@@ -1310,7 +1346,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/013_unprotected-left-reproduced.txt"
+                "href": "evidence/validation/013_unprotected-left-reproduced.txt"
               }
             },
             {
@@ -1323,7 +1359,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/014_wet-low-sun-sessions.txt"
+                "href": "evidence/validation/014_wet-low-sun-sessions.txt"
               }
             },
             {
@@ -1338,7 +1374,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/015_unprotected-left-cleared.txt"
+                "href": "evidence/validation/015_unprotected-left-cleared.txt"
               }
             },
             {
@@ -1351,7 +1387,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/016_night-cut-in-testing.txt"
+                "href": "evidence/validation/016_night-cut-in-testing.txt"
               }
             },
             {
@@ -1365,7 +1401,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/017_track-sign-off.txt"
+                "href": "evidence/validation/017_track-sign-off.txt"
               }
             }
           ]
@@ -1383,12 +1419,15 @@
               "importance": 1,
               "phase": "Argue",
               "attachments": [
-                "safety_case_outline.pdf"
+                {
+                  "name": "safety_case_outline.pdf",
+                  "href": "files/safety_case_outline.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/018_safety-case-outline.txt"
+                "href": "evidence/validation/018_safety-case-outline.txt"
               }
             },
             {
@@ -1407,7 +1446,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/019_hazard-analysis-updated.txt"
+                "href": "evidence/validation/019_hazard-analysis-updated.txt"
               }
             },
             {
@@ -1420,7 +1459,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/020_threat-misuse-review.txt"
+                "href": "evidence/validation/020_threat-misuse-review.txt"
               }
             },
             {
@@ -1440,7 +1479,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/021_operational-design-domain-locked.txt"
+                "href": "evidence/validation/021_operational-design-domain-locked.txt"
               }
             },
             {
@@ -1455,7 +1494,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/022_independent-safety-audit.txt"
+                "href": "evidence/validation/022_independent-safety-audit.txt"
               }
             },
             {
@@ -1466,12 +1505,15 @@
               "importance": 1,
               "phase": "Review",
               "attachments": [
-                "hf_study.pdf"
+                {
+                  "name": "hf_study.pdf",
+                  "href": "files/hf_study.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/023_human-factors-study-readout.txt"
+                "href": "evidence/validation/023_human-factors-study-readout.txt"
               }
             },
             {
@@ -1484,7 +1526,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/024_findings-closed.txt"
+                "href": "evidence/validation/024_findings-closed.txt"
               }
             },
             {
@@ -1497,7 +1539,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/025_recall-risk-assessment.txt"
+                "href": "evidence/validation/025_recall-risk-assessment.txt"
               }
             },
             {
@@ -1510,7 +1552,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/026_driver-monitoring-threshold-set.txt"
+                "href": "evidence/validation/026_driver-monitoring-threshold-set.txt"
               }
             },
             {
@@ -1530,7 +1572,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/027_safety-case-approved.txt"
+                "href": "evidence/validation/027_safety-case-approved.txt"
               }
             }
           ]
@@ -1548,12 +1590,15 @@
               "importance": 1,
               "phase": "Prepare",
               "attachments": [
-                "reg_matrix.xlsx"
+                {
+                  "name": "reg_matrix.xlsx",
+                  "href": "files/reg_matrix.xlsx"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/028_market-applicability-matrix.txt"
+                "href": "evidence/validation/028_market-applicability-matrix.txt"
               }
             },
             {
@@ -1567,7 +1612,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/029_pre-submission-meeting.txt"
+                "href": "evidence/validation/029_pre-submission-meeting.txt"
               }
             },
             {
@@ -1580,7 +1625,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/030_type-approval-dossier-drafted.txt"
+                "href": "evidence/validation/030_type-approval-dossier-drafted.txt"
               }
             },
             {
@@ -1599,7 +1644,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/031_dossier-filed-lead-market.txt"
+                "href": "evidence/validation/031_dossier-filed-lead-market.txt"
               }
             },
             {
@@ -1613,7 +1658,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/032_regulator-clarification-round.txt"
+                "href": "evidence/validation/032_regulator-clarification-round.txt"
               }
             },
             {
@@ -1627,7 +1672,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/033_lead-market-clearance.txt"
+                "href": "evidence/validation/033_lead-market-clearance.txt"
               }
             },
             {
@@ -1640,7 +1685,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/validation/034_second-wave-market-filings.txt"
+                "href": "evidence/validation/034_second-wave-market-filings.txt"
               }
             }
           ]
@@ -1670,7 +1715,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/001_employee-fleet-enrolled.txt"
+                "href": "evidence/beta/001_employee-fleet-enrolled.txt"
               }
             },
             {
@@ -1683,7 +1728,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/002_first-dogfood-build.txt"
+                "href": "evidence/beta/002_first-dogfood-build.txt"
               }
             },
             {
@@ -1698,7 +1743,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/003_cold-start-handover-bug.txt"
+                "href": "evidence/beta/003_cold-start-handover-bug.txt"
               }
             },
             {
@@ -1711,7 +1756,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/004_cold-start-fix-verified.txt"
+                "href": "evidence/beta/004_cold-start-fix-verified.txt"
               }
             },
             {
@@ -1722,12 +1767,15 @@
               "importance": 0,
               "phase": "Dogfood",
               "attachments": [
-                "dogfood_survey.csv"
+                {
+                  "name": "dogfood_survey.csv",
+                  "href": "files/dogfood_survey.csv"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/005_dogfood-survey.txt"
+                "href": "evidence/beta/005_dogfood-survey.txt"
               }
             },
             {
@@ -1741,7 +1789,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/006_internal-go-for-early-access.txt"
+                "href": "evidence/beta/006_internal-go-for-early-access.txt"
               }
             }
           ]
@@ -1759,12 +1807,15 @@
               "importance": 1,
               "phase": "Invite",
               "attachments": [
-                "cohort_criteria.pdf"
+                {
+                  "name": "cohort_criteria.pdf",
+                  "href": "files/cohort_criteria.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/007_early-access-cohort-selected.txt"
+                "href": "evidence/beta/007_early-access-cohort-selected.txt"
               }
             },
             {
@@ -1777,7 +1828,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/008_consent-onboarding.txt"
+                "href": "evidence/beta/008_consent-onboarding.txt"
               }
             },
             {
@@ -1791,7 +1842,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/009_first-customer-miles.txt"
+                "href": "evidence/beta/009_first-customer-miles.txt"
               }
             },
             {
@@ -1804,7 +1855,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/010_telematics-consent-refresh.txt"
+                "href": "evidence/beta/010_telematics-consent-refresh.txt"
               }
             },
             {
@@ -1817,7 +1868,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/011_weekly-telemetry-review.txt"
+                "href": "evidence/beta/011_weekly-telemetry-review.txt"
               }
             },
             {
@@ -1830,7 +1881,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/012_cold-climate-sub-cohort.txt"
+                "href": "evidence/beta/012_cold-climate-sub-cohort.txt"
               }
             },
             {
@@ -1844,7 +1895,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/013_construction-zone-reports.txt"
+                "href": "evidence/beta/013_construction-zone-reports.txt"
               }
             },
             {
@@ -1857,7 +1908,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/014_construction-tuning-shipped.txt"
+                "href": "evidence/beta/014_construction-tuning-shipped.txt"
               }
             },
             {
@@ -1871,7 +1922,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/015_roundabout-edge-cases.txt"
+                "href": "evidence/beta/015_roundabout-edge-cases.txt"
               }
             },
             {
@@ -1885,7 +1936,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/016_trust-scores-trending-up.txt"
+                "href": "evidence/beta/016_trust-scores-trending-up.txt"
               }
             },
             {
@@ -1899,7 +1950,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/017_early-access-exit-review.txt"
+                "href": "evidence/beta/017_early-access-exit-review.txt"
               }
             }
           ]
@@ -1920,7 +1971,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/018_expanded-beta-opens.txt"
+                "href": "evidence/beta/018_expanded-beta-opens.txt"
               }
             },
             {
@@ -1934,7 +1985,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/019_onboarding-load-spike.txt"
+                "href": "evidence/beta/019_onboarding-load-spike.txt"
               }
             },
             {
@@ -1949,7 +2000,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/020_freeway-merge-complaints.txt"
+                "href": "evidence/beta/020_freeway-merge-complaints.txt"
               }
             },
             {
@@ -1962,7 +2013,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/021_merge-aggressiveness-tuning.txt"
+                "href": "evidence/beta/021_merge-aggressiveness-tuning.txt"
               }
             },
             {
@@ -1975,7 +2026,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/022_referral-waitlist-opens.txt"
+                "href": "evidence/beta/022_referral-waitlist-opens.txt"
               }
             },
             {
@@ -1989,7 +2040,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/023_merge-fix-validated-in-beta.txt"
+                "href": "evidence/beta/023_merge-fix-validated-in-beta.txt"
               }
             },
             {
@@ -2002,7 +2053,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/024_night-merge-follow-up.txt"
+                "href": "evidence/beta/024_night-merge-follow-up.txt"
               }
             },
             {
@@ -2015,7 +2066,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/025_a-b-on-cue-timing.txt"
+                "href": "evidence/beta/025_a-b-on-cue-timing.txt"
               }
             },
             {
@@ -2035,7 +2086,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/026_beta-safety-metrics-report.txt"
+                "href": "evidence/beta/026_beta-safety-metrics-report.txt"
               }
             },
             {
@@ -2046,12 +2097,15 @@
               "importance": 1,
               "phase": "Review",
               "attachments": [
-                "comfort_survey.csv"
+                {
+                  "name": "comfort_survey.csv",
+                  "href": "files/comfort_survey.csv"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/027_comfort-survey-wave.txt"
+                "href": "evidence/beta/027_comfort-survey-wave.txt"
               }
             },
             {
@@ -2065,7 +2119,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/beta/028_expanded-beta-sign-off.txt"
+                "href": "evidence/beta/028_expanded-beta-sign-off.txt"
               }
             }
           ]
@@ -2101,7 +2155,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/001_rollout-runbook-finalized.txt"
+                "href": "evidence/rollout/001_rollout-runbook-finalized.txt"
               }
             },
             {
@@ -2116,7 +2170,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/002_1-canary-live.txt"
+                "href": "evidence/rollout/002_1-canary-live.txt"
               }
             },
             {
@@ -2129,7 +2183,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/003_10-ring.txt"
+                "href": "evidence/rollout/003_10-ring.txt"
               }
             },
             {
@@ -2144,7 +2198,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/004_auto-halt-at-10.txt"
+                "href": "evidence/rollout/004_auto-halt-at-10.txt"
               }
             },
             {
@@ -2157,7 +2211,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/005_resumed-after-analysis.txt"
+                "href": "evidence/rollout/005_resumed-after-analysis.txt"
               }
             },
             {
@@ -2170,7 +2224,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/006_50-ring.txt"
+                "href": "evidence/rollout/006_50-ring.txt"
               }
             },
             {
@@ -2183,7 +2237,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/007_hold-for-holiday-traffic.txt"
+                "href": "evidence/rollout/007_hold-for-holiday-traffic.txt"
               }
             },
             {
@@ -2197,7 +2251,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/008_100-availability.txt",
+                "href": "evidence/rollout/008_100-availability.txt",
                 "by": "Dev Anand",
                 "at": "2025-12-19 12:05"
               }
@@ -2219,7 +2273,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/009_positioning-narrative.txt"
+                "href": "evidence/rollout/009_positioning-narrative.txt"
               }
             },
             {
@@ -2230,12 +2284,15 @@
               "importance": 1,
               "phase": "Build",
               "attachments": [
-                "film_brief.pdf"
+                {
+                  "name": "film_brief.pdf",
+                  "href": "files/film_brief.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/010_demo-film-shoot.txt"
+                "href": "evidence/rollout/010_demo-film-shoot.txt"
               }
             },
             {
@@ -2254,7 +2311,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/011_site-release-assets.txt"
+                "href": "evidence/rollout/011_site-release-assets.txt"
               }
             },
             {
@@ -2267,7 +2324,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/012_owner-email-sequence.txt"
+                "href": "evidence/rollout/012_owner-email-sequence.txt"
               }
             },
             {
@@ -2282,7 +2339,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/013_launch-day-reveal.txt"
+                "href": "evidence/rollout/013_launch-day-reveal.txt"
               }
             },
             {
@@ -2295,7 +2352,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/014_owner-explainer-push.txt"
+                "href": "evidence/rollout/014_owner-explainer-push.txt"
               }
             },
             {
@@ -2308,7 +2365,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/015_availability-moment.txt"
+                "href": "evidence/rollout/015_availability-moment.txt"
               }
             }
           ]
@@ -2326,12 +2383,15 @@
               "importance": 1,
               "phase": "Ready",
               "attachments": [
-                "support_plan.xlsx"
+                {
+                  "name": "support_plan.xlsx",
+                  "href": "files/support_plan.xlsx"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/016_support-readiness-plan.txt"
+                "href": "evidence/rollout/016_support-readiness-plan.txt"
               }
             },
             {
@@ -2344,7 +2404,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/017_agent-training.txt"
+                "href": "evidence/rollout/017_agent-training.txt"
               }
             },
             {
@@ -2363,7 +2423,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/018_knowledge-base-published.txt"
+                "href": "evidence/rollout/018_knowledge-base-published.txt"
               }
             },
             {
@@ -2377,7 +2437,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/019_day-1-contact-spike.txt"
+                "href": "evidence/rollout/019_day-1-contact-spike.txt"
               }
             },
             {
@@ -2392,7 +2452,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/020_top-issue-handover-confusion.txt"
+                "href": "evidence/rollout/020_top-issue-handover-confusion.txt"
               }
             },
             {
@@ -2405,7 +2465,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/021_in-app-explainer-shipped.txt"
+                "href": "evidence/rollout/021_in-app-explainer-shipped.txt"
               }
             },
             {
@@ -2418,7 +2478,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/022_support-load-normalizes.txt"
+                "href": "evidence/rollout/022_support-load-normalizes.txt"
               }
             }
           ]
@@ -2436,12 +2496,15 @@
               "importance": 1,
               "phase": "Prep",
               "attachments": [
-                "press_strategy.pdf"
+                {
+                  "name": "press_strategy.pdf",
+                  "href": "files/press_strategy.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/023_press-strategy-locked.txt"
+                "href": "evidence/rollout/023_press-strategy-locked.txt"
               }
             },
             {
@@ -2454,7 +2517,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/024_analyst-pre-briefs.txt"
+                "href": "evidence/rollout/024_analyst-pre-briefs.txt"
               }
             },
             {
@@ -2468,7 +2531,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/025_embargo-lifts.txt"
+                "href": "evidence/rollout/025_embargo-lifts.txt"
               }
             },
             {
@@ -2483,7 +2546,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/026_scrutiny-on-auto-halt.txt"
+                "href": "evidence/rollout/026_scrutiny-on-auto-halt.txt"
               }
             },
             {
@@ -2503,7 +2566,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/027_transparency-post.txt"
+                "href": "evidence/rollout/027_transparency-post.txt"
               }
             },
             {
@@ -2516,7 +2579,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/028_narrative-recovers.txt"
+                "href": "evidence/rollout/028_narrative-recovers.txt"
               }
             },
             {
@@ -2529,7 +2592,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/rollout/029_availability-press-note.txt"
+                "href": "evidence/rollout/029_availability-press-note.txt"
               }
             }
           ]
@@ -2557,12 +2620,15 @@
               "importance": 1,
               "phase": "Watch",
               "attachments": [
-                "metrics_dashboard.png"
+                {
+                  "name": "metrics_dashboard.png",
+                  "href": "files/metrics_dashboard.png"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/001_live-safety-dashboard.txt"
+                "href": "evidence/postlaunch/001_live-safety-dashboard.txt"
               }
             },
             {
@@ -2577,7 +2643,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/002_fleet-metric-holds.txt"
+                "href": "evidence/postlaunch/002_fleet-metric-holds.txt"
               }
             },
             {
@@ -2590,7 +2656,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/003_weather-correlation-study.txt"
+                "href": "evidence/postlaunch/003_weather-correlation-study.txt"
               }
             },
             {
@@ -2603,7 +2669,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/004_new-year-traffic-baseline.txt"
+                "href": "evidence/postlaunch/004_new-year-traffic-baseline.txt"
               }
             },
             {
@@ -2622,7 +2688,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/005_long-tail-intersection-report.txt"
+                "href": "evidence/postlaunch/005_long-tail-intersection-report.txt"
               }
             },
             {
@@ -2635,7 +2701,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/006_per-market-metric-split.txt"
+                "href": "evidence/postlaunch/006_per-market-metric-split.txt"
               }
             },
             {
@@ -2654,7 +2720,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/007_monthly-safety-report.txt"
+                "href": "evidence/postlaunch/007_monthly-safety-report.txt"
               }
             },
             {
@@ -2667,7 +2733,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/008_comfort-metric-regression-watch.txt"
+                "href": "evidence/postlaunch/008_comfort-metric-regression-watch.txt"
               }
             },
             {
@@ -2686,7 +2752,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/009_disengagement-taxonomy-v2.txt"
+                "href": "evidence/postlaunch/009_disengagement-taxonomy-v2.txt"
               }
             },
             {
@@ -2699,7 +2765,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/010_quarter-retro-metrics.txt"
+                "href": "evidence/postlaunch/010_quarter-retro-metrics.txt"
               }
             }
           ]
@@ -2721,7 +2787,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/011_phantom-braking-cluster.txt"
+                "href": "evidence/postlaunch/011_phantom-braking-cluster.txt"
               }
             },
             {
@@ -2734,7 +2800,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/012_overpass-mitigation.txt"
+                "href": "evidence/postlaunch/012_overpass-mitigation.txt"
               }
             },
             {
@@ -2753,7 +2819,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/013_phantom-braking-post-mortem.txt"
+                "href": "evidence/postlaunch/013_phantom-braking-post-mortem.txt"
               }
             },
             {
@@ -2768,7 +2834,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/014_update-stall-incident.txt"
+                "href": "evidence/postlaunch/014_update-stall-incident.txt"
               }
             },
             {
@@ -2781,7 +2847,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/015_stall-mitigation.txt"
+                "href": "evidence/postlaunch/015_stall-mitigation.txt"
               }
             },
             {
@@ -2792,12 +2858,15 @@
               "importance": 1,
               "phase": "Review",
               "attachments": [
-                "postmortem_cdn.pdf"
+                {
+                  "name": "postmortem_cdn.pdf",
+                  "href": "files/postmortem_cdn.pdf"
+                }
               ],
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/016_update-stall-post-mortem.txt"
+                "href": "evidence/postlaunch/016_update-stall-post-mortem.txt"
               }
             },
             {
@@ -2810,7 +2879,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/017_incident-trend-review.txt"
+                "href": "evidence/postlaunch/017_incident-trend-review.txt"
               }
             }
           ]
@@ -2830,7 +2899,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/018_3-1-backlog-groomed.txt"
+                "href": "evidence/postlaunch/018_3-1-backlog-groomed.txt"
               }
             },
             {
@@ -2845,7 +2914,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/019_auto-lane-change-resumes.txt"
+                "href": "evidence/postlaunch/019_auto-lane-change-resumes.txt"
               }
             },
             {
@@ -2858,7 +2927,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/020_overpass-data-campaign.txt"
+                "href": "evidence/postlaunch/020_overpass-data-campaign.txt"
               }
             },
             {
@@ -2871,7 +2940,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/021_comfort-tuning-experiment.txt"
+                "href": "evidence/postlaunch/021_comfort-tuning-experiment.txt"
               }
             },
             {
@@ -2884,7 +2953,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/022_intersection-handling-spike.txt"
+                "href": "evidence/postlaunch/022_intersection-handling-spike.txt"
               }
             },
             {
@@ -2897,7 +2966,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/023_auto-lane-change-sim-gauntlet.txt"
+                "href": "evidence/postlaunch/023_auto-lane-change-sim-gauntlet.txt"
               }
             },
             {
@@ -2910,7 +2979,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/024_3-1-scope-review.txt"
+                "href": "evidence/postlaunch/024_3-1-scope-review.txt"
               }
             },
             {
@@ -2923,7 +2992,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/025_3-1-design-spike.txt"
+                "href": "evidence/postlaunch/025_3-1-design-spike.txt"
               }
             },
             {
@@ -2937,7 +3006,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/026_3-1-kickoff.txt"
+                "href": "evidence/postlaunch/026_3-1-kickoff.txt"
               }
             },
             {
@@ -2950,7 +3019,7 @@
               "source": {
                 "type": "email",
                 "label": "Open email",
-                "href": "examples/evidence/postlaunch/027_3-1-safety-pre-read.txt"
+                "href": "evidence/postlaunch/027_3-1-safety-pre-read.txt"
               }
             }
           ]

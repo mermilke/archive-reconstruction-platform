@@ -18,6 +18,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **GitHub Pages landing page** (`docs/index.html`) linking to the dedup tool and
   the timeline demo; the timeline moved to `docs/timeline.html`.
 
+### Fixed
+
+- **The timeline demo's source links now work when published.** Every card's
+  *"Open email"* link and every attachment chip pointed at paths that GitHub
+  Pages doesn't serve (or that didn't exist at all), so they 404'd. The source
+  emails now live under `docs/evidence/` and every attachment is a real,
+  openable placeholder file under `docs/files/`, both linked relative to
+  `docs/timeline.html`. All attachment chips are clickable now (previously some
+  were dead).
+
 ## [1.0.0] — 2026-06-15
 
 First public release. Zero third-party runtime dependencies — the standard
