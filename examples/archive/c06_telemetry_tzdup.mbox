@@ -1,4 +1,4 @@
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Mara Lindqvist <mara.lindqvist@voltera.example>
 To: Raj Patel <raj.patel@voltera.example>
 Subject: Telemetry pipeline for canary gating
@@ -11,7 +11,7 @@ MIME-Version: 1.0
 The telemetry pipeline now ingests canary disengagement events within two min=
 utes end to end. Mara
 
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Raj Patel <raj.patel@voltera.example>
 To: Mara Lindqvist <mara.lindqvist@voltera.example>
 Subject: RE: Telemetry pipeline for canary gating
@@ -23,7 +23,7 @@ MIME-Version: 1.0
 
 Good; make sure the auto-halt query reads from the low-latency view. Raj
 
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Mara Lindqvist <mara.lindqvist@voltera.example>
 To: Raj Patel <raj.patel@voltera.example>
 Subject: RE: Telemetry pipeline for canary gating

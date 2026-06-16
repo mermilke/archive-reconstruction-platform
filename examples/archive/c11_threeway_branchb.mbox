@@ -1,0 +1,38 @@
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Lena Ortiz <lena.ortiz@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Auto lane-change design review
+Date: Fri, 05 Dec 2025 09:00:00 -0800
+Message-ID: <c11_threeway_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Kicking off the auto lane-change design review for Drive Assist 3.0. Lena
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Raj Patel <raj.patel@voltera.example>
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: RE: Auto lane-change design review
+Date: Sat, 06 Dec 2025 10:00:00 -0800
+Message-ID: <c11_threeway_m1@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Baseline behavior looks solid; the open question is how aggressive to tune ga=
+p acceptance. Raj
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Kenji Watanabe <kenji.watanabe@voltera.example>
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: RE: Auto lane-change design review
+Date: Mon, 08 Dec 2025 12:00:00 -0800
+Message-ID: <c11_threeway_m3@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+>From regulatory, two markets cap lane-change assertiveness, so we need a regi=
+onal profile. Kenji
+

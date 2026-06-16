@@ -1,0 +1,20 @@
+From: Lena Ortiz <lena.ortiz@voltera.example>
+Sent: 2025-11-23 11:00
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: RE: rc3 metrics - go/no-go
+
+Approved on my side; let us proceed to the canary. Lena
+
+From: Sofia Marenko <sofia.marenko@voltera.example>
+Sent: 2025-11-22 10:00
+To: Tomas Vidal <tomas.vidal@voltera.example>
+Subject: RE: rc3 metrics - go/no-go
+
+Numbers look good to me. Sofia
+
+From: Tomas Vidal <tomas.vidal@voltera.example>
+Sent: 2025-11-21 09:00
+To: Sofia Marenko <sofia.marenko@voltera.example>
+Subject: rc3 metrics - go/no-go
+
+Posting the rc3 metrics summary for the go/no-go thread. Tomas

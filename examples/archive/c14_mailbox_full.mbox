@@ -1,0 +1,74 @@
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Ivy Chen <ivy.chen@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Subject: Drive Assist 3.0 weekly digest
+Date: Thu, 15 Jan 2026 08:00:00 -0800
+Message-ID: <c14_mailbox_m0@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Weekly Drive Assist 3.0 digest: canary metrics, incidents, and rollout status=
+. Ivy
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Raj Patel <raj.patel@voltera.example>
+To: Ivy Chen <ivy.chen@voltera.example>
+Subject: RE: Drive Assist 3.0 weekly digest
+Date: Fri, 16 Jan 2026 09:00:00 -0800
+Message-ID: <c14_mailbox_m1@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Engineering: rc3 shipped, two minor hotfixes queued. Raj
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Nora Fischer <nora.fischer@voltera.example>
+To: Raj Patel <raj.patel@voltera.example>
+Subject: RE: Drive Assist 3.0 weekly digest
+Date: Sat, 17 Jan 2026 10:00:00 -0800
+Message-ID: <c14_mailbox_m2@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Validation: scenario suite at 94 percent pass, three flaky cases under review=
+. Nora
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Priya Iyer <priya.iyer@voltera.example>
+To: Nora Fischer <nora.fischer@voltera.example>
+Subject: RE: Drive Assist 3.0 weekly digest
+Date: Sun, 18 Jan 2026 11:00:00 -0800
+Message-ID: <c14_mailbox_m3@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Support: ticket volume nominal, one macro updated this week. Priya
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Mara Lindqvist <mara.lindqvist@voltera.example>
+To: Priya Iyer <priya.iyer@voltera.example>
+Subject: RE: Drive Assist 3.0 weekly digest
+Date: Mon, 19 Jan 2026 12:00:00 -0800
+Message-ID: <c14_mailbox_m4@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Cloud: telemetry latency p95 is under ninety seconds. Mara
+
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
+From: Kenji Watanabe <kenji.watanabe@voltera.example>
+To: Mara Lindqvist <mara.lindqvist@voltera.example>
+Subject: RE: Drive Assist 3.0 weekly digest
+Date: Tue, 20 Jan 2026 13:00:00 -0800
+Message-ID: <c14_mailbox_m5@voltera.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Regulatory: two markets confirmed for the limited launch profile. Kenji
+

@@ -3,30 +3,36 @@
 
 Where examples/threads/ is the minimal teaching fixture (six .txt files, the
 canonical "keep 2, delete 4" case the tests pin), examples/archive/ is the
-*messy real-world pile* you actually get after archiving a mailbox: a dozen
+*messy real-world pile* you actually get after archiving a mailbox: many
 conversations, each exported several times over, in different formats, with the
-PDF attachments saved right alongside the threads.
+attachments saved right alongside the threads.
 
-It exercises everything the dedup core handles:
+It exercises everything the dedup core handles, including the tricky cases:
 
 * three input formats in one folder — ``.txt`` stacked exports, real ``.eml``
   messages, and ``.mbox`` archives — deduped together;
 * cross-format redundancy — single-message ``.eml`` files that are subsets of a
   ``.txt``/``.mbox`` thread, and ``.mbox`` exports that are timezone-shifted
   subsets (collapsed, because timestamps are deliberately ignored);
-* attachment-driven keeps — a forwarded ``.eml`` (or an ``.mbox`` thread) whose
-  only unique content is a PDF is never marked redundant (the crown jewel);
-* PDFs as first-class attachments — the real ``.pdf`` files sit in the folder
-  too. The dedup engine reads ``.txt``/``.eml``/``.mbox`` (stdlib only, zero
-  dependencies) and treats each attachment by *name*; the PDFs are never parsed
-  as inputs, they ride along as attachments.
+* normalization collapse — the same message re-exported with a quoted-reply
+  tail, a ``-- `` signature, or as an HTML-only body all fold back onto the
+  plain original (only the identity fingerprint is cleaned; display text is
+  untouched);
+* a three-way branch — three exports where *none* is a subset of the others
+  (each holds a reply the others lack), so all three are kept: the clearest
+  proof that "biggest file" is the wrong heuristic;
+* attachment branching — two files that share their messages but carry
+  *different* attachments are both kept; attachments come in several types
+  (``.pdf``/``.csv``/``.png``), matched by name;
+* a large multi-message ``.mbox`` (a Takeout-style digest) kept as its own
+  branch.
 
-The corpus is generated from a declarative spec below, so each file's role
-(branch to keep vs. redundant subset) is explicit and the dedup verdict is
-deterministic. Filenames encode the role — ``*_full`` / ``*_thread`` /
-``*_forward`` are branches to keep; ``*_early`` / ``*_mid`` / ``*_open`` /
-``*_plain`` / ``*_tzdup`` are redundant subsets. tests/test_archive_example.py
-relies on that convention.
+The corpus is generated from a declarative spec, so each file's role is explicit
+and the dedup verdict is deterministic. Filenames encode the role — branches to
+KEEP are ``*_full`` / ``*_thread`` / ``*_forward`` / ``*_branch[abc]`` /
+``*_att[ab]``; redundant subsets are ``*_early`` / ``*_mid`` / ``*_open`` /
+``*_plain`` / ``*_tzdup`` / ``*_quoted`` / ``*_sig`` / ``*_html``.
+tests/test_archive_example.py relies on that convention.
 
 Everything is fully synthetic — a fictional EV company, Voltera, rolling out a
 "Drive Assist 3.0" feature — matching the rest of the sample data.
@@ -41,7 +47,7 @@ from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from generate_sample_events import _minimal_pdf  # noqa: E402  (reuse the PDF builder)
+from generate_sample_events import _PNG_1x1, _minimal_pdf  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "examples", "archive")
@@ -57,10 +63,10 @@ MARA = "Mara Lindqvist <mara.lindqvist@voltera.example>"
 OMAR = "Omar Haddad <omar.haddad@voltera.example>"
 IVY = "Ivy Chen <ivy.chen@voltera.example>"
 
-# Each conversation: slug, subject, who the opener writes to, base date, the
-# "kind" (forward = a forwarded .eml carries a unique PDF; thread = the thread
-# itself carries the PDF; plain = no attachment), the format of the kept thread,
-# the attachment name (if any), and the messages [(sender, body)].
+# Standard conversations (slug, subject, opener's recipient, base date, kind,
+# kept-thread format, attachment name, messages). kind: forward = a forwarded
+# .eml carries a unique PDF; thread = the thread itself carries the PDF; plain =
+# no attachment.
 CONVERSATIONS = [
     dict(slug="c01_perception", subject="Perception rc3 evaluation", to=SOFIA,
          base="2025-11-18 09:00", kind="forward", fmt="txt",
@@ -140,11 +146,43 @@ CONVERSATIONS = [
              (IVY, "Final copy locked for launch day. Ivy")]),
 ]
 
+# Special conversations for the tricky cases — written by hand-rolled logic in
+# main() rather than the standard pattern.
+SPECIAL = [
+    dict(slug="c11_threeway", subject="Auto lane-change design review", to=RAJ,
+         base="2025-12-05 09:00", msgs=[
+             (LENA, "Kicking off the auto lane-change design review for Drive Assist 3.0. Lena"),
+             (RAJ, "Baseline behavior looks solid; the open question is how aggressive to tune gap acceptance. Raj"),
+             (SOFIA, "From perception, the side-detection margin supports a slightly tighter gap. Sofia"),
+             (KENJI, "From regulatory, two markets cap lane-change assertiveness, so we need a regional profile. Kenji"),
+             (NORA, "From validation, the tighter gap needs three new scenarios before we ship. Nora")]),
+
+    dict(slug="c12_normalize", subject="rc3 metrics - go/no-go", to=SOFIA,
+         base="2025-11-21 09:00", msgs=[
+             (TOMAS, "Posting the rc3 metrics summary for the go/no-go thread. Tomas"),
+             (SOFIA, "Numbers look good to me. Sofia"),
+             (LENA, "Approved on my side; let us proceed to the canary. Lena")]),
+
+    dict(slug="c13_assets", subject="Trip-review design assets", to=LENA,
+         base="2025-12-16 09:00", msgs=[
+             (OMAR, "Design assets for the trip-review screen are ready; sharing the spec variants and metrics. Omar"),
+             (LENA, "Thanks; please keep both the v1 and v2 spec variants on file. Lena")]),
+
+    dict(slug="c14_mailbox", subject="Drive Assist 3.0 weekly digest", to=RAJ,
+         base="2026-01-15 08:00", msgs=[
+             (IVY, "Weekly Drive Assist 3.0 digest: canary metrics, incidents, and rollout status. Ivy"),
+             (RAJ, "Engineering: rc3 shipped, two minor hotfixes queued. Raj"),
+             (NORA, "Validation: scenario suite at 94 percent pass, three flaky cases under review. Nora"),
+             (PRIYA, "Support: ticket volume nominal, one macro updated this week. Priya"),
+             (MARA, "Cloud: telemetry latency p95 is under ninety seconds. Mara"),
+             (KENJI, "Regulatory: two markets confirmed for the limited launch profile. Kenji")]),
+]
+
 # Build the canonical message table: each logical message defined once, reused
 # wherever it appears, so the same message has a byte-identical body everywhere.
 #   key "<slug>_m<i>" -> (sender, recipient, subject, "YYYY-MM-DD HH:MM", body)
 M = {}
-for _conv in CONVERSATIONS:
+for _conv in CONVERSATIONS + SPECIAL:
     _base = datetime.strptime(_conv["base"], "%Y-%m-%d %H:%M")
     _prev = _conv["to"]
     for _i, (_sender, _body) in enumerate(_conv["msgs"]):
@@ -153,6 +191,23 @@ for _conv in CONVERSATIONS:
         _recip = _conv["to"] if _i == 0 else _prev
         M["%s_m%d" % (_conv["slug"], _i)] = (_sender, _recip, _subj, _date, _body)
         _prev = _sender
+
+# Real bytes per attachment type, so the files in the folder match their
+# extension (a .png stub named .png, readable CSV, a one-page PDF).
+_MIME = {"pdf": ("application", "pdf"), "png": ("image", "png"), "csv": ("text", "csv")}
+
+
+def _ext(name):
+    return name.rsplit(".", 1)[-1].lower() if "." in name else ""
+
+
+def _attachment_bytes(name):
+    ext = _ext(name)
+    if ext == "png":
+        return _PNG_1x1
+    if ext == "csv":
+        return ("file,note\r\n%s,synthetic sample attachment\r\n" % name).encode("utf-8")
+    return _minimal_pdf(name)
 
 
 def _rfc_date(date, tz):
@@ -174,36 +229,46 @@ def _txt_block(key, attachments=None):
     return "\n".join(lines)
 
 
-def _eml_message(key, attachments=None, tz="-0800"):
-    """One EmailMessage for a single canonical message (real .eml = one message)."""
-    sender, recipient, subject, date, body = M[key]
+def _eml_message(key, attachments=None, tz="-0800", body=None, html=False):
+    """One EmailMessage for a single canonical message (real .eml = one message).
+
+    ``body`` overrides the message text (used to append a quote tail / signature);
+    ``html`` emits an HTML-only body. Either path still fingerprints back to the
+    canonical message once normalization runs."""
+    sender, recipient, subject, date, canon = M[key]
+    text = (canon + "\n") if body is None else body
     msg = EmailMessage()
     msg["From"] = sender
     msg["To"] = recipient
     msg["Subject"] = subject
     msg["Date"] = _rfc_date(date, tz)
     msg["Message-ID"] = "<%s@voltera.example>" % key
-    msg.set_content(body + "\n")
+    if html:
+        msg.set_content(text, subtype="html")
+    else:
+        msg.set_content(text)
     for att in attachments or []:
-        msg.add_attachment(_minimal_pdf(att), maintype="application",
-                           subtype="pdf", filename=att)
+        maintype, subtype = _MIME.get(_ext(att), ("application", "octet-stream"))
+        msg.add_attachment(_attachment_bytes(att), maintype=maintype,
+                           subtype=subtype, filename=att)
     return msg
 
 
-def write_txt(name, keys, attachment_on_last=None):
+def write_txt(name, keys, attachments_on_last=None):
     """Write a stacked .txt export (newest message first)."""
-    atts = {keys[-1]: [attachment_on_last]} if attachment_on_last else {}
+    atts = {keys[-1]: attachments_on_last} if attachments_on_last else {}
     blocks = [_txt_block(k, atts.get(k)) for k in reversed(keys)]
     with open(os.path.join(OUT, name), "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(blocks).rstrip() + "\n")
 
 
-def write_eml(name, key, attachments=None, tz="-0800"):
+def write_eml(name, key, attachments=None, tz="-0800", body=None, html=False):
+    msg = _eml_message(key, attachments=attachments, tz=tz, body=body, html=html)
     with open(os.path.join(OUT, name), "wb") as fh:
-        fh.write(bytes(_eml_message(key, attachments=attachments, tz=tz)))
+        fh.write(bytes(msg))
 
 
-def write_mbox(name, keys, attachment_on_last=None, tz="-0800"):
+def write_mbox(name, keys, attachments_on_last=None, tz="-0800"):
     """Write several messages into one .mbox archive (multi-message container)."""
     path = os.path.join(OUT, name)
     if os.path.exists(path):
@@ -212,7 +277,7 @@ def write_mbox(name, keys, attachment_on_last=None, tz="-0800"):
     box.lock()
     try:
         for i, k in enumerate(keys):
-            atts = [attachment_on_last] if (attachment_on_last and i == len(keys) - 1) else None
+            atts = attachments_on_last if (attachments_on_last and i == len(keys) - 1) else None
             box.add(_eml_message(k, attachments=atts, tz=tz))
     finally:
         box.flush()
@@ -222,14 +287,18 @@ def write_mbox(name, keys, attachment_on_last=None, tz="-0800"):
 
 def write_pdf(name):
     with open(os.path.join(OUT, name), "wb") as fh:
-        fh.write(_minimal_pdf(name))
+        fh.write(_attachment_bytes(name))
 
 
-def _write_thread(name, fmt, keys, attachment_on_last=None, tz="-0800"):
+def _write_thread(name, fmt, keys, attachments_on_last=None, tz="-0800"):
     if fmt == "mbox":
-        write_mbox(name, keys, attachment_on_last=attachment_on_last, tz=tz)
+        write_mbox(name, keys, attachments_on_last=attachments_on_last, tz=tz)
     else:
-        write_txt(name, keys, attachment_on_last=attachment_on_last)
+        write_txt(name, keys, attachments_on_last=attachments_on_last)
+
+
+def _keys(slug, n):
+    return ["%s_m%d" % (slug, i) for i in range(n)]
 
 
 def main():
@@ -239,31 +308,67 @@ def main():
                 os.remove(os.path.join(OUT, f))
     os.makedirs(OUT, exist_ok=True)
 
-    pdfs = set()
+    attachments = set()
+
+    # --- Standard conversations (c01-c10): a branch + cross-format subsets ---
     for conv in CONVERSATIONS:
         slug, fmt, att = conv["slug"], conv["fmt"], conv["attachment"]
-        n = len(conv["msgs"])
-        keys = ["%s_m%d" % (slug, i) for i in range(n)]
+        keys = _keys(slug, len(conv["msgs"]))
         ext = "mbox" if fmt == "mbox" else "txt"
 
-        # --- the branch(es) to KEEP ---
         if conv["kind"] == "thread":          # the thread itself carries the PDF
-            _write_thread("%s_thread.%s" % (slug, ext), fmt, keys, attachment_on_last=att)
+            _write_thread("%s_thread.%s" % (slug, ext), fmt, keys, attachments_on_last=[att])
             write_txt("%s_plain.txt" % slug, keys)                 # same messages, no PDF -> subset
-            pdfs.add(att)
+            attachments.add(att)
         else:                                  # forward / plain: a no-attachment thread
             _write_thread("%s_full.%s" % (slug, ext), fmt, keys)
         if conv["kind"] == "forward":          # a forwarded single message carrying the PDF
             write_eml("%s_forward.eml" % slug, keys[-1], attachments=[att])
-            pdfs.add(att)
+            attachments.add(att)
 
-        # --- redundant SUBSETS, spread across formats ---
         write_txt("%s_early.txt" % slug, keys[0:2])                # first two messages
         write_txt("%s_mid.txt" % slug, keys[1:3])                  # middle two messages
         write_eml("%s_open.eml" % slug, keys[0])                   # single-message .eml subset
         write_mbox("%s_tzdup.mbox" % slug, keys[:-1], tz="+0900")  # tz-shifted proper subset
 
-    for nm in sorted(pdfs):
+    # --- c11: a three-way branch (none is a subset of the others) ---
+    k = _keys("c11_threeway", 5)
+    write_txt("c11_threeway_brancha.txt", [k[0], k[1], k[2]])      # KEEP
+    write_mbox("c11_threeway_branchb.mbox", [k[0], k[1], k[3]])    # KEEP
+    write_txt("c11_threeway_branchc.txt", [k[0], k[1], k[4]])      # KEEP
+    write_eml("c11_threeway_open.eml", k[0])                       # subset -> DELETE
+    write_txt("c11_threeway_early.txt", [k[0], k[1]])              # subset -> DELETE
+
+    # --- c12: normalization collapse (quote tail / signature / HTML-only) ---
+    k = _keys("c12_normalize", 3)
+    write_txt("c12_normalize_full.txt", k)                         # KEEP
+    quote_tail = (M[k[2]][4] + "\n\nOn Fri, 21 Nov 2025 09:00:00 -0800, "
+                  + "Sofia Marenko <sofia.marenko@voltera.example> wrote:\n> "
+                  + M[k[1]][4] + "\n")
+    write_eml("c12_normalize_quoted.eml", k[2], body=quote_tail)   # quote stripped -> subset
+    sig_body = M[k[1]][4] + "\n\n-- \nSofia Marenko\nPerception Lead, Voltera\n"
+    write_eml("c12_normalize_sig.eml", k[1], body=sig_body)        # signature stripped -> subset
+    html_body = "<html><body><p>%s</p></body></html>" % M[k[0]][4]
+    write_eml("c12_normalize_html.eml", k[0], body=html_body, html=True)  # HTML->text -> subset
+
+    # --- c13: attachment branching across several attachment types ---
+    k = _keys("c13_assets", 2)
+    write_txt("c13_assets_atta.txt", k,
+              attachments_on_last=["spec_v1.pdf", "ride_metrics.csv"])     # KEEP
+    write_eml("c13_assets_attb.eml", k[1],
+              attachments=["spec_v2.pdf", "screen_mock.png"])             # KEEP (different atts)
+    write_txt("c13_assets_plain.txt", k)                                   # no atts -> subset of atta
+    write_eml("c13_assets_forward.eml", k[0], attachments=["launch_budget.csv"])  # unique att -> KEEP
+    attachments.update(["spec_v1.pdf", "ride_metrics.csv", "spec_v2.pdf",
+                        "screen_mock.png", "launch_budget.csv"])
+
+    # --- c14: a large multi-message .mbox (Takeout-style digest) ---
+    k = _keys("c14_mailbox", 6)
+    write_mbox("c14_mailbox_full.mbox", k)                         # KEEP (6 unique messages)
+    write_eml("c14_mailbox_open.eml", k[0])                        # subset -> DELETE
+    write_txt("c14_mailbox_early.txt", [k[0], k[1]])              # subset -> DELETE
+
+    for nm in sorted(attachments):
         write_pdf(nm)
 
     files = [f for f in sorted(os.listdir(OUT)) if f != "README.md"]

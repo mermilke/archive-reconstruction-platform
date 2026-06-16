@@ -1,4 +1,4 @@
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Lena Ortiz <lena.ortiz@voltera.example>
 To: Raj Patel <raj.patel@voltera.example>
 Subject: Drive Assist 3.0 - canary go/no-go
@@ -11,7 +11,7 @@ MIME-Version: 1.0
 Are we go for the 1% canary next week? I need perception and the safety case =
 both signed before I brief leadership. Lena
 
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Raj Patel <raj.patel@voltera.example>
 To: Lena Ortiz <lena.ortiz@voltera.example>
 Subject: RE: Drive Assist 3.0 - canary go/no-go
@@ -24,7 +24,7 @@ MIME-Version: 1.0
 Perception rc3 is signed and the release candidate build is cut; from enginee=
 ring we are go. Raj
 
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Priya Iyer <priya.iyer@voltera.example>
 To: Raj Patel <raj.patel@voltera.example>
 Subject: RE: Drive Assist 3.0 - canary go/no-go
@@ -37,23 +37,23 @@ MIME-Version: 1.0
 Support is staffed for the canary window and the rollback macro is ready if d=
 isengagement spikes. Priya
 
-From MAILER-DAEMON Tue Jun 16 15:33:30 2026
+From MAILER-DAEMON Tue Jun 16 15:42:47 2026
 From: Lena Ortiz <lena.ortiz@voltera.example>
 To: Priya Iyer <priya.iyer@voltera.example>
 Subject: RE: Drive Assist 3.0 - canary go/no-go
 Date: Thu, 27 Nov 2025 12:00:00 -0800
 Message-ID: <c02_canary_m3@voltera.example>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4567378421357623984=="
+Content-Type: multipart/mixed; boundary="===============5508137667623529925=="
 
---===============4567378421357623984==
+--===============5508137667623529925==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 Leadership approved the 1% canary for Monday; the briefing deck is attached. =
 Lena
 
---===============4567378421357623984==
+--===============5508137667623529925==
 Content-Type: application/pdf
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="c02_canary_brief.pdf"
@@ -73,5 +73,5 @@ IG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDI0MSAwMDAwMCBuIAowMDAwMDAwMzExIDAw
 MDAwIG4gCnRyYWlsZXIKPDwgL1NpemUgNiAvUm9vdCAxIDAgUiA+PgpzdGFydHhyZWYKNTA1CiUl
 RU9GCg==
 
---===============4567378421357623984==--
+--===============5508137667623529925==--
 

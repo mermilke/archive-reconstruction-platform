@@ -1,0 +1,25 @@
+From: Omar Haddad <omar.haddad@voltera.example>
+To: Lena Ortiz <lena.ortiz@voltera.example>
+Subject: Trip-review design assets
+Date: Tue, 16 Dec 2025 09:00:00 -0800
+Message-ID: <c13_assets_m0@voltera.example>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5779687849724450885=="
+
+--===============5779687849724450885==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Design assets for the trip-review screen are ready; sharing the spec variants=
+ and metrics. Omar
+
+--===============5779687849724450885==
+Content-Type: text/csv
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="launch_budget.csv"
+MIME-Version: 1.0
+
+ZmlsZSxub3RlDQpsYXVuY2hfYnVkZ2V0LmNzdixzeW50aGV0aWMgc2FtcGxlIGF0dGFjaG1lbnQN
+Cg==
+
+--===============5779687849724450885==--
