@@ -8,6 +8,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **Timeline focus & fullscreen in the local web UI.** The `arc web` timeline
+  preview gains a **Focus timeline** toggle (collapses the uploader and the
+  files/dedup panel so the timeline spans the full width and height) and a
+  **Fullscreen** button (true browser fullscreen for the timeline; Esc exits) —
+  for reading a built timeline without the dedup chrome in the way.
+
 - **In-browser dedup tool** (`docs/try.html`) — a zero-install web page that runs
   the branch-aware dedup entirely client-side: drag in `.txt` thread exports (or
   click *Load the sample data*) and get the keep/delete verdict plus a

@@ -368,7 +368,19 @@ PAGE_HTML = r"""<!doctype html>
   iframe{width:100%;height:100%;border:0;border-radius:0 0 var(--radius) var(--radius);background:#fff}
   .note{color:var(--muted);font-size:12.5px;margin-top:16px;text-align:center}
   .buildbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
-  .buildbar .status{font-size:12.5px;color:var(--muted)}
+  .buildbar .status{font-size:12.5px;color:var(--muted);min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #focus{margin-left:auto}
+  /* Focus mode: collapse the uploader + files panel so the timeline fills the width. */
+  body.focusMode #drop{display:none}
+  body.focusMode #filesCard{display:none}
+  body.focusMode main{max-width:none}
+  body.focusMode .grid{grid-template-columns:1fr}
+  body.focusMode .framewrap{height:calc(100vh - 188px)}
+  body.focusMode .note{display:none}
+  /* True browser fullscreen for just the timeline card. */
+  #tlCard:fullscreen{width:100vw;height:100vh;border-radius:0;display:flex;flex-direction:column}
+  #tlCard:fullscreen .framewrap{flex:1 1 auto;height:auto;min-height:0}
+  #tlCard:fullscreen iframe{border-radius:0}
   /* file viewer / compare modal */
   .fname-btn{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:0;
     cursor:pointer;text-align:left;word-break:break-all}
@@ -415,7 +427,7 @@ PAGE_HTML = r"""<!doctype html>
   </label>
 
   <section class="grid" id="workspace" style="display:none">
-    <div class="card">
+    <div class="card" id="filesCard">
       <h2>Files &amp; dedup verdict</h2>
       <div class="chips" id="chips"></div>
       <div class="toolbar">
@@ -427,11 +439,13 @@ PAGE_HTML = r"""<!doctype html>
       <ul class="files" id="fileList"></ul>
     </div>
 
-    <div class="card">
+    <div class="card" id="tlCard">
       <h2>Timeline preview</h2>
       <div class="buildbar">
         <button id="build" class="primary">Build timeline from selected</button>
         <span class="status" id="buildStatus"></span>
+        <button id="focus" title="Hide the uploader and file list so the timeline gets the full width">Focus timeline</button>
+        <button id="full" title="Open the timeline in full screen (Esc to exit)">Fullscreen</button>
       </div>
       <div class="framewrap"><iframe id="frame" src="/timeline" title="Timeline preview"></iframe></div>
     </div>
@@ -700,6 +714,27 @@ PAGE_HTML = r"""<!doctype html>
       }
     });
   };
+
+  // Focus mode: collapse the uploader + files panel to give the timeline room.
+  var focusBtn = document.getElementById("focus");
+  focusBtn.onclick = function(){
+    var on = document.body.classList.toggle("focusMode");
+    focusBtn.textContent = on ? "Show files" : "Focus timeline";
+  };
+
+  // True browser fullscreen for the timeline card (Esc exits natively).
+  var tlCard = document.getElementById("tlCard");
+  var fullBtn = document.getElementById("full");
+  fullBtn.onclick = function(){
+    if(document.fullscreenElement){
+      if(document.exitFullscreen) document.exitFullscreen();
+    } else if(tlCard.requestFullscreen){
+      tlCard.requestFullscreen();
+    }
+  };
+  document.addEventListener("fullscreenchange", function(){
+    fullBtn.textContent = document.fullscreenElement ? "Exit fullscreen" : "Fullscreen";
+  });
 
   // Drag & drop + click-to-browse
   ["dragenter","dragover"].forEach(function(ev){
