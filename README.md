@@ -467,14 +467,18 @@ tests/
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md). Done: `.eml`/`.mbox` ingestion; a hardened parser
-with messy fixtures (quoted replies, forwards, signatures, timezone duplicates,
-malformed/folded headers); thread-tree reconstruction from `Message-ID` /
-`In-Reply-To` / `References` that verifies dedup loses no message (`arc tree`);
-a SQLite store (`arc store`) that accumulates across runs and dedups across
-formats and folders; and a thin local web UI (`arc web`) on the stdlib
-`http.server` — drag-drop an export, see keep/delete, pick threads, browse the
-timeline, all offline with no framework. The roadmap is complete.
+The roadmap is complete; [ROADMAP.md](ROADMAP.md) has the full write-up. What
+shipped:
+
+- `.eml` / `.mbox` ingestion via the stdlib `email` and `mailbox` modules.
+- A hardened parser, with a messy fixture behind each behavior: quoted replies,
+  forwards, signatures, timezone duplicates, and malformed/folded headers.
+- Thread-tree reconstruction from `Message-ID` / `In-Reply-To` / `References`
+  that verifies dedup loses no message (`arc tree`).
+- A SQLite store (`arc store`) that accumulates across runs and dedups across
+  formats and folders.
+- A thin local web UI (`arc web`) on the stdlib `http.server`: drag-drop an
+  export, see keep/delete, pick threads, browse the timeline. Offline, no framework.
 
 **Vision (not built):** live mailbox connect via Gmail/Outlook OAuth, IMAP
 pull, and forward-to-an-address ingestion. These need hosted infrastructure,
@@ -483,8 +487,7 @@ token storage, and a security review — out of scope for now.
 ## A note on the example data
 
 All example data is **fully synthetic**. There are no real names, companies,
-filenames, or message contents anywhere in this repository, and it must stay
-that way.
+filenames, or message contents anywhere in this repository.
 
 ## License
 
