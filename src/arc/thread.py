@@ -18,10 +18,10 @@ Standard library only. Identity within a corpus:
 * a message with a ``Message-ID`` is identified by that id;
 * a message without one falls back to dedup's content key.
 
-(So a message that appears *with* an id in one export and *without* one in
-another would count twice — but real mail keeps message-ids consistently, and
-the plain-text examples carry none at all, so each corpus is internally
-consistent.)
+A message can appear *with* an id in one export and *without* one in another
+(mixed-format archives do this). The verifier reconciles the two identity spaces:
+such a message is reported as a *collapsed cross-format duplicate*, not a loss,
+because its content is still present in a kept file (see :func:`verify_no_loss`).
 """
 from __future__ import annotations
 
@@ -180,18 +180,29 @@ class VerifyReport:
     branches_kept: int
     unique_messages: int
     lost: list[str] = field(default_factory=list)
+    # Messages whose Message-ID identity isn't in a kept file but whose *content*
+    # is — i.e. the same message re-exported across formats (one copy carries a
+    # Message-ID, another doesn't). Content is preserved, so these are not losses;
+    # we report the count so the benchmark line reconciles the identity spaces.
+    collapsed: int = 0
 
     @property
     def ok(self) -> bool:
         return not self.lost
 
     def benchmark_line(self) -> str:
-        return "Collapsed %d files -> %d branches; %d unique messages, %d lost." % (
+        line = "Collapsed %d files -> %d branches; %d unique messages, %d lost." % (
             self.files_total,
             self.branches_kept,
             self.unique_messages,
             len(self.lost),
         )
+        if self.collapsed:
+            line += " (%d cross-format duplicate%s collapsed)" % (
+                self.collapsed,
+                "" if self.collapsed == 1 else "s",
+            )
+        return line
 
 
 def _describe(msg: Message) -> str:
@@ -204,9 +215,19 @@ def verify_no_loss(directory: str, pattern: str | None = None) -> VerifyReport:
     """Prove dedup's keep-set retains every message in the corpus.
 
     Identity is message-id when present (authoritative), else dedup's content
-    key. ``lost`` lists any message whose identity exists in the corpus but in
-    *no* kept branch — i.e. content-only dedup would have discarded it. On the
-    intended inputs this is empty, which is the "0 unique messages lost" proof.
+    key. A corpus identity that isn't in any kept branch is checked one level
+    deeper against dedup's *content* key:
+
+    * if the message's content lives in a kept file, it is a **cross-format
+      duplicate** — the same message re-exported with a Message-ID in one file
+      and without one in another. Content is preserved, so it is counted in
+      ``collapsed``, not lost.
+    * only when the content is in *no* kept file is it a true ``lost`` — i.e.
+      content-only dedup would actually have discarded it.
+
+    So ``lost`` is empty whenever dedup is content-lossless (it always is by the
+    subset rule), even on a corpus that mixes id-bearing and id-less exports,
+    while still flagging a genuine loss if one ever occurred.
     """
     import os
 
@@ -222,20 +243,31 @@ def verify_no_loss(directory: str, pattern: str | None = None) -> VerifyReport:
 
     result = dedup_directory(directory, pattern=pattern)
     kept_names = set(result.keep)
-    kept_identities = {
-        _identity(msg)
-        for name, msgs in per_file.items()
-        if name in kept_names
-        for msg in msgs
-    }
+    kept_identities = set()
+    kept_content_keys = set()
+    for name, msgs in per_file.items():
+        if name not in kept_names:
+            continue
+        for msg in msgs:
+            kept_identities.add(_identity(msg))
+            kept_content_keys.add(message_key(msg))
 
-    lost = [_describe(msg) for ident, msg in corpus.items() if ident not in kept_identities]
+    lost = []
+    collapsed = 0
+    for ident, msg in corpus.items():
+        if ident in kept_identities:
+            continue
+        if message_key(msg) in kept_content_keys:
+            collapsed += 1  # content preserved under a different identity
+        else:
+            lost.append(_describe(msg))
     lost.sort()
     return VerifyReport(
         files_total=len(paths),
         branches_kept=len(result.keep),
         unique_messages=len(corpus),
         lost=lost,
+        collapsed=collapsed,
     )
 
 

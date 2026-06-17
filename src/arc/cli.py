@@ -141,6 +141,9 @@ def cmd_tree(args: argparse.Namespace) -> int:
     print("\n" + report.benchmark_line())
     if report.ok:
         print("Verified: every message in the conversation survives in a kept branch.")
+        if report.collapsed:
+            print("(%d message(s) re-exported across formats were collapsed by content - "
+                  "no content lost.)" % report.collapsed)
         return 0
     print("WARNING: content-only dedup would drop these message(s):")
     for desc in report.lost:

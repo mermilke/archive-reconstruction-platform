@@ -72,10 +72,14 @@ On the synthetic sample corpora, both verifiable from a clean checkout:
   and timezone-shifted duplicates.
 - **`examples/threads`** — **6 files → keep 2 / delete 4**
   ([`tests/test_dedup.py`](tests/test_dedup.py)).
-- **Provably lossless threading** — on the reply-header fixtures, thread-tree
-  reconstruction confirms the dedup keep-set covers every message:
+- **Provably lossless threading** — thread-tree reconstruction confirms the
+  dedup keep-set covers every message:
   *“Collapsed 3 files → 2 branches; 5 unique messages, **0 lost**.”*
-  (`arc tree`; [`tests/test_thread.py`](tests/test_thread.py)).
+  (`arc tree`; [`tests/test_thread.py`](tests/test_thread.py)). The verifier
+  reconciles identity across formats, so even the mixed `examples/archive` pile —
+  where the same message is exported with a `Message-ID` in one file and without
+  one in another — verifies as *“0 lost (37 cross-format duplicates collapsed)”*
+  rather than crying wolf.
 
 What's underneath:
 

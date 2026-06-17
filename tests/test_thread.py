@@ -26,6 +26,9 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
+import shutil  # noqa: E402
+import tempfile  # noqa: E402
+
 from arc.parse import find_message_files, parse_path  # noqa: E402
 from arc.thread import build_forest, verify_no_loss, walk  # noqa: E402
 
@@ -119,11 +122,67 @@ def test_verify_no_loss_falls_back_without_headers():
     assert all(node.depth == 0 for node in forest)
 
 
+# The opener, exported twice: once inside a 2-message thread that carries
+# Message-IDs, and once on its own with NO Message-ID. The id-less copy is a
+# strict content subset, so dedup deletes it. Its content lives in the kept file,
+# so it must be reported as a *collapsed cross-format duplicate*, not a loss.
+_WITH_ID = """\
+From: Raj Patel <raj@voltera.example>
+Sent: 2025-03-02 10:00
+To: Lena Ortiz <lena@voltera.example>
+Subject: RE: Canary plan
+Message-ID: <reply@voltera.example>
+In-Reply-To: <open@voltera.example>
+
+Sounds good, shipping the canary tonight.
+
+From: Lena Ortiz <lena@voltera.example>
+Sent: 2025-03-01 09:00
+To: Raj Patel <raj@voltera.example>
+Subject: Canary plan
+Message-ID: <open@voltera.example>
+
+Here is the canary rollout plan for review.
+"""
+
+_NO_ID = """\
+From: Lena Ortiz <lena@voltera.example>
+Sent: 2025-03-01 09:00
+To: Raj Patel <raj@voltera.example>
+Subject: Canary plan
+
+Here is the canary rollout plan for review.
+"""
+
+
+def test_mixed_id_corpus_collapses_without_reporting_loss():
+    tmp = tempfile.mkdtemp(prefix="arc_mixed_")
+    try:
+        with open(os.path.join(tmp, "with_id.txt"), "w", encoding="utf-8") as fh:
+            fh.write(_WITH_ID)
+        with open(os.path.join(tmp, "no_id.txt"), "w", encoding="utf-8") as fh:
+            fh.write(_NO_ID)
+
+        report = verify_no_loss(tmp)
+        assert report.files_total == 2
+        assert report.branches_kept == 1, "the id-less subset should be deleted"
+        # The opener appears under a Message-ID (kept) and id-less (deleted); its
+        # content is preserved, so it's collapsed, not lost.
+        assert report.lost == [], f"no real content loss, got {report.lost}"
+        assert report.collapsed == 1, f"expected 1 cross-format duplicate, got {report.collapsed}"
+        assert report.ok
+        assert "0 lost" in report.benchmark_line()
+        assert "1 cross-format duplicate collapsed" in report.benchmark_line()
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     test_threading_headers_are_captured()
     test_forest_shape()
     test_verify_no_loss_with_message_ids()
     test_verify_no_loss_falls_back_without_headers()
+    test_mixed_id_corpus_collapses_without_reporting_loss()
     print("OK - thread tree rebuilt; dedup verified to lose 0 messages.")
 
 
