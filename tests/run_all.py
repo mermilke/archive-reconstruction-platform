@@ -18,6 +18,11 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
+# Per-test-file wall-clock cap. The suite spins up a live local web server and a
+# Node subprocess (parity test); a hang in either shouldn't wedge the whole run
+# with no diagnostic. Generous — the whole suite finishes in a few seconds.
+TIMEOUT = 300
+
 
 def main(argv):
     quiet = "-q" in argv or "--quiet" in argv
@@ -40,7 +45,15 @@ def main(argv):
             cmd = [sys.executable, "-m", "coverage", "run", "--parallel-mode", path]
         else:
             cmd = [sys.executable, path]
-        proc = subprocess.run(cmd, capture_output=True, text=True)
+        try:
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=TIMEOUT)
+        except subprocess.TimeoutExpired as exc:
+            failures.append(name)
+            print(f"[TIMEOUT] {name} (exceeded {TIMEOUT}s)")
+            out = ((exc.stdout or "") + (exc.stderr or "")).strip()
+            if out:
+                print("\n".join("    " + line for line in out.splitlines()))
+            continue
         ok = proc.returncode == 0
         if not ok:
             failures.append(name)

@@ -61,10 +61,20 @@ def test_roles_match_keep_and_delete():
 
 
 def test_counts():
+    """Counts are *derived from the corpus* (by filename role), not hard-coded, so
+    adding or removing a fixture can't silently rot a magic number — the keep set
+    must equal exactly the branch-role files, and delete the subset-role files."""
     result = dedup_directory(ARCHIVE)
-    assert len(result.reports) == 77, "expected 77 scanned threads, got %d" % len(result.reports)
-    assert len(result.keep) == 25, "expected 25 kept branches, got %d" % len(result.keep)
-    assert len(result.delete) == 52, "expected 52 redundant files, got %d" % len(result.delete)
+    by_name = {r.name: r for r in result.reports}
+    expected_keep = {n for n in by_name if _role(n) in KEEP_ROLES}
+    expected_delete = {n for n in by_name if _role(n) in SUBSET_ROLES}
+
+    assert len(result.reports) == len(expected_keep) + len(expected_delete), (
+        "every scanned file should be either a branch or a subset")
+    assert set(result.keep) == expected_keep, (
+        "kept branches should be exactly the branch-role files")
+    assert set(result.delete) == expected_delete, (
+        "redundant files should be exactly the subset-role files")
 
 
 def test_attachment_files_stay_attachments_but_saved_pdf_emails_are_read():
@@ -180,10 +190,12 @@ def main():
     test_large_mbox_is_kept_as_its_own_branch()
     test_saved_to_pdf_email_is_a_cross_format_subset_of_a_txt_thread()
     test_pdf_only_conversation_is_read_and_kept_as_a_branch()
-    print("OK - mixed-format archive: 77 threads -> 25 kept branches, 52 redundant; "
+    result = dedup_directory(ARCHIVE)
+    print("OK - mixed-format archive: %d threads -> %d kept branches, %d redundant; "
           "covers 3-way forks, normalization collapse, attachment branching, a large "
           ".mbox, and emails saved/printed to PDF read as inputs, with .pdf/.csv/.png "
-          "attachments riding along.")
+          "attachments riding along."
+          % (len(result.reports), len(result.keep), len(result.delete)))
 
 
 if __name__ == "__main__":
