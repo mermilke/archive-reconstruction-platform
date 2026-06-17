@@ -9,4 +9,4 @@ Everything here runs on the Python standard library: no network, no services,
 and no external assets in any generated HTML.
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"

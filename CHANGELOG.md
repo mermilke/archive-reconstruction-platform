@@ -6,20 +6,29 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Fixed
-
-- **"Open thread" / attachments open a readable in-app preview.** Timeline cards
-  in `arc web` linked to `file://` URLs, which browsers block from an `http://`
-  page, so clicking did nothing. Now clicking **Open thread** (or an attachment
-  chip) opens the file parsed into readable message cards in a modal **in the
-  same window** — so a `.mbox`/`.eml`/`.pdf` is shown without a desktop app or a
-  new tab. (Source files are still served over HTTP via a `/source/<name>` route
-  as a no-JS fallback.)
-- **Focus and Fullscreen are mutually exclusive in the web UI.** They are two
-  ways to view the timeline bigger; entering one now exits the other, so they
-  can't both be active at once.
+## [1.1.0] — 2026-06-17
 
 ### Added
+
+- **Lint & type-checking in CI** (`ruff` + `mypy`). A new opt-in `[dev]` extra
+  installs the tooling; a separate CI job runs `ruff check` and `mypy` on every
+  push and pull request. The **runtime core stays zero-dependency** — the tooling
+  is never imported by any code path. README gains ruff/mypy badges. `ruff` and
+  `mypy` are clean across the codebase.
+- **Test coverage measurement.** The stdlib test runner launches each test as a
+  subprocess, so `run_all.py` now wraps each child under `coverage` when
+  `COVERAGE_PROCESS_START` is set (combine the per-process data files afterwards).
+  A CI step reports coverage and enforces a 65% floor (~72% today). See
+  `CONTRIBUTING.md`.
+- **`SECURITY.md` and `CONTRIBUTING.md`.** Security states the threat model
+  plainly (fully local, recommend-only, the only networked path is opt-in
+  `arc organize`) and how to report a vulnerability; Contributing documents the
+  zero-runtime-dependency hard rule, dev setup via the `[dev]` extra, the test
+  runner, lint/type-check, and the "every feature ships a test" convention.
+- **"Engineering highlights" README section** with headline metrics, each linked
+  to the test that asserts it.
+- **pipx install quickstart** in the README (`pip install --user` leaves console
+  scripts off PATH; pipx fixes it).
 
 - **Timeline focus & fullscreen in the local web UI.** The `arc web` timeline
   preview gains a **Focus timeline** toggle (collapses the uploader and the
@@ -37,7 +46,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **Back-to-top button on timelines.** Long timelines (standalone and in the web
   UI preview) get a floating up-arrow that appears once you scroll down and jumps
   smoothly back to the top.
-
 - **In-browser dedup tool** (`docs/try.html`) — a zero-install web page that runs
   the branch-aware dedup entirely client-side: drag in `.txt` thread exports (or
   click *Load the sample data*) and get the keep/delete verdict plus a
@@ -84,11 +92,19 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **`arc tree` no longer reports phantom losses on mixed-format archives.**
+  `verify_no_loss` measured coverage in `Message-ID` space while dedup decides
+  deletion in content-key space, so the same message exported *with* a Message-ID
+  in one file and *without* one in another looked "lost" even though its content
+  was preserved. The verifier now reconciles the two: content kept under a
+  different identity is counted as a **collapsed cross-format duplicate**, not a
+  loss — e.g. `examples/archive` now verifies as *"0 lost (37 cross-format
+  duplicates collapsed)"*. A genuine content loss (content in no kept file) is
+  still flagged. Covered by a new mixed-id case in `tests/test_thread.py`.
 - **Office/archive attachment placeholders open inline.** The timeline demo's
   `.xlsx`/`.zip`/`.fig` attachment chips downloaded as unopenable archives;
   they're now one-page PDFs served from a `.pdf` href while the chip still shows
   the real name.
-
 - **The timeline demo's source links now work when published.** Every card's
   *"Open email"* link and every attachment chip pointed at paths that GitHub
   Pages doesn't serve (or that didn't exist at all), so they 404'd. The source
@@ -128,4 +144,6 @@ library does everything in the core.
   implemented with stdlib `urllib` so there is still nothing to `pip install`.
   Every other command is fully offline.
 
+[Unreleased]: https://github.com/mermilke/archive-reconstruction-platform/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.1.0
 [1.0.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.0.0
