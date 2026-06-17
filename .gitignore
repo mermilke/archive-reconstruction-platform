@@ -31,6 +31,10 @@ raw_draft.json
 *.db
 arc.db
 
+# Large regenerable sample corpus — not tracked to keep the code front-and-centre.
+# Recreate any time with:  python scripts/generate_sample_mailbox.py
+examples/mailbox/
+
 # Session continuity (working state, not part of the product)
 session_handoff.md
 lessons_learned.md
