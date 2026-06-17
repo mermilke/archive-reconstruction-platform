@@ -314,9 +314,9 @@ KEEP (2 branch(es) - together these preserve every message and attachment):
 
 DELETE (4 redundant - each is a subset of a kept branch):
   [del]  thread_forward_noattach.txt   (subset of thread_forward_attachment.txt)
-  [del]  thread_partial_early.txt      (subset of thread_main_full.txt, ...)
+  [del]  thread_partial_early.txt      (subset of thread_forward_attachment.txt, thread_main_full.txt)
   [del]  thread_partial_mid.txt        (subset of thread_main_full.txt)
-  [del]  thread_single_open.txt        (subset of thread_main_full.txt, ...)
+  [del]  thread_single_open.txt        (subset of thread_forward_attachment.txt, thread_main_full.txt)
 
 Recommendation only - no files were deleted.
 ```
@@ -488,8 +488,4 @@ that way.
 
 ## License
 
-[MIT](LICENSE).
-
-> Before the first public commit: replace the author placeholder in `LICENSE`
-> and `pyproject.toml`, replace the clone URL above if you add one, `git init` a
-> fresh repo, and confirm no real data is present.
+[MIT](LICENSE) © Mercedes Milke.
