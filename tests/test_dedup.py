@@ -40,18 +40,17 @@ def test_branches_and_subsets():
     keep = set(result.keep)
     delete = set(result.delete)
 
-    assert keep == EXPECTED_KEEP, "keep mismatch: got %s" % sorted(keep)
-    assert delete == EXPECTED_DELETE, "delete mismatch: got %s" % sorted(delete)
+    assert keep == EXPECTED_KEEP, f"keep mismatch: got {sorted(keep)}"
+    assert delete == EXPECTED_DELETE, f"delete mismatch: got {sorted(delete)}"
 
     # Every recommended deletion must be covered by at least one kept branch.
     # (It may also be a subset of other redundant files; that is fine and
     # informative, so we only require that a *branch* supersedes it.)
     for report in result.reports:
         if report.redundant:
-            assert report.superseded_by, "%s flagged with no superseder" % report.name
+            assert report.superseded_by, f"{report.name} flagged with no superseder"
             assert EXPECTED_KEEP & set(report.superseded_by), (
-                "%s should be superseded by a kept branch; got %s"
-                % (report.name, report.superseded_by)
+                f"{report.name} should be superseded by a kept branch; got {report.superseded_by}"
             )
 
 

@@ -19,16 +19,16 @@ The tool only ever **recommends** a delete list. It never deletes anything.
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
-from typing import Iterable, List, Optional, Sequence, Set, Tuple
 
 from .normalize import clean_for_fingerprint
-from .parse import Message, find_message_files, parse_path
+from .parse import Message
 
 # A content key is a tuple so it is hashable and human-inspectable:
 #   ("msg", normalized_sender, body_fingerprint)
 #   ("att", "",                normalized_attachment_name)
-Key = Tuple[str, str, str]
+Key = tuple[str, str, str]
 
 _ADDR_RE = re.compile(r"<([^>]+)>")
 
@@ -61,9 +61,9 @@ def attachment_key(name: str) -> Key:
     return ("att", "", name.strip().lower())
 
 
-def content_keys(messages: Iterable[Message]) -> Set[Key]:
+def content_keys(messages: Iterable[Message]) -> set[Key]:
     """Reduce a parsed file (its messages) to its full set of content keys."""
-    keys: Set[Key] = set()
+    keys: set[Key] = set()
     for msg in messages:
         keys.add(message_key(msg))
         for att in msg.attachments:
@@ -76,27 +76,27 @@ class FileReport:
     """Per-file verdict."""
 
     name: str
-    keys: Set[Key]
+    keys: set[Key]
     redundant: bool = False
-    superseded_by: List[str] = field(default_factory=list)
+    superseded_by: list[str] = field(default_factory=list)
 
 
 @dataclass
 class DedupResult:
-    reports: List[FileReport]
+    reports: list[FileReport]
 
     @property
-    def keep(self) -> List[str]:
+    def keep(self) -> list[str]:
         """Names of the branches to keep (subset of nothing)."""
         return [r.name for r in self.reports if not r.redundant]
 
     @property
-    def delete(self) -> List[str]:
+    def delete(self) -> list[str]:
         """Names recommended for deletion (each a subset of a kept branch)."""
         return [r.name for r in self.reports if r.redundant]
 
 
-def analyze(file_keys: Sequence[Tuple[str, Set[Key]]]) -> DedupResult:
+def analyze(file_keys: Sequence[tuple[str, set[Key]]]) -> DedupResult:
     """Decide, for each file, whether it is a redundant subset of another.
 
     ``file_keys`` is a sequence of ``(name, keyset)`` pairs.
@@ -107,10 +107,10 @@ def analyze(file_keys: Sequence[Tuple[str, Set[Key]]]) -> DedupResult:
     identical-content pair collapses to exactly one keeper.
     """
     items = sorted(file_keys, key=lambda kv: kv[0])  # deterministic ordering
-    reports: List[FileReport] = []
+    reports: list[FileReport] = []
 
     for name, keys in items:
-        superseded_by: List[str] = []
+        superseded_by: list[str] = []
         for other_name, other_keys in items:
             if other_name == name:
                 continue
@@ -130,7 +130,7 @@ def analyze(file_keys: Sequence[Tuple[str, Set[Key]]]) -> DedupResult:
     return DedupResult(reports)
 
 
-def dedup_directory(path: str, pattern: Optional[str] = None) -> DedupResult:
+def dedup_directory(path: str, pattern: str | None = None) -> DedupResult:
     """Parse every readable file under ``path`` and run the dedup analysis.
 
     With no ``pattern``, reads ``.txt``/``.eml``/``.mbox`` and also any
@@ -142,9 +142,10 @@ def dedup_directory(path: str, pattern: Optional[str] = None) -> DedupResult:
     :mod:`arc.pdf_in`.
     """
     import os
+
     from .parse import collect_directory_messages
 
-    file_keys: List[Tuple[str, Set[Key]]] = [
+    file_keys: list[tuple[str, set[Key]]] = [
         (os.path.basename(p), content_keys(messages))
         for p, messages in collect_directory_messages(path, pattern=pattern)
     ]

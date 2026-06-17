@@ -43,8 +43,10 @@ def _fake_classification(emails):
 
 
 def test_build_request_shape():
-    body = ai.build_request([{"id": "e1", "date": "2025-01-01", "from": "A", "subject": "Hi", "snippet": "x"}],
-                            model="claude-opus-4-8")
+    body = ai.build_request(
+        [{"id": "e1", "date": "2025-01-01", "from": "A", "subject": "Hi", "snippet": "x"}],
+        model="claude-opus-4-8",
+    )
     assert body["model"] == "claude-opus-4-8"
     assert body["output_config"]["format"]["type"] == "json_schema"
     assert body["system"] and body["messages"][0]["role"] == "user"
@@ -110,7 +112,7 @@ def test_assemble_into_timeline():
     html = render_timeline(data)
     assert "<svg" in html
     for needle in ('src="http', 'href="http', "<link", "@import"):
-        assert needle not in html, "unexpected external reference: %s" % needle
+        assert needle not in html, f"unexpected external reference: {needle}"
 
 
 def main():

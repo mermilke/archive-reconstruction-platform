@@ -46,17 +46,17 @@ def test_js_matches_python_on_examples():
     js = _run_js(THREADS_DIR)
 
     assert set(js["keep"]) == set(py.keep), (
-        "keep mismatch — JS %s vs Python %s" % (sorted(js["keep"]), sorted(py.keep))
+        "keep mismatch — JS {} vs Python {}".format(sorted(js["keep"]), sorted(py.keep))
     )
     assert set(js["delete"]) == set(py.delete), (
-        "delete mismatch — JS %s vs Python %s" % (sorted(js["delete"]), sorted(py.delete))
+        "delete mismatch — JS {} vs Python {}".format(sorted(js["delete"]), sorted(py.delete))
     )
 
     # Per-file redundant flag must agree, file by file.
     py_redundant = {r.name: r.redundant for r in py.reports}
     js_redundant = {f["name"]: f["redundant"] for f in js["files"]}
     assert js_redundant == py_redundant, (
-        "per-file verdict mismatch — JS %s vs Python %s" % (js_redundant, py_redundant)
+        f"per-file verdict mismatch — JS {js_redundant} vs Python {py_redundant}"
     )
 
 
@@ -65,12 +65,11 @@ def _assert_verdict_parity(directory):
     py = dedup_directory(directory)
     js = _run_js(directory)
     assert set(js["keep"]) == set(py.keep), (
-        "keep mismatch in %s — JS %s vs Python %s"
-        % (directory, sorted(js["keep"]), sorted(py.keep))
+        f"keep mismatch in {directory} — JS {sorted(js['keep'])} vs Python {sorted(py.keep)}"
     )
     assert set(js["delete"]) == set(py.delete), (
-        "delete mismatch in %s — JS %s vs Python %s"
-        % (directory, sorted(js["delete"]), sorted(py.delete))
+        f"delete mismatch in {directory} — "
+        f"JS {sorted(js['delete'])} vs Python {sorted(py.delete)}"
     )
 
 
@@ -108,8 +107,10 @@ def test_js_matches_python_on_quote_stripped_bodies():
 
         # Sanity: Python must see these as duplicates (so the case is meaningful).
         py = dedup_directory(tmp)
-        assert set(py.keep) == {"a_clean.txt"}, "setup: expected clean file kept, got %s" % py.keep
-        assert set(py.delete) == {"b_quoted.txt"}, "setup: expected quoted file redundant, got %s" % py.delete
+        assert set(py.keep) == {"a_clean.txt"}, f"setup: expected clean file kept, got {py.keep}"
+        assert set(py.delete) == {"b_quoted.txt"}, (
+            f"setup: expected quoted file redundant, got {py.delete}"
+        )
 
         _assert_verdict_parity(tmp)
     finally:

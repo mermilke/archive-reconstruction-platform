@@ -30,12 +30,12 @@ import re
 import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from .bridge import collect_unique_messages, timeline_data_from_messages
 from .dedup import analyze, content_keys, message_key
-from .parse import SUPPORTED_EXTS, collect_directory_messages, find_message_files, parse_path
+from .parse import SUPPORTED_EXTS, collect_directory_messages, parse_path
 from .timeline import count_events, render_timeline
 
 
@@ -62,10 +62,10 @@ class Session:
     def __init__(self) -> None:
         self.dir = tempfile.mkdtemp(prefix="arc-web-")
         self.lock = threading.Lock()
-        self.timeline_html: Optional[str] = None
+        self.timeline_html: str | None = None
 
     # -- mutations ------------------------------------------------------- #
-    def save_uploads(self, files: List[Dict[str, str]]) -> Tuple[int, List[str]]:
+    def save_uploads(self, files: list[dict[str, str]]) -> tuple[int, list[str]]:
         """Write uploaded ``{name, content[, encoding]}`` records into the working
         dir. Text formats arrive as UTF-8 text; ``.pdf`` arrives base64-encoded
         (it's binary) with ``encoding == "base64"``.
@@ -75,7 +75,7 @@ class Session:
         """
         allowed = set(SUPPORTED_EXTS) | {".pdf"}
         saved = 0
-        skipped: List[str] = []
+        skipped: list[str] = []
         for f in files:
             name = _safe_name(f.get("name", ""))
             ext = os.path.splitext(name)[1].lower()
@@ -105,11 +105,11 @@ class Session:
         self.timeline_html = None
 
     # -- reads ----------------------------------------------------------- #
-    def state(self) -> Dict[str, Any]:
+    def state(self) -> dict[str, Any]:
         """Per-file dedup verdict + counts, plus a headline summary."""
         items = collect_directory_messages(self.dir)
         file_keys = []
-        info_by_name: Dict[str, Dict[str, Any]] = {}
+        info_by_name: dict[str, dict[str, Any]] = {}
         for p, msgs in items:
             name = os.path.basename(p)
             keys = content_keys(msgs)
@@ -123,7 +123,7 @@ class Session:
 
         result = analyze(file_keys)
         keep_set = set(result.keep)
-        files: List[Dict[str, Any]] = []
+        files: list[dict[str, Any]] = []
         for r in result.reports:
             info = info_by_name.get(r.name, {"name": r.name, "messages": 0, "attachments": []})
             covered_by = [n for n in r.superseded_by if n in keep_set] or list(r.superseded_by)
@@ -143,7 +143,7 @@ class Session:
             },
         }
 
-    def build_timeline(self, selected: List[str]) -> Dict[str, Any]:
+    def build_timeline(self, selected: list[str]) -> dict[str, Any]:
         """Render a timeline from just the selected files; store the HTML."""
         chosen = set(selected)
         paths = [p for p, _ in collect_directory_messages(self.dir)
@@ -192,7 +192,7 @@ class Session:
             return {"name": name, "href": "/source/" + quote(base)}
         return att
 
-    def file_view(self, name: str) -> Dict[str, Any]:
+    def file_view(self, name: str) -> dict[str, Any]:
         """The parsed messages of one stored file, each tagged with its dedup
         key. The browser uses the keys to compare a redundant file against its
         keeper and highlight exactly what the keeper has that this file doesn't.
@@ -276,8 +276,8 @@ class _Handler(BaseHTTPRequestHandler):
         elif path.startswith("/source/"):
             # Serve an uploaded source file so a timeline card's "Open thread" /
             # attachment link opens it over HTTP. basename-only -> no traversal.
-            from urllib.parse import unquote
             import mimetypes
+            from urllib.parse import unquote
             name = os.path.basename(unquote(path[len("/source/"):]))
             fp = os.path.join(sess.dir, name)
             if name and os.path.isfile(fp):
@@ -340,8 +340,8 @@ def serve(host: str = "127.0.0.1", port: int = 8000, open_browser: bool = True) 
     httpd = run_server(host, port, open_browser=open_browser)
     url = "http://%s:%d/" % (host, port)
     print("Archive Reconstruction Platform - local web UI")
-    print("  Serving at %s  (local only, no data leaves this machine)" % url)
-    print("  Working dir: %s" % httpd.session.dir)  # type: ignore[attr-defined]
+    print(f"  Serving at {url}  (local only, no data leaves this machine)")
+    print(f"  Working dir: {httpd.session.dir}")  # type: ignore[attr-defined]
     print("  Press Ctrl-C to stop.")
     try:
         threading.Event().wait()

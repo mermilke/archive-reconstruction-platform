@@ -24,11 +24,14 @@ classifiers = [
 # ZERO third-party runtime dependencies for the core — standard library only.
 dependencies = []
 
-# Optional extras. The core never requires these; they only enhance one thing:
+# Optional extras. The core never requires these.
 #   pdf — more robust PDF text extraction (the built-in reader is stdlib-only and
 #         best-effort). Install with:  pip install "archive-reconstruction-platform[pdf]"
+#   dev — lint / type-check / coverage tooling for contributors. Never imported by
+#         any runtime path; the core still installs with zero dependencies.
 [project.optional-dependencies]
 pdf = ["pypdf>=4"]
+dev = ["ruff", "mypy", "coverage"]
 
 [project.scripts]
 arc = "arc.cli:main"
@@ -40,3 +43,38 @@ Issues = "https://github.com/mermilke/archive-reconstruction-platform/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["src", "tests"]
+# scripts/ are one-off synthetic-data generators (not part of the shipped
+# package); they are full of long data string literals, so they are not linted.
+extend-exclude = ["scripts"]
+
+[tool.ruff.lint]
+# A pragmatic, not-maximalist set: pyflakes (F), pycodestyle (E/W), isort (I),
+# pyupgrade (UP), flake8-bugbear (B), comprehensions (C4).
+select = ["E", "W", "F", "I", "UP", "B", "C4"]
+# UP031 (printf -> format) is the one sub-rule we don't enforce: %-formatting is
+# idiomatic Python (the stdlib `logging` module recommends it). The rest of
+# pyupgrade stays on. No blanket file-level ignores.
+ignore = ["UP031"]
+
+[tool.ruff.lint.per-file-ignores]
+# timeline.py and web.py embed verbatim HTML/CSS/JS templates; wrapping those
+# lines would corrupt the markup, so line-length is not enforced there.
+"src/arc/timeline.py" = ["E501"]
+"src/arc/web.py" = ["E501"]
+
+[tool.mypy]
+# The package supports Python >= 3.9, but mypy type-checks against 3.10 (its
+# lowest supported target). `from __future__ import annotations` keeps the
+# PEP 604 unions used here valid at runtime on 3.9.
+python_version = "3.10"
+files = ["src"]
+# Sensible, not --strict. Tighten over time.
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+ignore_missing_imports = true

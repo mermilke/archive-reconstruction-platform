@@ -63,7 +63,7 @@ def test_renders_to_self_contained_html():
     assert "<svg" in html and "tab-pane" in html
     # No external assets in the generated page.
     for needle in ('src="http', 'href="http', "<link", "@import"):
-        assert needle not in html, "unexpected external reference: %s" % needle
+        assert needle not in html, f"unexpected external reference: {needle}"
 
 
 def main():

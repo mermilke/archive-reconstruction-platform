@@ -18,13 +18,13 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
-from arc.parse import Message, parse_path, parse_thread  # noqa: E402
+from arc.dedup import analyze, content_keys, message_key  # noqa: E402
 from arc.normalize import (  # noqa: E402
     clean_for_fingerprint,
     strip_quoted,
     strip_signature,
 )
-from arc.dedup import analyze, content_keys, message_key  # noqa: E402
+from arc.parse import Message, parse_path, parse_thread  # noqa: E402
 
 MESSY = os.path.join(ROOT, "tests", "fixtures", "messy")
 

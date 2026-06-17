@@ -11,11 +11,10 @@ of the actual conversation, grouped by subject thread and colored by sender.
 """
 from __future__ import annotations
 
-import glob
 import os
 import re
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from .dedup import message_key
 from .parse import Message, find_message_files, parse_path
@@ -36,7 +35,7 @@ def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", str(text).lower()).strip("-") or "x"
 
 
-def _split_sender(raw: str) -> Tuple[str, str]:
+def _split_sender(raw: str) -> tuple[str, str]:
     """Return (display_name, email) from a ``From:`` value."""
     m = _ADDR_RE.search(raw or "")
     email = (m.group(1).strip().lower() if m else (raw or "").strip().lower())
@@ -60,7 +59,7 @@ def base_subject(subject: str) -> str:
 
 def _iso_date(timestamp: str) -> str:
     m = _DATE_RE.search(timestamp or "")
-    return "%s-%s-%s" % (m.group(1), m.group(2), m.group(3)) if m else (timestamp or "")
+    return f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else (timestamp or "")
 
 
 def _ts_key(timestamp: str):
@@ -90,7 +89,7 @@ def _snippet(text: str, limit: int) -> str:
 def _parties(msg: Message) -> str:
     sender = _display_name(msg.sender)
     if msg.recipient:
-        return "%s → %s" % (sender, _display_name(msg.recipient))
+        return f"{sender} → {_display_name(msg.recipient)}"
     return sender
 
 
@@ -99,12 +98,12 @@ def _parties(msg: Message) -> str:
 _LEGEND_LIMIT = 8
 
 
-def collect_unique_messages(paths: List[str]) -> Tuple[List[Tuple[Message, str]], int]:
+def collect_unique_messages(paths: list[str]) -> tuple[list[tuple[Message, str]], int]:
     """Parse all files and keep one representative ``(message, source_path)`` per
     content key — the earliest occurrence, so each message is shown at the first
     time it was sent and links back to the file it came from.
     """
-    best: Dict[Any, Tuple[datetime, Message, str]] = {}
+    best: dict[Any, tuple[datetime, Message, str]] = {}
     total = 0
     for path in paths:
         for msg in parse_path(path):
@@ -118,7 +117,7 @@ def collect_unique_messages(paths: List[str]) -> Tuple[List[Tuple[Message, str]]
     return uniques, total
 
 
-def _href_for(path: str, directory: str, link_base: str) -> str:
+def _href_for(path: str, directory: str, link_base: str | None) -> str:
     """A link to a source thread file: a hosted URL under ``link_base`` if given,
     otherwise a local ``file://`` URL."""
     if link_base:
@@ -127,8 +126,8 @@ def _href_for(path: str, directory: str, link_base: str) -> str:
     return "file:///" + os.path.abspath(path).replace("\\", "/")
 
 
-def _make_event(msg: Message, path: str, directory: str, link_base: str,
-                cat_id: str, is_opener: bool) -> Dict[str, Any]:
+def _make_event(msg: Message, path: str, directory: str, link_base: str | None,
+                cat_id: str, is_opener: bool) -> dict[str, Any]:
     """Turn one message into a timeline event, colored by its conversation and
     linked back to its source file.
 
@@ -137,7 +136,7 @@ def _make_event(msg: Message, path: str, directory: str, link_base: str,
     """
     name, _ = _split_sender(msg.sender)
     subject = (msg.subject or "").strip() or base_subject(msg.subject) or "(no subject)"
-    event: Dict[str, Any] = {
+    event: dict[str, Any] = {
         "date": _iso_date(msg.timestamp),
         "title": subject,
         "summary": _snippet(msg.body, 240),
@@ -146,29 +145,43 @@ def _make_event(msg: Message, path: str, directory: str, link_base: str,
         "badge": name,  # who sent it, shown on the card (not the organizing axis)
         # Highlight attachment-bearing messages and conversation openers.
         "importance": 2 if msg.attachments else (1 if is_opener else 0),
-        "source": {"type": "email", "label": "Open thread", "href": _href_for(path, directory, link_base)},
+        "source": {
+            "type": "email",
+            "label": "Open thread",
+            "href": _href_for(path, directory, link_base),
+        },
     }
     if msg.attachments:
         event["attachments"] = list(msg.attachments)
     return event
 
 
-def _build_groups(uniques: List[Tuple[Message, str]], directory: str, link_base: str,
-                  tab_id: str, categories: List[Dict[str, str]], palette: Dict[str, int]) -> List[Dict[str, Any]]:
+def _build_groups(
+    uniques: list[tuple[Message, str]],
+    directory: str,
+    link_base: str | None,
+    tab_id: str,
+    categories: list[dict[str, str]],
+    palette: dict[str, int],
+) -> list[dict[str, Any]]:
     """Group messages by conversation; each conversation is its own colored category."""
-    groups: Dict[str, Dict[str, Any]] = {}
-    order: List[str] = []
+    groups: dict[str, dict[str, Any]] = {}
+    order: list[str] = []
     for msg, path in uniques:
         subject = base_subject(msg.subject) or "(no subject)"
         gid = _slug(subject)
-        cat_id = "topic-%s-%s" % (tab_id, gid)
+        cat_id = f"topic-{tab_id}-{gid}"
         if gid not in groups:
-            categories.append({"id": cat_id, "label": subject, "color": _PALETTE[palette["i"] % len(_PALETTE)]})
+            categories.append(
+                {"id": cat_id, "label": subject, "color": _PALETTE[palette["i"] % len(_PALETTE)]}
+            )
             palette["i"] += 1
             groups[gid] = {"id": gid, "label": subject, "category": cat_id, "events": []}
             order.append(gid)
         groups[gid]["events"].append(
-            _make_event(msg, path, directory, link_base, cat_id, is_opener=not groups[gid]["events"])
+            _make_event(
+                msg, path, directory, link_base, cat_id, is_opener=not groups[gid]["events"]
+            )
         )
     return [groups[gid] for gid in order]
 
@@ -179,10 +192,10 @@ def _tab_label(folder: str) -> str:
     return name.title() if name else folder
 
 
-def ai_email_inputs(uniques: List[Tuple[Message, str]]):
+def ai_email_inputs(uniques: list[tuple[Message, str]]):
     """Compact per-email records for an AI classifier, plus an id -> (msg, path) map."""
     emails = []
-    items: Dict[str, Tuple[Message, str]] = {}
+    items: dict[str, tuple[Message, str]] = {}
     for i, (msg, path) in enumerate(uniques, 1):
         eid = "e%d" % i
         items[eid] = (msg, path)
@@ -196,13 +209,13 @@ def ai_email_inputs(uniques: List[Tuple[Message, str]]):
     return emails, items
 
 
-def assemble_categorized(directory: str, items: Dict[str, Tuple[Message, str]],
-                         classification: Dict[str, Any], link_base: str = None,
-                         title: str = None) -> Dict[str, Any]:
+def assemble_categorized(directory: str, items: dict[str, tuple[Message, str]],
+                         classification: dict[str, Any], link_base: str | None = None,
+                         title: str | None = None) -> dict[str, Any]:
     """Turn an AI classification (categories + per-email assignments) into timeline
     data: one group per category, each email placed by date with a source link."""
-    categories: List[Dict[str, str]] = []
-    label_by_id: Dict[str, str] = {}
+    categories: list[dict[str, str]] = []
+    label_by_id: dict[str, str] = {}
     for i, c in enumerate(classification.get("categories", [])):
         cid = str(c.get("id") or _slug(c.get("label", "category")))
         label = c.get("label", cid)
@@ -212,8 +225,8 @@ def assemble_categorized(directory: str, items: Dict[str, Tuple[Message, str]],
 
     assignments = {a.get("id"): a for a in classification.get("assignments", [])}
 
-    groups: Dict[str, Dict[str, Any]] = {}
-    order: List[str] = []
+    groups: dict[str, dict[str, Any]] = {}
+    order: list[str] = []
     for eid, (msg, path) in items.items():
         a = assignments.get(eid, {})
         cid = str(a.get("category") or "")
@@ -224,10 +237,15 @@ def assemble_categorized(directory: str, items: Dict[str, Tuple[Message, str]],
                 label_by_id[cid] = "Uncategorized"
                 known.add(cid)
         if cid not in groups:
-            groups[cid] = {"id": cid, "label": label_by_id.get(cid, cid), "category": cid, "events": []}
+            groups[cid] = {
+                "id": cid,
+                "label": label_by_id.get(cid, cid),
+                "category": cid,
+                "events": [],
+            }
             order.append(cid)
         subject = (msg.subject or "").strip() or base_subject(msg.subject) or "(no subject)"
-        event: Dict[str, Any] = {
+        event: dict[str, Any] = {
             "date": _iso_date(msg.timestamp),
             "title": subject,
             "summary": a.get("summary") or _snippet(msg.body, 200),
@@ -235,7 +253,11 @@ def assemble_categorized(directory: str, items: Dict[str, Tuple[Message, str]],
             "category": cid,
             "badge": _display_name(msg.sender),
             "importance": int(a.get("importance") or 0),
-            "source": {"type": "email", "label": "Open email", "href": _href_for(path, directory, link_base)},
+            "source": {
+                "type": "email",
+                "label": "Open email",
+                "href": _href_for(path, directory, link_base),
+            },
         }
         if msg.attachments:
             event["attachments"] = list(msg.attachments)
@@ -246,24 +268,29 @@ def assemble_categorized(directory: str, items: Dict[str, Tuple[Message, str]],
     ordered = [groups[c] for c in cat_order] + [groups[c] for c in order if c not in cat_order]
 
     n_cat = len(categories)
+    folder = os.path.basename(os.path.normpath(directory))
+    default_title = title or classification.get("title")
     return {
-        "title": title or classification.get("title") or ("Email threads — %s" % os.path.basename(os.path.normpath(directory))),
+        "title": default_title or f"Email threads — {folder}",
         "subtitle": "Organized by AI into %d categor%s · %d email(s)."
                     % (n_cat, "y" if n_cat == 1 else "ies", len(items)),
         "categories": categories,
         "tabs": [{
             "id": "timeline",
             "label": "Timeline",
-            "heading": title or classification.get("title") or "Timeline",
-            "description": "Emails organized into categories by AI; refine in-browser or in the draft JSON.",
+            "heading": default_title or "Timeline",
+            "description": (
+                "Emails organized into categories by AI; "
+                "refine in-browser or in the draft JSON."
+            ),
             "filters": True,
             "groups": ordered,
         }],
     }
 
 
-def build_timeline_data(directory: str, pattern: str = None, title: str = None,
-                        link_base: str = None) -> Dict[str, Any]:
+def build_timeline_data(directory: str, pattern: str | None = None, title: str | None = None,
+                        link_base: str | None = None) -> dict[str, Any]:
     """Build timeline data from a folder of exported email threads.
 
     If ``directory`` contains subfolders, each subfolder becomes a **tab** (think
@@ -272,7 +299,7 @@ def build_timeline_data(directory: str, pattern: str = None, title: str = None,
     (colored by topic), and each card links back to its source file (a local
     ``file://`` path, or a ``link_base`` URL if provided).
     """
-    subdirs: List[str] = []
+    subdirs: list[str] = []
     if os.path.isdir(directory):
         subdirs = [d for d in sorted(os.listdir(directory))
                    if os.path.isdir(os.path.join(directory, d))]
@@ -296,17 +323,17 @@ def _conversation_tab(tab_id, label, idx, groups, n_messages, multi):
     return tab
 
 
-def timeline_data_from_messages(uniques: List[Tuple[Message, str]], total: int = None,
-                                title: str = None, link_base: str = None,
+def timeline_data_from_messages(uniques: list[tuple[Message, str]], total: int | None = None,
+                                title: str | None = None, link_base: str | None = None,
                                 directory: str = ".", label: str = "Conversations",
-                                subtitle: str = None) -> Dict[str, Any]:
+                                subtitle: str | None = None) -> dict[str, Any]:
     """Build single-tab timeline data from an already-deduped ``(message, source)``
     list — so callers that hold messages (e.g. the SQLite store) can render
     without re-parsing a folder. Messages are grouped into conversations and
     colored by topic, exactly as the folder path does."""
     if total is None:
         total = len(uniques)
-    categories: List[Dict[str, str]] = []
+    categories: list[dict[str, str]] = []
     palette = {"i": 0}
     groups = _build_groups(uniques, directory, link_base, "conversations", categories, palette)
     duplicates = max(0, total - len(uniques))
@@ -321,7 +348,9 @@ def timeline_data_from_messages(uniques: List[Tuple[Message, str]], total: int =
     }
 
 
-def _single_tab_data(directory: str, pattern: str, title: str, link_base: str) -> Dict[str, Any]:
+def _single_tab_data(
+    directory: str, pattern: str | None, title: str | None, link_base: str | None
+) -> dict[str, Any]:
     paths = find_message_files(directory, pattern=pattern)
     uniques, total = collect_unique_messages(paths)
     duplicates = total - len(uniques)
@@ -330,12 +359,15 @@ def _single_tab_data(directory: str, pattern: str, title: str, link_base: str) -
                 % (len(paths), len(uniques), duplicates, "" if duplicates == 1 else "s"))
     return timeline_data_from_messages(
         uniques, total=total,
-        title=title or ("Email threads — %s" % os.path.basename(os.path.normpath(directory))),
+        title=title or (f"Email threads — {os.path.basename(os.path.normpath(directory))}"),
         link_base=link_base, directory=directory, label="Conversations", subtitle=subtitle,
     )
 
 
-def _multi_tab_data(directory: str, subdirs: List[str], pattern: str, title: str, link_base: str) -> Dict[str, Any]:
+def _multi_tab_data(
+    directory: str, subdirs: list[str], pattern: str | None, title: str | None,
+    link_base: str | None,
+) -> dict[str, Any]:
     per_folder = []  # (folder, uniques, nfiles, total)
     for sub in subdirs:
         paths = find_message_files(os.path.join(directory, sub), pattern=pattern)
@@ -347,23 +379,27 @@ def _multi_tab_data(directory: str, subdirs: List[str], pattern: str, title: str
     if not per_folder:
         return _single_tab_data(directory, pattern, title, link_base)
 
-    categories: List[Dict[str, str]] = []
+    categories: list[dict[str, str]] = []
     palette = {"i": 0}
     tabs = []
     g_files = g_unique = g_total = 0
     for idx, (sub, uniques, nfiles, total) in enumerate(per_folder, 1):
         groups = _build_groups(uniques, directory, link_base, _slug(sub), categories, palette)
-        tabs.append(_conversation_tab(_slug(sub), _tab_label(sub), idx, groups, len(uniques), multi=True))
+        tabs.append(
+            _conversation_tab(_slug(sub), _tab_label(sub), idx, groups, len(uniques), multi=True)
+        )
         g_files += nfiles
         g_unique += len(uniques)
         g_total += total
 
     duplicates = g_total - g_unique
+    folder = os.path.basename(os.path.normpath(directory))
     return {
-        "title": title or ("Email threads — %s" % os.path.basename(os.path.normpath(directory))),
+        "title": title or f"Email threads — {folder}",
         "subtitle": "Generated from %d folder(s) / %d file(s); %d unique message(s) after dedup "
                     "(%d duplicate%s collapsed)."
-                    % (len(per_folder), g_files, g_unique, duplicates, "" if duplicates == 1 else "s"),
+                    % (len(per_folder), g_files, g_unique, duplicates,
+                       "" if duplicates == 1 else "s"),
         "categories": categories,
         "tabs": tabs,
     }

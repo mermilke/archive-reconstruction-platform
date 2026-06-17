@@ -23,7 +23,7 @@ def main(argv):
     quiet = "-q" in argv or "--quiet" in argv
     test_files = sorted(glob.glob(os.path.join(HERE, "test_*.py")))
     if not test_files:
-        print("No test files found in %s" % HERE)
+        print(f"No test files found in {HERE}")
         return 1
 
     failures = []
@@ -36,7 +36,7 @@ def main(argv):
             failures.append(name)
         if not quiet or not ok:
             mark = "PASS" if ok else "FAIL"
-            print("[%s] %s" % (mark, name))
+            print(f"[{mark}] {name}")
             if not ok:
                 # Surface the failing test's output so the cause is visible.
                 out = (proc.stdout + proc.stderr).strip()
@@ -48,7 +48,7 @@ def main(argv):
     passed = total - len(failures)
     print("\n%d/%d test file(s) passed in %.2fs." % (passed, total, elapsed))
     if failures:
-        print("Failed: %s" % ", ".join(failures))
+        print("Failed: {}".format(", ".join(failures)))
         return 1
     return 0
 

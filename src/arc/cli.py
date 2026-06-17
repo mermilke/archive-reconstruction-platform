@@ -12,9 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
-from typing import List, Optional
 
 from .bridge import (
     ai_email_inputs,
@@ -36,7 +34,7 @@ def _print_dedup_result(result, scanned_line: str) -> None:
     print("KEEP (%d branch(es) - together these preserve every message and attachment):"
           % len(keep))
     for name in keep:
-        print("  [keep] %s" % name)
+        print(f"  [keep] {name}")
 
     keep_set = set(keep)
     print("\nDELETE (%d redundant - each is a subset of a kept branch):" % len(delete))
@@ -46,7 +44,7 @@ def _print_dedup_result(result, scanned_line: str) -> None:
         if r.redundant:
             # Show the kept branch(es) that cover this file, not every container.
             covered_by = [name for name in r.superseded_by if name in keep_set] or r.superseded_by
-            print("  [del]  %s   (subset of %s)" % (r.name, ", ".join(covered_by)))
+            print("  [del]  {}   (subset of {})".format(r.name, ", ".join(covered_by)))
 
     print("\nRecommendation only - no files were deleted.")
 
@@ -54,7 +52,7 @@ def _print_dedup_result(result, scanned_line: str) -> None:
 def cmd_dedup(args: argparse.Namespace) -> int:
     result = dedup_directory(args.directory, pattern=args.pattern)
     if not result.reports:
-        print("No files matching %r found in %s" % (args.pattern, args.directory))
+        print(f"No files matching {args.pattern!r} found in {args.directory}")
         return 1
     _print_dedup_result(result, "Scanned %d file(s) in %s" % (len(result.reports), args.directory))
     return 0
@@ -87,7 +85,7 @@ def cmd_store(args: argparse.Namespace) -> int:
         if args.store_command == "dedup":
             result = store.dedup(conn)
             if not result.reports:
-                print("The store is empty. Add files first: arc store add <dir> --db %s" % args.db)
+                print(f"The store is empty. Add files first: arc store add <dir> --db {args.db}")
                 return 1
             _print_dedup_result(result, "Dedup across %d file(s) in the store (%s)"
                                 % (len(result.reports), args.db))
@@ -96,7 +94,7 @@ def cmd_store(args: argparse.Namespace) -> int:
         if args.store_command == "timeline":
             items = store.load_messages(conn)
             if not items:
-                print("The store is empty. Add files first: arc store add <dir> --db %s" % args.db)
+                print(f"The store is empty. Add files first: arc store add <dir> --db {args.db}")
                 return 1
             from .bridge import timeline_data_from_messages
             subtitle = "From the store (%s): %d unique message(s)." % (args.db, len(items))
@@ -109,7 +107,7 @@ def cmd_store(args: argparse.Namespace) -> int:
             print("Wrote %d event(s) to %s" % (count, args.output))
             return 0
 
-        print("Unknown store command: %r" % args.store_command)
+        print(f"Unknown store command: {args.store_command!r}")
         return 1
     finally:
         conn.close()
@@ -131,7 +129,7 @@ def cmd_tree(args: argparse.Namespace) -> int:
 
     forest, report = reconstruct(args.directory, pattern=args.pattern)
     if not report.files_total:
-        print("No files matching %r found in %s" % (args.pattern, args.directory))
+        print(f"No files matching {args.pattern!r} found in {args.directory}")
         return 1
 
     roots = len(forest)
@@ -146,7 +144,7 @@ def cmd_tree(args: argparse.Namespace) -> int:
         return 0
     print("WARNING: content-only dedup would drop these message(s):")
     for desc in report.lost:
-        print("  [lost] %s" % _ascii(desc))
+        print(f"  [lost] {_ascii(desc)}")
     return 3
 
 
@@ -161,7 +159,7 @@ def cmd_timeline_threads(args: argparse.Namespace) -> int:
         args.directory, pattern=args.pattern, title=args.title, link_base=args.link_base
     )
     count = write_timeline(data, args.output)
-    print("%s" % data["subtitle"])
+    print("{}".format(data["subtitle"]))
     print("Wrote %d event(s) to %s" % (count, args.output))
     return 0
 
@@ -179,10 +177,10 @@ def cmd_ingest(args: argparse.Namespace) -> int:
     with open(args.output, "w", encoding="utf-8") as fh:
         json.dump(data, fh, indent=2, ensure_ascii=False)
         fh.write("\n")
-    print("%s" % data["subtitle"])
+    print("{}".format(data["subtitle"]))
     print("Wrote draft timeline data (%d event(s), %d tab(s)) to %s"
           % (count_events(data), len(data.get("tabs", [])), args.output))
-    print("Refine the categories/placement, then: arc timeline %s -o out.html" % args.output)
+    print(f"Refine the categories/placement, then: arc timeline {args.output} -o out.html")
     return 0
 
 
@@ -197,7 +195,7 @@ def cmd_organize(args: argparse.Namespace) -> int:
 
     paths = find_message_files(args.directory, recursive=True, pattern=args.pattern)
     if not paths:
-        print("No files matching %r under %s" % (args.pattern, args.directory))
+        print(f"No files matching {args.pattern!r} under {args.directory}")
         return 1
 
     uniques, total = collect_unique_messages(paths)
@@ -208,7 +206,7 @@ def cmd_organize(args: argparse.Namespace) -> int:
     try:
         classification = ai.classify_emails(emails, model=args.model)
     except ai.AIError as e:
-        print("\nAI organization unavailable: %s" % e)
+        print(f"\nAI organization unavailable: {e}")
         return 2
 
     data = assemble_categorized(args.directory, items, classification,
@@ -217,10 +215,10 @@ def cmd_organize(args: argparse.Namespace) -> int:
         with open(args.draft, "w", encoding="utf-8") as fh:
             json.dump(data, fh, indent=2, ensure_ascii=False)
             fh.write("\n")
-        print("Wrote editable draft data to %s" % args.draft)
+        print(f"Wrote editable draft data to {args.draft}")
 
     count = write_timeline(data, args.output)
-    print("%s" % data["subtitle"])
+    print("{}".format(data["subtitle"]))
     print("Wrote %d event(s) to %s" % (count, args.output))
     return 0
 
@@ -333,7 +331,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="Turn a folder of email threads into an editable draft timeline-data JSON "
              "(scaffold to refine, then render with `timeline`).",
     )
-    p_in.add_argument("directory", help="Directory of exported thread files (subfolders become tabs).")
+    p_in.add_argument(
+        "directory", help="Directory of exported thread files (subfolders become tabs)."
+    )
     p_in.add_argument("-o", "--output", required=True, help="Output draft JSON path.")
     p_in.add_argument("--pattern", default=None,
                       help="Glob for input files (default: all of *.txt, *.eml, *.mbox).")
@@ -376,7 +376,7 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     return args.func(args)

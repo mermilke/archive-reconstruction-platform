@@ -27,7 +27,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
 
 from .dedup import dedup_directory, message_key
 from .parse import Message, find_message_files, parse_path
@@ -52,13 +51,13 @@ def _identity(msg: Message):
     return ("body",) + message_key(msg)
 
 
-def _parent_candidates(msg: Message) -> List[str]:
+def _parent_candidates(msg: Message) -> list[str]:
     """Normalized parent ids to try, nearest-ancestor first.
 
     ``In-Reply-To`` is the direct parent and wins; ``References`` is the
     root-to-here chain, so its *last* entry is the next-best parent.
     """
-    out: List[str] = []
+    out: list[str] = []
     direct = _norm_id(msg.in_reply_to)
     if direct:
         out.append(direct)
@@ -84,9 +83,9 @@ def _ts(msg: Message) -> str:
 
 @dataclass
 class ThreadNode:
-    identity: Tuple
+    identity: tuple
     message: Message
-    children: List["ThreadNode"] = field(default_factory=list)
+    children: list[ThreadNode] = field(default_factory=list)
     depth: int = 0
 
     @property
@@ -94,7 +93,7 @@ class ThreadNode:
         return self.message.subject or "(no subject)"
 
 
-def build_forest(messages: List[Message]) -> List[ThreadNode]:
+def build_forest(messages: list[Message]) -> list[ThreadNode]:
     """Build the reply forest from a flat list of messages.
 
     Messages are de-duplicated by :func:`_identity` (earliest timestamp wins, so
@@ -103,26 +102,26 @@ def build_forest(messages: List[Message]) -> List[ThreadNode]:
     (the thread openers, or replies whose parent wasn't exported) become roots.
     """
     # De-duplicate to one representative per identity, earliest first.
-    best: Dict[Tuple, Message] = {}
+    best: dict[tuple, Message] = {}
     for msg in messages:
         ident = _identity(msg)
         if ident not in best or _ts(msg) < _ts(best[ident]):
             best[ident] = msg
 
-    nodes: Dict[Tuple, ThreadNode] = {
+    nodes: dict[tuple, ThreadNode] = {
         ident: ThreadNode(identity=ident, message=msg) for ident, msg in best.items()
     }
 
     # Map every known message-id to its node identity so parents resolve.
-    by_mid: Dict[str, Tuple] = {}
+    by_mid: dict[str, tuple] = {}
     for ident, node in nodes.items():
         mid = _norm_id(node.message.message_id)
         if mid:
             by_mid[mid] = ident
 
-    roots: List[ThreadNode] = []
+    roots: list[ThreadNode] = []
     for ident, node in nodes.items():
-        parent_ident: Optional[Tuple] = None
+        parent_ident: tuple | None = None
         for cand in _parent_candidates(node.message):
             target = by_mid.get(cand)
             if target is not None and target != ident:
@@ -148,9 +147,9 @@ def build_forest(messages: List[Message]) -> List[ThreadNode]:
     return roots
 
 
-def walk(roots: List[ThreadNode]) -> List[ThreadNode]:
+def walk(roots: list[ThreadNode]) -> list[ThreadNode]:
     """Pre-order flatten of the forest (parents before children)."""
-    out: List[ThreadNode] = []
+    out: list[ThreadNode] = []
 
     def visit(node: ThreadNode) -> None:
         out.append(node)
@@ -162,14 +161,14 @@ def walk(roots: List[ThreadNode]) -> List[ThreadNode]:
     return out
 
 
-def render_forest(roots: List[ThreadNode]) -> List[str]:
+def render_forest(roots: list[ThreadNode]) -> list[str]:
     """ASCII lines for the reconstructed forest, indented by reply depth."""
-    lines: List[str] = []
+    lines: list[str] = []
     for node in walk(roots):
         indent = "  " * node.depth
         bullet = "- " if node.depth else "* "
-        ts = ("[%s] " % node.message.timestamp) if node.message.timestamp else ""
-        lines.append("%s%s%s%s  (%s)" % (indent, bullet, ts, node.subject, _who(node.message.sender)))
+        ts = (f"[{node.message.timestamp}] ") if node.message.timestamp else ""
+        lines.append(f"{indent}{bullet}{ts}{node.subject}  ({_who(node.message.sender)})")
     return lines
 
 
@@ -180,7 +179,7 @@ class VerifyReport:
     files_total: int
     branches_kept: int
     unique_messages: int
-    lost: List[str] = field(default_factory=list)
+    lost: list[str] = field(default_factory=list)
 
     @property
     def ok(self) -> bool:
@@ -198,10 +197,10 @@ class VerifyReport:
 def _describe(msg: Message) -> str:
     who = _who(msg.sender)
     subject = msg.subject or "(no subject)"
-    return "%s: %s" % (who, subject)
+    return f"{who}: {subject}"
 
 
-def verify_no_loss(directory: str, pattern: Optional[str] = None) -> VerifyReport:
+def verify_no_loss(directory: str, pattern: str | None = None) -> VerifyReport:
     """Prove dedup's keep-set retains every message in the corpus.
 
     Identity is message-id when present (authoritative), else dedup's content
@@ -212,11 +211,11 @@ def verify_no_loss(directory: str, pattern: Optional[str] = None) -> VerifyRepor
     import os
 
     paths = find_message_files(directory, pattern=pattern)
-    per_file: Dict[str, List[Message]] = {}
+    per_file: dict[str, list[Message]] = {}
     for p in paths:
         per_file[os.path.basename(p)] = parse_path(p)
 
-    corpus: Dict[Tuple, Message] = {}
+    corpus: dict[tuple, Message] = {}
     for msgs in per_file.values():
         for msg in msgs:
             corpus.setdefault(_identity(msg), msg)
@@ -240,10 +239,12 @@ def verify_no_loss(directory: str, pattern: Optional[str] = None) -> VerifyRepor
     )
 
 
-def reconstruct(directory: str, pattern: Optional[str] = None) -> Tuple[List[ThreadNode], VerifyReport]:
+def reconstruct(
+    directory: str, pattern: str | None = None
+) -> tuple[list[ThreadNode], VerifyReport]:
     """Parse a folder, rebuild the reply forest, and verify dedup against it."""
     paths = find_message_files(directory, pattern=pattern)
-    messages: List[Message] = []
+    messages: list[Message] = []
     for p in paths:
         messages.extend(parse_path(p))
     forest = build_forest(messages)

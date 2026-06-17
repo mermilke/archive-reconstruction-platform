@@ -29,6 +29,7 @@ from arc.dedup import dedup_directory  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import base64  # noqa: E402
+
 from test_pdf_in import EMAIL_A, EMAIL_B, _email_pdf  # noqa: E402
 
 EXAMPLES = os.path.join(ROOT, "examples", "threads")
@@ -40,7 +41,7 @@ def _example_uploads():
     for name in sorted(os.listdir(EXAMPLES)):
         path = os.path.join(EXAMPLES, name)
         if os.path.isfile(path) and name.lower().endswith(".txt"):
-            with open(path, "r", encoding="utf-8") as fh:
+            with open(path, encoding="utf-8") as fh:
                 uploads.append({"name": name, "content": fh.read()})
     return uploads
 

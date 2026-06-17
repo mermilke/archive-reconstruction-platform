@@ -16,7 +16,6 @@ import email.utils
 import html as _html
 import mailbox
 import re
-from typing import List
 
 from .parse import Message
 
@@ -24,17 +23,17 @@ _TAG_RE = re.compile(r"<[^>]+>")
 _INLINE_WS_RE = re.compile(r"[ \t\r\f\v]+")
 
 
-def parse_eml(path: str) -> List[Message]:
+def parse_eml(path: str) -> list[Message]:
     """Parse a single ``.eml`` file (one message) into a one-element list."""
     with open(path, "rb") as fh:
         msg = email.message_from_binary_file(fh, policy=email.policy.default)
     return [_to_message(msg)]
 
 
-def parse_mbox(path: str) -> List[Message]:
+def parse_mbox(path: str) -> list[Message]:
     """Parse every message in an ``.mbox`` archive."""
     box = mailbox.mbox(path)
-    out: List[Message] = []
+    out: list[Message] = []
     try:
         for key in box.keys():
             raw = box.get_bytes(key)
@@ -111,8 +110,8 @@ def _body(msg) -> str:
     return text.strip()
 
 
-def _attachments(msg) -> List[str]:
-    names: List[str] = []
+def _attachments(msg) -> list[str]:
+    names: list[str] = []
     try:
         for part in msg.iter_attachments():
             filename = part.get_filename()
@@ -123,7 +122,7 @@ def _attachments(msg) -> List[str]:
     return names
 
 
-def _references(msg) -> List[str]:
+def _references(msg) -> list[str]:
     raw = msg["References"]
     if raw is None:
         return []

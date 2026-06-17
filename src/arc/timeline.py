@@ -54,7 +54,7 @@ import html as _html
 import json
 import re
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 E = _html.escape
 
@@ -80,7 +80,7 @@ def _prettify(text: str) -> str:
     return re.sub(r"[-_]+", " ", str(text)).strip().title()
 
 
-def _hex_to_rgb(h: str) -> Tuple[int, int, int]:
+def _hex_to_rgb(h: str) -> tuple[int, int, int]:
     h = h.lstrip("#")
     if len(h) == 3:
         h = "".join(c * 2 for c in h)
@@ -91,7 +91,7 @@ def _tint(h: str, alpha: float) -> str:
     try:
         r, g, b = _hex_to_rgb(h)
     except Exception:
-        return "rgba(107,114,128,%s)" % alpha
+        return f"rgba(107,114,128,{alpha})"
     return "rgba(%d,%d,%d,%s)" % (r, g, b, alpha)
 
 
@@ -105,7 +105,7 @@ def _parse_date(value: str):
     return None
 
 
-def _fmt_short(value: str) -> Tuple[str, str]:
+def _fmt_short(value: str) -> tuple[str, str]:
     d = _parse_date(value)
     if d is None:
         return (str(value or ""), "")
@@ -116,22 +116,22 @@ def _fmt_long(d) -> str:
     return "%s %d, %d" % (d.strftime("%b"), d.day, d.year)
 
 
-def _range_str(events: List[Dict[str, Any]]) -> str:
+def _range_str(events: list[dict[str, Any]]) -> str:
     dates = [d for d in (_parse_date(str(e.get("date", ""))) for e in events) if d]
     if not dates:
         return ""
     lo, hi = min(dates), max(dates)
-    return _fmt_long(lo) if lo == hi else "%s - %s" % (_fmt_long(lo), _fmt_long(hi))
+    return _fmt_long(lo) if lo == hi else f"{_fmt_long(lo)} - {_fmt_long(hi)}"
 
 
 # --------------------------------------------------------------------------- #
 # Normalisation + category registry
 # --------------------------------------------------------------------------- #
-def _normalize(data: Any) -> Dict[str, Any]:
+def _normalize(data: Any) -> dict[str, Any]:
     """Coerce either schema form into the canonical {title, categories, tabs} dict."""
     if isinstance(data, list):
-        order: List[str] = []
-        buckets: Dict[str, List[Dict[str, Any]]] = {}
+        order: list[str] = []
+        buckets: dict[str, list[dict[str, Any]]] = {}
         for ev in data:
             group = str(ev.get("group", "Events"))
             buckets.setdefault(group, [])
@@ -166,9 +166,9 @@ def _normalize(data: Any) -> Dict[str, Any]:
     return out
 
 
-def _build_categories(data: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
-    cats: Dict[str, Dict[str, str]] = {}
-    order: List[str] = []
+def _build_categories(data: dict[str, Any]) -> dict[str, dict[str, str | None]]:
+    cats: dict[str, dict[str, str | None]] = {}
+    order: list[str] = []
 
     for c in data.get("categories", []):
         cid = c["id"]
@@ -194,7 +194,7 @@ def _build_categories(data: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
     return cats
 
 
-def _resolve_cat(event: Dict[str, Any], group_cat: Optional[str], cats: Dict[str, Any]) -> str:
+def _resolve_cat(event: dict[str, Any], group_cat: str | None, cats: dict[str, Any]) -> str:
     cat = event.get("category") or group_cat or _DEFAULT_CAT
     return cat if cat in cats else _DEFAULT_CAT
 
@@ -203,7 +203,7 @@ def _resolve_cat(event: Dict[str, Any], group_cat: Optional[str], cats: Dict[str
 # Public API
 # --------------------------------------------------------------------------- #
 def load_events(path: str) -> Any:
-    with open(path, "r", encoding="utf-8") as fh:
+    with open(path, encoding="utf-8") as fh:
         return json.load(fh)
 
 
@@ -212,7 +212,7 @@ def count_events(data: Any) -> int:
     return sum(len(g.get("events", [])) for tab in data["tabs"] for g in tab.get("groups", []))
 
 
-def render_timeline(data: Any, title: Optional[str] = None) -> str:
+def render_timeline(data: Any, title: str | None = None) -> str:
     data = _normalize(data)
     cats = _build_categories(data)
 
@@ -233,10 +233,9 @@ def render_timeline(data: Any, title: Optional[str] = None) -> str:
         for i, (pane_id, label) in enumerate(tab_meta):
             cls = "tab-btn active" if i == 0 else "tab-btn"
             buttons.append(
-                '<button class="%s" data-tab="%s" onclick="switchTab(\'%s\',this)">%s</button>'
-                % (cls, pane_id, pane_id, E(label))
+                f'<button class="{cls}" data-tab="{pane_id}" onclick="switchTab(\'{pane_id}\',this)">{E(label)}</button>'
             )
-        tab_bar = '<div class="tab-bar"><div class="tab-btn-group">%s</div></div>' % "".join(buttons)
+        tab_bar = '<div class="tab-bar"><div class="tab-btn-group">{}</div></div>'.format("".join(buttons))
 
     html = _PAGE
     html = html.replace("__TITLE__", E(page_title))
@@ -253,12 +252,12 @@ def render_timeline(data: Any, title: Optional[str] = None) -> str:
     return html
 
 
-def build_timeline(events_path: str, output_path: str, title: Optional[str] = None) -> int:
+def build_timeline(events_path: str, output_path: str, title: str | None = None) -> int:
     data = load_events(events_path)
     return write_timeline(data, output_path, title=title)
 
 
-def write_timeline(data: Any, output_path: str, title: Optional[str] = None) -> int:
+def write_timeline(data: Any, output_path: str, title: str | None = None) -> int:
     """Render an already-built data dict to ``output_path``; return event count."""
     html = render_timeline(data, title=title)
     with open(output_path, "w", encoding="utf-8") as fh:
@@ -269,17 +268,17 @@ def write_timeline(data: Any, output_path: str, title: Optional[str] = None) -> 
 # --------------------------------------------------------------------------- #
 # Rendering
 # --------------------------------------------------------------------------- #
-def _render_tab(tab: Dict[str, Any], cats: Dict[str, Any], idx: int, active: bool) -> Tuple[str, str, str]:
+def _render_tab(tab: dict[str, Any], cats: dict[str, Any], idx: int, active: bool) -> tuple[str, str, str]:
     tab_id = tab.get("id") or ("tab%d" % idx)
-    pane_id = "tab-%s" % tab_id
+    pane_id = f"tab-{tab_id}"
     label = tab.get("label", tab.get("heading", "Tab %d" % (idx + 1)))
 
     # First pass: assign stable ids, collect axis dots + which categories appear.
-    axis: List[Dict[str, Any]] = []
-    used_cats: List[str] = []
+    axis: list[dict[str, Any]] = []
+    used_cats: list[str] = []
     counter = 0
-    all_events: List[Dict[str, Any]] = []
-    records: List[Dict[str, Any]] = []
+    all_events: list[dict[str, Any]] = []
+    records: list[dict[str, Any]] = []
     for group in tab.get("groups", []):
         gcat = group.get("category")
         for ev in group.get("events", []):
@@ -316,12 +315,11 @@ def _render_tab(tab: Dict[str, Any], cats: Dict[str, Any], idx: int, active: boo
     filtered_panel = _filtered_panel() if tab.get("filters") else ""
 
     pane = (
-        '<div id="%s" class="tab-pane%s">'
-        '<div class="pane-header"><h2>%s</h2><p>%s</p></div>'
-        "%s%s%s"
-        '<div class="detail-wrap"><div class="detail-title">Detail · click any card to expand</div>%s</div>'
-        "</div>"
-        % (
+        '<div id="{}" class="tab-pane{}">'
+        '<div class="pane-header"><h2>{}</h2><p>{}</p></div>'
+        "{}{}{}"
+        '<div class="detail-wrap"><div class="detail-title">Detail · click any card to expand</div>{}</div>'
+        "</div>".format(
             pane_id,
             " active" if active else "",
             E(tab.get("heading", label)),
@@ -335,16 +333,16 @@ def _render_tab(tab: Dict[str, Any], cats: Dict[str, Any], idx: int, active: boo
     return pane_id, pane, label
 
 
-def _tab_stats(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+def _tab_stats(records: list[dict[str, Any]]) -> dict[str, Any]:
     """Aggregate full-tab stats: total, date span, category counts, key count."""
     total = len(records)
     dates = [d for d in (_parse_date(r["date"]) for r in records) if d]
     span = ""
     if dates:
         lo, hi = min(dates), max(dates)
-        span = _fmt_long(lo) if lo == hi else "%s – %s" % (_fmt_long(lo), _fmt_long(hi))
-    counts: Dict[str, int] = {}
-    order: List[str] = []
+        span = _fmt_long(lo) if lo == hi else f"{_fmt_long(lo)} – {_fmt_long(hi)}"
+    counts: dict[str, int] = {}
+    order: list[str] = []
     for r in records:
         label = r["label"]
         if label not in counts:
@@ -356,7 +354,7 @@ def _tab_stats(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         key=lambda r: (0, _parse_date(r["date"]).toordinal()) if _parse_date(r["date"]) else (1, 0),
     )
     key_titles = [r["title"] for r in key_recs if r["title"]]
-    busiest = max(order, key=lambda l: counts[l]) if order else ""
+    busiest = max(order, key=lambda lbl: counts[lbl]) if order else ""
     return {
         "total": total,
         "span": span,
@@ -369,22 +367,22 @@ def _tab_stats(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def _stats_chips(s: Dict[str, Any]) -> str:
+def _stats_chips(s: dict[str, Any]) -> str:
     chips = ['<span class="stat"><b>%d</b> events</span>' % s["total"]]
     if s["span"]:
-        chips.append('<span class="stat">%s</span>' % E(s["span"]))
+        chips.append('<span class="stat">{}</span>'.format(E(s["span"])))
     chips.append('<span class="stat"><b>%d</b> categories</span>' % s["ncats"])
     chips.append('<span class="stat"><b>%d</b> key</span>' % s["key"])
-    return '<div class="stats-row">%s</div>' % "".join(chips)
+    return '<div class="stats-row">{}</div>'.format("".join(chips))
 
 
-def _overview_paragraph(s: Dict[str, Any]) -> str:
+def _overview_paragraph(s: dict[str, Any]) -> str:
     """A descriptive fallback overview when a tab has no authored ``summary``."""
     if not s["total"]:
         return "No events in this view."
     parts = ["This timeline tracks %d event%s" % (s["total"], "" if s["total"] == 1 else "s")]
     if s["span"]:
-        parts.append(" spanning %s" % s["span"])
+        parts.append(" spanning {}".format(s["span"]))
     parts.append(".")
     if s["ncats"] > 1 and s["busiest"]:
         breakdown = ", ".join("%s (%d)" % (label, s["counts"][label]) for label in s["order"])
@@ -392,15 +390,15 @@ def _overview_paragraph(s: Dict[str, Any]) -> str:
                      % (s["ncats"], breakdown, s["busiest"]))
     if s["key_titles"]:
         shown = s["key_titles"][:4]
-        names = "; ".join('“%s”' % t for t in shown)
+        names = "; ".join(f'“{t}”' for t in shown)
         more = " and %d more" % (len(s["key_titles"]) - len(shown)) if len(s["key_titles"]) > len(shown) else ""
-        parts.append(" Key milestones: %s%s." % (names, more))
+        parts.append(f" Key milestones: {names}{more}.")
     elif s["key"]:
         parts.append(" %d event%s flagged as key." % (s["key"], "" if s["key"] == 1 else "s"))
     return "".join(parts)
 
 
-def _summary_top(tab: Dict[str, Any], records: List[Dict[str, Any]]) -> str:
+def _summary_top(tab: dict[str, Any], records: list[dict[str, Any]]) -> str:
     """Static, collapsible Summary panel at the top of a tab.
 
     A paragraph overview (authored ``tab['summary']`` if present, else generated)
@@ -411,8 +409,8 @@ def _summary_top(tab: Dict[str, Any], records: List[Dict[str, Any]]) -> str:
     return (
         '<details class="summary-panel" open>'
         '<summary><span class="summary-title">Summary</span></summary>'
-        '<p class="summary-text">%s</p>%s'
-        "</details>" % (E(str(paragraph)), _stats_chips(s))
+        f'<p class="summary-text">{E(str(paragraph))}</p>{_stats_chips(s)}'
+        "</details>"
     )
 
 
@@ -437,17 +435,15 @@ def _render_overview(tab_id, tab, axis, used_cats, cats, all_events) -> str:
     rng = _range_str(all_events)
     hint = '<span class="hint">Hover dots · click to jump</span>' if svg else "<span></span>"
     axis_block = (
-        '<div class="axis-wrap" id="axisWrap-%s">%s<div class="tooltip" id="tooltip-%s"></div></div>'
-        % (tab_id, svg, tab_id)
+        f'<div class="axis-wrap" id="axisWrap-{tab_id}">{svg}<div class="tooltip" id="tooltip-{tab_id}"></div></div>'
         if svg
         else ""
     )
     return (
         '<div class="overview-section">'
-        '<div class="overview-title"><span>Overview%s</span>%s</div>'
-        "%s%s%s"
-        "</div>"
-        % (
+        '<div class="overview-title"><span>Overview{}</span>{}</div>'
+        "{}{}{}"
+        "</div>".format(
             (" · " + E(rng)) if rng else "",
             hint,
             axis_block,
@@ -457,7 +453,7 @@ def _render_overview(tab_id, tab, axis, used_cats, cats, all_events) -> str:
     )
 
 
-def _axis_svg(tab_id: str, axis: List[Dict[str, Any]]) -> str:
+def _axis_svg(tab_id: str, axis: list[dict[str, Any]]) -> str:
     if not axis:
         return ""
     axis = sorted(axis, key=lambda a: a["ord"])
@@ -470,23 +466,21 @@ def _axis_svg(tab_id: str, axis: List[Dict[str, Any]]) -> str:
         return 60.0 + 780.0 * (o - lo) / (hi - lo)
 
     parts = ['<svg viewBox="0 0 900 130" xmlns="http://www.w3.org/2000/svg" '
-             'class="axis-svg" id="svg-%s" data-lo="%s" data-hi="%s">'
-             % (tab_id, E(axis[0]["iso"]), E(axis[-1]["iso"]))]
+             'class="axis-svg" id="svg-{}" data-lo="{}" data-hi="{}">'.format(tab_id, E(axis[0]["iso"]), E(axis[-1]["iso"]))]
     parts.append('<line x1="60" x2="840" y1="80" y2="80" stroke="#D1D5DB" stroke-width="1"/>')
 
     for frac in (0.0, 1 / 3, 2 / 3, 1.0):
         o = lo + frac * (hi - lo)
         tx = x(o)
         label = datetime.fromordinal(int(round(o))).strftime("%b %Y")
-        parts.append('<line x1="%.1f" x2="%.1f" y1="77" y2="83" stroke="#9CA3AF"/>' % (tx, tx))
-        parts.append('<text x="%.1f" y="96" text-anchor="middle" font-size="10" fill="#6B7280">%s</text>'
-                     % (tx, label))
+        parts.append(f'<line x1="{tx:.1f}" x2="{tx:.1f}" y1="77" y2="83" stroke="#9CA3AF"/>')
+        parts.append(f'<text x="{tx:.1f}" y="96" text-anchor="middle" font-size="10" fill="#6B7280">{label}</text>')
 
     for i, a in enumerate(axis):
         tx = x(a["ord"])
         ty = _Y_PATTERN[i % len(_Y_PATTERN)]
         r = {3: 8.5, 2: 7.0}.get(a["key"], 5.5)
-        title = E("%s — %s" % (a["iso"], a["title"]))
+        title = E("{} — {}".format(a["iso"], a["title"]))
         parts.append('<line x1="%.1f" x2="%.1f" y1="%d" y2="80" stroke="#D1D5DB" '
                      'stroke-width="1" opacity="0.5"/>' % (tx, tx, ty))
         parts.append(
@@ -498,36 +492,35 @@ def _axis_svg(tab_id: str, axis: List[Dict[str, Any]]) -> str:
     return "".join(parts)
 
 
-def _legend(used_cats: List[str], cats: Dict[str, Any]) -> str:
+def _legend(used_cats: list[str], cats: dict[str, Any]) -> str:
     visible = [c for c in used_cats if c != _DEFAULT_CAT]
     if not visible:
         return ""
     spans = "".join(
-        '<span><span class="dot" style="background:%s"></span>%s</span>'
-        % (cats[c]["color"], E(cats[c]["label"]))
+        '<span><span class="dot" style="background:{}"></span>{}</span>'.format(cats[c]["color"], E(cats[c]["label"]))
         for c in visible
     )
-    return '<div class="legend">%s<span class="key-tag">★★ = key event</span></div>' % spans
+    return f'<div class="legend">{spans}<span class="key-tag">★★ = key event</span></div>'
 
 
-def _filters(tab_id: str, used_cats: List[str], cats: Dict[str, Any], include_categories: bool = True) -> str:
+def _filters(tab_id: str, used_cats: list[str], cats: dict[str, Any], include_categories: bool = True) -> str:
     cat_html = ""
     if include_categories:
         visible = [c for c in used_cats if c != _DEFAULT_CAT]
         cat_btns = ['<button data-cat-filter="all" class="active">All</button>']
         for c in visible:
-            cat_btns.append('<button data-cat-filter="%s">%s</button>' % (E(c), E(cats[c]["label"])))
-        cat_html = "<label>Filter</label>%s<span class=\"sep\"></span>" % "".join(cat_btns)
+            cat_btns.append('<button data-cat-filter="{}">{}</button>'.format(E(c), E(cats[c]["label"])))
+        cat_html = "<label>Filter</label>{}<span class=\"sep\"></span>".format("".join(cat_btns))
     return (
-        '<div class="filters" id="filters-%s">'
-        "%s"
+        f'<div class="filters" id="filters-{tab_id}">'
+        f"{cat_html}"
         '<button data-key-filter="all" class="active">All events</button>'
         '<button data-key-filter="key">Key events ★★+</button>'
-        "</div>" % (tab_id, cat_html)
+        "</div>"
     )
 
 
-def _render_group(group: Dict[str, Any], tab_id: str, cats: Dict[str, Any]) -> str:
+def _render_group(group: dict[str, Any], tab_id: str, cats: dict[str, Any]) -> str:
     gcat = group.get("category")
     color = cats[gcat]["color"] if gcat in cats else cats[_DEFAULT_CAT]["color"]
     events = group.get("events", [])
@@ -539,7 +532,7 @@ def _render_group(group: Dict[str, Any], tab_id: str, cats: Dict[str, Any]) -> s
         % (
             color,
             E(group.get("label", "")),
-            ('<span class="grp-range">%s</span>' % E(rng)) if rng else "",
+            (f'<span class="grp-range">{E(rng)}</span>') if rng else "",
             len(events),
             "" if len(events) == 1 else "s",
         )
@@ -553,24 +546,22 @@ def _render_group(group: Dict[str, Any], tab_id: str, cats: Dict[str, Any]) -> s
         else:
             prange = _range_str(phase_events)
             body_parts.append(
-                '<div class="phase"><div class="phase-header"><h3>%s</h3>%s</div>%s</div>'
-                % (
+                '<div class="phase"><div class="phase-header"><h3>{}</h3>{}</div>{}</div>'.format(
                     E(phase_label),
-                    ('<span class="phase-range">%s</span>' % E(prange)) if prange else "",
+                    (f'<span class="phase-range">{E(prange)}</span>') if prange else "",
                     cards,
                 )
             )
 
     gid = _slug(str(group.get("id") or group.get("label", "")))
-    return ('<section class="group-section" id="grp-%s-%s" data-group-label="%s">%s%s</section>'
-            % (tab_id, gid, E(group.get("label", "")), header, "".join(body_parts)))
+    return ('<section class="group-section" id="grp-{}-{}" data-group-label="{}">{}{}</section>'.format(tab_id, gid, E(group.get("label", "")), header, "".join(body_parts)))
 
 
-def _phase_buckets(events: List[Dict[str, Any]]) -> List[Tuple[Optional[str], List[Dict[str, Any]]]]:
+def _phase_buckets(events: list[dict[str, Any]]) -> list[tuple[str | None, list[dict[str, Any]]]]:
     if not any(ev.get("phase") for ev in events):
         return [(None, events)]
-    order: List[str] = []
-    buckets: Dict[str, List[Dict[str, Any]]] = {}
+    order: list[str] = []
+    buckets: dict[str, list[dict[str, Any]]] = {}
     for ev in events:
         p = ev.get("phase") or ""
         buckets.setdefault(p, [])
@@ -580,7 +571,7 @@ def _phase_buckets(events: List[Dict[str, Any]]) -> List[Tuple[Optional[str], Li
     return [(p or None, buckets[p]) for p in order]
 
 
-def _sorted_by_date(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def _sorted_by_date(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
     def key(ev):
         d = _parse_date(str(ev.get("date", "")))
         return (0, d.toordinal()) if d else (1, 0)
@@ -588,14 +579,14 @@ def _sorted_by_date(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return sorted(events, key=key)
 
 
-def _card(ev: Dict[str, Any], group_cat: Optional[str], cats: Dict[str, Any]) -> str:
+def _card(ev: dict[str, Any], group_cat: str | None, cats: dict[str, Any]) -> str:
     cat = _resolve_cat(ev, group_cat, cats)
     color = cats[cat]["color"]
     key = int(ev.get("importance") or 0)
     badge = ev.get("badge") or cats[cat]["label"]
     ydate, ytime = _fmt_short(str(ev.get("date", "")))
     parties = ev.get("parties", "")
-    parties_html = '<div class="event-parties">%s</div>' % E(parties) if parties else ""
+    parties_html = f'<div class="event-parties">{E(parties)}</div>' if parties else ""
 
     return (
         '<div class="event" id="%s" data-cat="%s" data-cat-label="%s" data-key="%d" data-date="%s">'
@@ -629,7 +620,7 @@ def _card(ev: Dict[str, Any], group_cat: Optional[str], cats: Dict[str, Any]) ->
     )
 
 
-def _source_row(ev: Dict[str, Any]) -> str:
+def _source_row(ev: dict[str, Any]) -> str:
     """Provenance row: a link to the source (email/doc) and/or who added it."""
     src = ev.get("source")
     if not isinstance(src, dict):
@@ -637,42 +628,41 @@ def _source_row(ev: Dict[str, Any]) -> str:
     typ = src.get("type", "ref")
     href = src.get("href")
     label = src.get("label")
-    parts: List[str] = []
+    parts: list[str] = []
     if href:
         icon = "📧" if typ == "email" else "🔗"
         text = label or ("Open email" if typ == "email" else "Open source")
-        parts.append('<a class="src-link" href="%s" target="_blank" rel="noopener">%s %s</a>'
-                     % (E(str(href)), icon, E(text)))
+        parts.append(f'<a class="src-link" href="{E(str(href))}" target="_blank" rel="noopener">{icon} {E(text)}</a>')
     elif label:
-        parts.append('<span class="src-link src-static">%s</span>' % E(label))
+        parts.append(f'<span class="src-link src-static">{E(label)}</span>')
     if typ == "manual" or src.get("by") or src.get("at"):
-        meta = "✎ Added by %s" % E(str(src.get("by") or "someone"))
+        meta = "✎ Added by {}".format(E(str(src.get("by") or "someone")))
         if src.get("at"):
-            meta += " · %s" % E(str(src.get("at")))
-        parts.append('<span class="src-meta">%s</span>' % meta)
+            meta += " · {}".format(E(str(src.get("at"))))
+        parts.append(f'<span class="src-meta">{meta}</span>')
     if not parts:
         return ""
-    return '<div class="event-source">%s</div>' % "".join(parts)
+    return '<div class="event-source">{}</div>'.format("".join(parts))
 
 
-def _details(ev: Dict[str, Any]) -> str:
-    parts: List[str] = []
+def _details(ev: dict[str, Any]) -> str:
+    parts: list[str] = []
     quote = ev.get("quote")
     if quote:
-        parts.append('<div class="quote">%s</div>' % E(str(quote)))
+        parts.append(f'<div class="quote">{E(str(quote))}</div>')
 
     attachments = ev.get("attachments") or []
     if attachments:
         chips = "".join(_att_chip(a) for a in attachments)
-        parts.append('<span class="label">Attachments</span>%s' % chips)
+        parts.append(f'<span class="label">Attachments</span>{chips}')
 
     significance = ev.get("significance")
     if significance:
-        parts.append('<div class="significance">%s</div>' % E(str(significance)))
+        parts.append(f'<div class="significance">{E(str(significance))}</div>')
 
     if not parts:
         return ""
-    return '<details class="event-extra"><summary>show details</summary>%s</details>' % "".join(parts)
+    return '<details class="event-extra"><summary>show details</summary>{}</details>'.format("".join(parts))
 
 
 def _att_chip(att: Any) -> str:
@@ -682,9 +672,8 @@ def _att_chip(att: Any) -> str:
     else:
         name, href = str(att), None
     if href:
-        return ('<a class="file-chip" href="%s" target="_blank" rel="noopener">%s</a>'
-                % (E(str(href)), E(name)))
-    return '<span class="file-chip">%s</span>' % E(name)
+        return (f'<a class="file-chip" href="{E(str(href))}" target="_blank" rel="noopener">{E(name)}</a>')
+    return f'<span class="file-chip">{E(name)}</span>'
 
 
 # --------------------------------------------------------------------------- #

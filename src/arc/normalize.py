@@ -22,7 +22,6 @@ conservative: a body with none of these markers comes back unchanged.
 from __future__ import annotations
 
 import re
-from typing import List, Optional
 
 # An attribution line opening a quoted reply, e.g.
 #   On Mon, Nov 24, 2025 at 3:30 PM Raj Patel <raj@x> wrote:
@@ -42,7 +41,7 @@ _SEPARATOR_RE = re.compile(
 _SIG_RE = re.compile(r"^--[ \t]?$")
 
 
-def _attribution_index(lines: List[str]) -> Optional[int]:
+def _attribution_index(lines: list[str]) -> int | None:
     """Index of the line that opens a quoted-reply attribution, if any.
 
     Handles the common case where the attribution wraps across up to three
@@ -53,7 +52,7 @@ def _attribution_index(lines: List[str]) -> Optional[int]:
     """
     for i, line in enumerate(lines):
         if _ATTRIB_START_RE.match(line.strip()):
-            window = " ".join(l.strip() for l in lines[i : i + 3])
+            window = " ".join(ln.strip() for ln in lines[i : i + 3])
             if _WROTE_RE.search(window) or "wrote:" in window.lower():
                 return i
     return None
@@ -74,7 +73,7 @@ def strip_quoted(body: str) -> str:
 
     kept = lines[:cut]
     # Drop any stray standalone quoted lines that appear before the cut, too.
-    kept = [l for l in kept if not l.lstrip().startswith(">")]
+    kept = [ln for ln in kept if not ln.lstrip().startswith(">")]
     return "\n".join(kept).strip()
 
 

@@ -19,8 +19,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from arc import store  # noqa: E402
-from arc.dedup import dedup_directory  # noqa: E402
 from arc.bridge import timeline_data_from_messages  # noqa: E402
+from arc.dedup import dedup_directory  # noqa: E402
 from arc.timeline import render_timeline  # noqa: E402
 
 EXAMPLES = os.path.join(ROOT, "examples", "threads")

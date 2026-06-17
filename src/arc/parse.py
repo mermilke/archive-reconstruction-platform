@@ -21,7 +21,6 @@ import glob
 import os
 import re
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
 
 # Input formats the toolkit can read from a folder.
 SUPPORTED_EXTS = (".txt", ".eml", ".mbox")
@@ -49,14 +48,14 @@ class Message:
     timestamp: str = ""
     recipient: str = ""
     subject: str = ""
-    attachments: List[str] = field(default_factory=list)
+    attachments: list[str] = field(default_factory=list)
     body: str = ""
     message_id: str = ""
     in_reply_to: str = ""
-    references: List[str] = field(default_factory=list)
+    references: list[str] = field(default_factory=list)
 
 
-def parse_thread(text: str) -> List[Message]:
+def parse_thread(text: str) -> list[Message]:
     """Parse the full text of one export file into a list of messages.
 
     Messages are returned in the order they appear (newest-first for the
@@ -66,7 +65,7 @@ def parse_thread(text: str) -> List[Message]:
     """
     lines = text.splitlines()
 
-    starts: List[int] = []
+    starts: list[int] = []
     for i, line in enumerate(lines):
         m = _HEADER_RE.match(line)
         if m and m.group(1).lower() == "from":
@@ -77,7 +76,7 @@ def parse_thread(text: str) -> List[Message]:
         return []
 
     starts.append(len(lines))
-    messages: List[Message] = []
+    messages: list[Message] = []
     for start, end in zip(starts, starts[1:]):
         msg = _parse_block(lines[start:end])
         if msg is not None:
@@ -85,13 +84,13 @@ def parse_thread(text: str) -> List[Message]:
     return messages
 
 
-def parse_file(path: str) -> List[Message]:
+def parse_file(path: str) -> list[Message]:
     """Read a stacked thread-export ``.txt`` file and parse it into messages."""
-    with open(path, "r", encoding="utf-8") as fh:
+    with open(path, encoding="utf-8") as fh:
         return parse_thread(fh.read())
 
 
-def parse_path(path: str) -> List[Message]:
+def parse_path(path: str) -> list[Message]:
     """Parse a file into messages, dispatching by extension.
 
     ``.eml`` and ``.mbox`` are read with the stdlib email/mailbox modules (one or
@@ -111,25 +110,35 @@ def parse_path(path: str) -> List[Message]:
     return parse_file(path)
 
 
-def find_message_files(directory: str, recursive: bool = False, pattern: Optional[str] = None) -> List[str]:
+def find_message_files(
+    directory: str, recursive: bool = False, pattern: str | None = None
+) -> list[str]:
     """List readable message files under ``directory``.
 
     With no ``pattern``, gathers every supported extension (``.txt``/``.eml``/
     ``.mbox``); with a ``pattern`` (e.g. ``*.eml``), uses just that glob.
     """
     if pattern:
-        root = os.path.join(directory, "**", pattern) if recursive else os.path.join(directory, pattern)
+        root = (
+            os.path.join(directory, "**", pattern)
+            if recursive
+            else os.path.join(directory, pattern)
+        )
         return sorted(glob.glob(root, recursive=recursive))
-    found: List[str] = []
+    found: list[str] = []
     for ext in SUPPORTED_EXTS:
-        root = os.path.join(directory, "**", "*" + ext) if recursive else os.path.join(directory, "*" + ext)
+        root = (
+            os.path.join(directory, "**", "*" + ext)
+            if recursive
+            else os.path.join(directory, "*" + ext)
+        )
         found.extend(glob.glob(root, recursive=recursive))
     return sorted(set(found))
 
 
 def collect_directory_messages(
-    directory: str, recursive: bool = False, pattern: Optional[str] = None
-) -> List[Tuple[str, List["Message"]]]:
+    directory: str, recursive: bool = False, pattern: str | None = None
+) -> list[tuple[str, list[Message]]]:
     """Return ``[(path, messages)]`` for every readable input under ``directory``.
 
     This is the one place that decides what counts as an input, so dedup, the web
@@ -141,7 +150,7 @@ def collect_directory_messages(
     ``pattern`` the matched files are returned as-is (no PDF auto-scan).
     """
     paths = find_message_files(directory, recursive=recursive, pattern=pattern)
-    out: List[Tuple[str, List["Message"]]] = []
+    out: list[tuple[str, list[Message]]] = []
     attachment_names = set()
     for p in paths:
         msgs = parse_path(p)
@@ -152,7 +161,11 @@ def collect_directory_messages(
 
     if not pattern:
         seen = {os.path.basename(p) for p in paths}
-        root = os.path.join(directory, "**", "*.pdf") if recursive else os.path.join(directory, "*.pdf")
+        root = (
+            os.path.join(directory, "**", "*.pdf")
+            if recursive
+            else os.path.join(directory, "*.pdf")
+        )
         for pp in sorted(glob.glob(root, recursive=recursive)):
             base = os.path.basename(pp)
             if base in seen or base.strip().lower() in attachment_names:
@@ -164,7 +177,7 @@ def collect_directory_messages(
     return out
 
 
-def _parse_block(block: List[str]) -> Optional[Message]:
+def _parse_block(block: list[str]) -> Message | None:
     """Parse one message block: header lines, then the body.
 
     Well-formed blocks separate the two with a blank line. Real exports are not
@@ -176,7 +189,7 @@ def _parse_block(block: List[str]) -> Optional[Message]:
     """
     headers = {}
     body_start = len(block)
-    last_key: Optional[str] = None
+    last_key: str | None = None
     for i, line in enumerate(block):
         if line.strip() == "":
             body_start = i + 1
@@ -213,7 +226,7 @@ def _parse_block(block: List[str]) -> Optional[Message]:
     )
 
 
-def _split_attachments(raw: str) -> List[str]:
+def _split_attachments(raw: str) -> list[str]:
     """Split an ``Attachments:`` header value into individual names."""
     if not raw.strip():
         return []
@@ -221,7 +234,7 @@ def _split_attachments(raw: str) -> List[str]:
     return [p.strip() for p in parts if p.strip()]
 
 
-def _split_references(raw: str) -> List[str]:
+def _split_references(raw: str) -> list[str]:
     """Split a ``References:`` value into individual message-id tokens.
 
     The value is a whitespace-separated list of ``<id@host>`` tokens. We keep

@@ -47,17 +47,16 @@ def test_roles_match_keep_and_delete():
     by_name = {r.name: r for r in result.reports}
 
     for name in by_name:  # guard against typos / unclassified files
-        assert _role(name) in KEEP_ROLES | SUBSET_ROLES, "unclassified file: %s" % name
+        assert _role(name) in KEEP_ROLES | SUBSET_ROLES, f"unclassified file: {name}"
 
     kept = set(result.keep)
     for name, report in by_name.items():
         if _role(name) in KEEP_ROLES:
-            assert name in kept, "%s is a branch but was flagged redundant" % name
+            assert name in kept, f"{name} is a branch but was flagged redundant"
         else:
-            assert report.redundant, "%s is a subset but was kept" % name
+            assert report.redundant, f"{name} is a subset but was kept"
             assert kept & set(report.superseded_by), (
-                "%s should be superseded by a kept branch; got %s"
-                % (name, report.superseded_by)
+                f"{name} should be superseded by a kept branch; got {report.superseded_by}"
             )
 
 
@@ -76,14 +75,14 @@ def test_attachment_files_stay_attachments_but_saved_pdf_emails_are_read():
     scanned = set(_reports())
     # .csv/.png are only ever attachments — never scanned as input.
     assert not any(n.endswith((".csv", ".png")) for n in scanned), \
-        "a binary attachment was scanned as input: %s" % sorted(scanned)
+        f"a binary attachment was scanned as input: {sorted(scanned)}"
     # A .pdf named as another message's attachment stays an attachment...
     for att_pdf in ("c01_perception_eval.pdf", "c03_runbook_v3.pdf", "spec_v1.pdf"):
-        assert att_pdf not in scanned, "attachment PDF scanned as input: %s" % att_pdf
+        assert att_pdf not in scanned, f"attachment PDF scanned as input: {att_pdf}"
     # ...but an email saved/printed to PDF is read and deduped.
     for saved_pdf in ("c15_pdfsaved_open.pdf", "c15_pdfsaved_early.pdf",
                       "c16_pdfonly_full.pdf"):
-        assert saved_pdf in scanned, "saved-to-PDF email was not read: %s" % saved_pdf
+        assert saved_pdf in scanned, f"saved-to-PDF email was not read: {saved_pdf}"
 
 
 def test_eml_can_be_a_subset_of_a_txt_thread():
@@ -101,7 +100,7 @@ def test_three_way_branch_keeps_every_fork():
     r = _reports()
     for branch in ("c11_threeway_brancha.txt", "c11_threeway_branchb.mbox",
                    "c11_threeway_branchc.txt"):
-        assert not r[branch].redundant, "%s must be kept" % branch
+        assert not r[branch].redundant, f"{branch} must be kept"
     # The opener, exported alone, is a subset of all three branches.
     assert r["c11_threeway_open.eml"].redundant
     assert "c11_threeway_brancha.txt" in r["c11_threeway_open.eml"].superseded_by
@@ -113,9 +112,9 @@ def test_normalization_collapses_requoted_signed_and_html_reexports():
     r = _reports()
     for variant in ("c12_normalize_quoted.eml", "c12_normalize_sig.eml",
                     "c12_normalize_html.eml"):
-        assert r[variant].redundant, "%s should normalize to a subset" % variant
+        assert r[variant].redundant, f"{variant} should normalize to a subset"
         assert "c12_normalize_full.txt" in r[variant].superseded_by, (
-            "%s should be superseded by the plain thread" % variant)
+            f"{variant} should be superseded by the plain thread")
 
 
 def test_attachment_branching_keeps_both_attachment_sets():
@@ -157,9 +156,9 @@ def test_saved_to_pdf_email_is_a_cross_format_subset_of_a_txt_thread():
     recognized as a subset of the .txt thread that contains those messages."""
     r = _reports()
     for excerpt in ("c15_pdfsaved_open.pdf", "c15_pdfsaved_early.pdf"):
-        assert r[excerpt].redundant, "%s should be read and flagged redundant" % excerpt
+        assert r[excerpt].redundant, f"{excerpt} should be read and flagged redundant"
         assert "c15_pdfsaved_full.txt" in r[excerpt].superseded_by, (
-            "%s should be superseded by the .txt thread" % excerpt)
+            f"{excerpt} should be superseded by the .txt thread")
 
 
 def test_pdf_only_conversation_is_read_and_kept_as_a_branch():

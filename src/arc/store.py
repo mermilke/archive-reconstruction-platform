@@ -28,7 +28,6 @@ import os
 import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import List, Optional, Tuple
 
 from .bridge import _ts_key
 from .dedup import DedupResult, analyze, attachment_key, message_key
@@ -85,7 +84,7 @@ def connect(db_path: str) -> sqlite3.Connection:
     return conn
 
 
-def add_files(conn: sqlite3.Connection, paths: List[str], now: Optional[str] = None) -> AddResult:
+def add_files(conn: sqlite3.Connection, paths: list[str], now: str | None = None) -> AddResult:
     """Ingest each file's messages and attachments into the store (accumulating)."""
     stamp = now or _now()
     res = AddResult()
@@ -126,8 +125,9 @@ def add_files(conn: sqlite3.Connection, paths: List[str], now: Optional[str] = N
                 # Keep the earliest-timestamped occurrence as the representative.
                 if _ts_key(msg.timestamp) < _ts_key(existing[0]):
                     conn.execute(
-                        "UPDATE messages SET sender=?, timestamp=?, recipient=?, subject=?, body=?, "
-                        "in_reply_to=?, references_json=?, attachments_json=? WHERE identity=?",
+                        "UPDATE messages SET sender=?, timestamp=?, recipient=?, subject=?, "
+                        "body=?, in_reply_to=?, references_json=?, attachments_json=? "
+                        "WHERE identity=?",
                         (msg.sender, msg.timestamp, msg.recipient, msg.subject, msg.body,
                          msg.in_reply_to, json.dumps(msg.references),
                          json.dumps(msg.attachments), ident),
@@ -154,20 +154,20 @@ def add_files(conn: sqlite3.Connection, paths: List[str], now: Optional[str] = N
     return res
 
 
-def add_directory(conn: sqlite3.Connection, directory: str, pattern: Optional[str] = None,
-                  recursive: bool = False, now: Optional[str] = None) -> AddResult:
+def add_directory(conn: sqlite3.Connection, directory: str, pattern: str | None = None,
+                  recursive: bool = False, now: str | None = None) -> AddResult:
     """Ingest every supported file under ``directory`` into the store."""
     paths = find_message_files(directory, recursive=recursive, pattern=pattern)
     return add_files(conn, paths, now=now)
 
 
-def _file_keysets(conn: sqlite3.Connection) -> List[Tuple[str, set]]:
+def _file_keysets(conn: sqlite3.Connection) -> list[tuple[str, set]]:
     """Reconstruct each stored file's content key-set for the dedup analysis.
 
     Names are disambiguated when two stored paths share a basename, so
     :func:`arc.dedup.analyze` (which keys on the name) stays correct.
     """
-    out: List[Tuple[str, set]] = []
+    out: list[tuple[str, set]] = []
     seen_names: dict = {}
     for file_id, basename in conn.execute("SELECT id, basename FROM files ORDER BY id"):
         name = basename
@@ -193,13 +193,13 @@ def dedup(conn: sqlite3.Connection) -> DedupResult:
     return analyze(_file_keysets(conn))
 
 
-def load_messages(conn: sqlite3.Connection) -> List[Tuple[Message, str]]:
+def load_messages(conn: sqlite3.Connection) -> list[tuple[Message, str]]:
     """Every unique stored message as ``(Message, source_path)``, earliest first.
 
     The source path is the earliest-ingested file that contained the message, so
     timeline cards link back to where it was first seen.
     """
-    items: List[Tuple[Message, str]] = []
+    items: list[tuple[Message, str]] = []
     for row in conn.execute(
         "SELECT identity, sender, timestamp, recipient, subject, body, message_id, "
         "in_reply_to, references_json, attachments_json FROM messages"

@@ -31,7 +31,7 @@ def _email_pdf(lines, compress=False):
         if i:
             ops.append("0 -14 Td")
         esc = ln.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
-        ops.append("(%s) Tj" % esc)
+        ops.append(f"({esc}) Tj")
     ops.append("ET")
     content = " ".join(ops).encode("latin-1")
     raw, filt = content, ""
@@ -79,7 +79,7 @@ def test_stdlib_extracts_uncompressed_and_flate():
     for compress in (False, True):
         text = pdf_in.extract_text(_email_pdf(EMAIL_A, compress=compress))
         assert "perception rc3 is signed off" in text, \
-            "compress=%s extraction failed: %r" % (compress, text)
+            f"compress={compress} extraction failed: {text!r}"
         assert "From: Raj Patel" in text
 
 
@@ -104,7 +104,7 @@ def test_two_pdf_copies_of_one_email_dedup():
         fh.write(_email_pdf(EMAIL_B))                 # a different email
     result = dedup_directory(tmp)
     assert len(result.reports) == 3
-    assert len(result.keep) == 2, "expected the two copies to collapse: %s" % result.keep
+    assert len(result.keep) == 2, f"expected the two copies to collapse: {result.keep}"
     assert len(result.delete) == 1
 
 
@@ -121,7 +121,7 @@ def test_attachment_named_pdf_is_not_scanned_as_input():
     with open(os.path.join(tmp, "runbook.pdf"), "wb") as fh:
         fh.write(_email_pdf(["Runbook contents here, unrelated text."]))
     scanned = {r.name for r in dedup_directory(tmp).reports}
-    assert "runbook.pdf" not in scanned, "attachment PDF was scanned as input: %s" % scanned
+    assert "runbook.pdf" not in scanned, f"attachment PDF was scanned as input: {scanned}"
     assert "thread.txt" in scanned
 
 
@@ -152,8 +152,8 @@ def test_example_pdf_emails_folder():
         return  # generated on demand; skip if not present
     result = dedup_directory(folder)
     assert len(result.reports) == 8, "expected 8 files scanned, got %d" % len(result.reports)
-    assert len(result.keep) == 4, "expected 4 kept, got %s" % sorted(result.keep)
-    assert len(result.delete) == 4, "expected 4 redundant, got %s" % sorted(result.delete)
+    assert len(result.keep) == 4, f"expected 4 kept, got {sorted(result.keep)}"
+    assert len(result.delete) == 4, f"expected 4 redundant, got {sorted(result.delete)}"
     by_name = {r.name: r for r in result.reports}
     # Two PDF copies + an .eml of the same email all collapse onto canary_go.pdf.
     assert by_name["canary_go_phone_export.pdf"].redundant

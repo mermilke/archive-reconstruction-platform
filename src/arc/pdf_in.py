@@ -23,7 +23,6 @@ import os
 import re
 import sys
 import zlib
-from typing import List
 
 from .parse import Message, parse_thread
 
@@ -34,7 +33,7 @@ _MIN_TEXT = 16
 # One-time hint so a run over many hard PDFs doesn't spam the terminal.
 _hint_shown = False
 #: Notes accumulated this process (also surfaced on stderr) — handy for tests.
-NOTES: List[str] = []
+NOTES: list[str] = []
 
 
 def have_pypdf():
@@ -80,20 +79,29 @@ def _decode_literal(raw: str) -> str:
         if c == "\\" and i + 1 < n:
             nxt = raw[i + 1]
             if nxt in esc:
-                out.append(esc[nxt]); i += 2; continue
+                out.append(esc[nxt])
+                i += 2
+                continue
             if nxt == "\n":  # line continuation
-                i += 2; continue
+                i += 2
+                continue
             if nxt.isdigit():  # octal char code \ddd
-                j = i + 1; digits = ""
+                j = i + 1
+                digits = ""
                 while j < n and len(digits) < 3 and raw[j].isdigit():
-                    digits += raw[j]; j += 1
+                    digits += raw[j]
+                    j += 1
                 try:
                     out.append(chr(int(digits, 8)))
                 except ValueError:
                     pass
-                i = j; continue
-            out.append(nxt); i += 2; continue
-        out.append(c); i += 1
+                i = j
+                continue
+            out.append(nxt)
+            i += 2
+            continue
+        out.append(c)
+        i += 1
     return "".join(out)
 
 
@@ -103,9 +111,9 @@ def _extract_content_text(buf: bytes) -> str:
     if b"Tj" not in buf and b"TJ" not in buf:
         return ""
     s = buf.decode("latin-1", "replace")
-    lines: List[str] = []
-    line: List[str] = []
-    pending: List[str] = []
+    lines: list[str] = []
+    line: list[str] = []
+    pending: list[str] = []
     i, n = 0, len(s)
 
     def flush_line():
@@ -120,14 +128,17 @@ def _extract_content_text(buf: bytes) -> str:
             while j < n and depth:
                 ch = s[j]
                 if ch == "\\" and j + 1 < n:
-                    body.append(s[j:j + 2]); j += 2; continue
+                    body.append(s[j:j + 2])
+                    j += 2
+                    continue
                 if ch == "(":
                     depth += 1
                 elif ch == ")":
                     depth -= 1
                     if depth == 0:
                         break
-                body.append(ch); j += 1
+                body.append(ch)
+                j += 1
             pending.append(_decode_literal("".join(body)))
             i = j + 1
             continue
@@ -151,16 +162,21 @@ def _extract_content_text(buf: bytes) -> str:
             op = s[i:j]
             i = j
             if op in ("Tj", "TJ"):
-                line.extend(pending); pending.clear()
+                line.extend(pending)
+                pending.clear()
             elif op in ("'", '"'):           # move to next line, then show
-                flush_line(); line.extend(pending); pending.clear()
+                flush_line()
+                line.extend(pending)
+                pending.clear()
             elif op in ("Td", "TD", "T*"):    # new line position
                 if pending:
-                    line.extend(pending); pending.clear()
+                    line.extend(pending)
+                    pending.clear()
                 flush_line()
             elif op == "ET":
                 if pending:
-                    line.extend(pending); pending.clear()
+                    line.extend(pending)
+                    pending.clear()
                 flush_line()
             continue
         i += 1
@@ -184,6 +200,7 @@ def _stdlib_extract(data: bytes) -> str:
 
 def _pypdf_extract(data: bytes) -> str:
     import io
+
     import pypdf
     reader = pypdf.PdfReader(io.BytesIO(data))
     return "\n".join((page.extract_text() or "") for page in reader.pages).strip()
@@ -201,7 +218,7 @@ def extract_text(data: bytes) -> str:
 
 # --- public API ------------------------------------------------------------
 
-def parse_pdf(path: str) -> List[Message]:
+def parse_pdf(path: str) -> list[Message]:
     """Read a PDF into messages.
 
     If the extracted text looks like an exported email thread (it has ``From:``

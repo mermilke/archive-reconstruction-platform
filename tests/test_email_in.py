@@ -11,10 +11,10 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
+from arc.bridge import build_timeline_data  # noqa: E402
 from arc.dedup import content_keys, message_key  # noqa: E402
 from arc.email_in import parse_eml, parse_mbox  # noqa: E402
 from arc.parse import find_message_files, parse_path  # noqa: E402
-from arc.bridge import build_timeline_data  # noqa: E402
 from arc.timeline import render_timeline  # noqa: E402
 
 RAW = os.path.join(ROOT, "examples", "raw_email")

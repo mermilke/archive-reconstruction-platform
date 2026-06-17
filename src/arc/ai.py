@@ -18,7 +18,7 @@ import json
 import os
 import urllib.error
 import urllib.request
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable
 
 API_URL = "https://api.anthropic.com/v1/messages"
 ANTHROPIC_VERSION = "2023-06-01"
@@ -78,7 +78,7 @@ _SCHEMA = {
 }
 
 
-def build_request(emails: List[Dict[str, Any]], model: str = DEFAULT_MODEL) -> Dict[str, Any]:
+def build_request(emails: list[dict[str, Any]], model: str = DEFAULT_MODEL) -> dict[str, Any]:
     """Build the Claude API request body for organizing ``emails``."""
     user = (
         "Here are the emails as a JSON array. Propose categories and assign each "
@@ -94,7 +94,7 @@ def build_request(emails: List[Dict[str, Any]], model: str = DEFAULT_MODEL) -> D
     }
 
 
-def parse_response(data: Dict[str, Any]) -> Dict[str, Any]:
+def parse_response(data: dict[str, Any]) -> dict[str, Any]:
     """Extract and validate the classification JSON from an API response."""
     if data.get("stop_reason") == "max_tokens":
         raise AIError(
@@ -111,20 +111,20 @@ def parse_response(data: Dict[str, Any]) -> Dict[str, Any]:
     try:
         result = json.loads(text)
     except ValueError as ex:
-        raise AIError("The model did not return valid JSON: %s" % ex)
+        raise AIError(f"The model did not return valid JSON: {ex}") from ex
     if not isinstance(result, dict) or "categories" not in result or "assignments" not in result:
         raise AIError("The model's JSON did not have the expected shape.")
     return result
 
 
 def classify_emails(
-    emails: List[Dict[str, Any]],
+    emails: list[dict[str, Any]],
     *,
     model: str = DEFAULT_MODEL,
-    api_key: Optional[str] = None,
+    api_key: str | None = None,
     timeout: int = 180,
-    transport: Optional[Callable[[Dict[str, Any], str, int], Dict[str, Any]]] = None,
-) -> Dict[str, Any]:
+    transport: Callable[[dict[str, Any], str, int], dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     """Ask Claude to organize ``emails`` into categories + per-email assignments.
 
     ``transport`` is the function that actually performs the HTTP POST; it
@@ -144,7 +144,7 @@ def classify_emails(
     return parse_response(data)
 
 
-def _post(body: Dict[str, Any], api_key: str, timeout: int) -> Dict[str, Any]:
+def _post(body: dict[str, Any], api_key: str, timeout: int) -> dict[str, Any]:
     req = urllib.request.Request(
         API_URL,
         data=json.dumps(body).encode("utf-8"),
@@ -160,6 +160,6 @@ def _post(body: Dict[str, Any], api_key: str, timeout: int) -> Dict[str, Any]:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as ex:
         detail = ex.read().decode("utf-8", "replace")
-        raise AIError("Claude API returned HTTP %s: %s" % (ex.code, detail.strip()[:500]))
+        raise AIError(f"Claude API returned HTTP {ex.code}: {detail.strip()[:500]}") from ex
     except urllib.error.URLError as ex:
-        raise AIError("Network error calling the Claude API: %s" % ex.reason)
+        raise AIError(f"Network error calling the Claude API: {ex.reason}") from ex
