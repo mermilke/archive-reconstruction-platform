@@ -60,6 +60,54 @@ are the files to keep; together they hold every message and attachment, and the
 rest are safe to delete." That guarantee is the whole point, and it's what makes
 the deduplication **branch-aware** instead of a size heuristic.
 
+## Engineering highlights
+
+On the synthetic sample corpora, both verifiable from a clean checkout:
+
+- **`examples/archive`** — **77 readable exports → 25 keep / 52 redundant**
+  (`arc dedup examples/archive`; asserted by
+  [`tests/test_archive_example.py`](tests/test_archive_example.py)). A
+  deliberately messy mixed-format pile: `.txt`/`.eml`/`.mbox` plus emails
+  saved-to-PDF, three-way branches, normalization collapses, attachment forks,
+  and timezone-shifted duplicates.
+- **`examples/threads`** — **6 files → keep 2 / delete 4**
+  ([`tests/test_dedup.py`](tests/test_dedup.py)).
+- **Provably lossless threading** — on the reply-header fixtures, thread-tree
+  reconstruction confirms the dedup keep-set covers every message:
+  *“Collapsed 3 files → 2 branches; 5 unique messages, **0 lost**.”*
+  (`arc tree`; [`tests/test_thread.py`](tests/test_thread.py)).
+
+What's underneath:
+
+- **Branch-aware subset dedup.** Each file reduces to a *set of content keys*; a
+  file is redundant **only** when its key-set is a subset of another's. A fork
+  that hides a unique reply or attachment is never collapsed into the largest
+  file — the failure mode of every "keep the biggest" heuristic.
+- **Timestamp-ignoring body fingerprint.** Message identity is *sender + a
+  normalized body fingerprint*, with timestamps deliberately excluded, so the
+  same message re-exported under a different timezone collapses to one instead of
+  looking like two. Quoted replies, forward headers, and `-- ` signatures are
+  stripped before fingerprinting so only the message's own content counts.
+- **Thread-tree reconstruction that *proves* it.** `In-Reply-To` / `References`
+  headers rebuild the reply forest, then a verifier checks the content-key
+  keep-set against that tree and reports a benchmark line (`X→Y files, N lost`) —
+  dedup is provably correct on threaded input, not just heuristic.
+- **Stdlib PDF text extraction.** Emails saved/printed to PDF are read with no
+  third-party dependency: `zlib`-inflate each content stream, then walk the PDF
+  text-showing operators (`Tj`/`TJ`/`'`/`"` with `Td`/`TD`/`T*` line breaks). An
+  unreadable PDF is skipped, never flagged for deletion. An optional `[pdf]`
+  extra (pypdf) handles the hard cases; the core still installs with zero deps.
+- **A JavaScript dedup port pinned to Python by a cross-language parity test.**
+  The in-browser tool runs the same algorithm client-side;
+  [`tests/test_js_parity.py`](tests/test_js_parity.py) shells out to Node and
+  asserts the JS keep/delete verdict matches `arc dedup` byte-for-byte (down to
+  Python/JS `splitlines` and set-subset edge cases).
+- **Zero-dependency core, lint + type-checked.** Standard library only — no
+  network, no services, no external assets in the generated HTML. CI runs the
+  test matrix (Linux + Windows × Python 3.9–3.13) plus `ruff` and `mypy`; the
+  one networked feature (opt-in `arc organize`) and PDF robustness live behind
+  optional extras.
+
 ## Screenshots
 
 Drag in an export folder and the branch-aware **keep / redundant** verdict
