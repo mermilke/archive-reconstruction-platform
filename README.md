@@ -8,18 +8,19 @@
 [![Checked with mypy](https://img.shields.io/badge/mypy-checked-2a6db2.svg)](https://mypy-lang.org/)
 
 > **When a conversation forks, the biggest file isn't always a superset.** A
-> smaller export can hold a reply — or an attachment — the big one never had.
-> Naïvely "keep the largest, delete the rest" silently loses data. This toolkit
-> compares the *content* of each export, not its size, so it only ever flags a
-> file as redundant when every message and attachment it holds lives somewhere
-> else. That branch-aware dedup is the core idea; everything else serves it.
+> smaller export can hold a reply, or an attachment, that the big one never had,
+> so naïvely "keep the largest, delete the rest" silently loses data. This
+> toolkit compares the *content* of each export rather than its size, and only
+> flags a file as redundant when every message and attachment it holds lives
+> somewhere else. That branch-aware dedup is the core idea; everything else
+> serves it.
 
 A small, dependency-free Python toolkit that reconstructs a clean, deduplicated,
-time-ordered view from a pile of **overlapping exported threads** — the mess you
-get after archiving a mailbox or saving conversations one message at a time. The
-engine is **source-agnostic**; its first input adapter is email (`.eml` /
-`.mbox` / `.txt`), and anything else that can be reduced to "messages with
-senders, bodies, and attachments" plugs into the same dedup and timeline core.
+time-ordered view from a pile of overlapping exported threads — the mess you get
+after archiving a mailbox or saving conversations one message at a time. The
+engine is source-agnostic: its first input adapter is email (`.eml` / `.mbox` /
+`.txt`), and anything that reduces to "messages with senders, bodies, and
+attachments" plugs into the same dedup and timeline core.
 
 It does two things:
 
@@ -34,31 +35,31 @@ It does two things:
    interactive HTML timeline grouped into tabs (e.g. by vendor, project, or
    correspondent).
 
-There's a **command line**, a **local drag-drop web UI** (`arc web`), an
-accumulating **SQLite store**, thread-tree reconstruction that *proves* dedup
-loses no message, and an opt-in AI categorizer. Everything runs on the Python
-**standard library** — no network, no services, no external assets in the
-generated HTML, and nothing to `pip install` to use the core.
+There's a command line, a local drag-drop web UI (`arc web`), an accumulating
+SQLite store, thread-tree reconstruction that proves dedup loses no message, and
+an opt-in AI categorizer. Everything runs on the Python standard library: no
+network, no services, no external assets in the generated HTML, and nothing to
+`pip install` to use the core.
 
 > ### ▶ Try it in your browser — no install
 > **[mermilke.github.io/archive-reconstruction-platform/try.html](https://mermilke.github.io/archive-reconstruction-platform/try.html)**
-> — drag in your `.txt` thread exports (or click **Load the sample data**) and
-> see the branch-aware keep/delete verdict instantly. The dedup engine is ported
-> to JavaScript and runs **entirely client-side**, so **your files never leave
-> the page** — nothing is uploaded anywhere. Same algorithm as the CLI, pinned to
-> it by a [parity test](tests/test_js_parity.py).
+> Drag in your `.txt` thread exports (or click "Load the sample data") and see
+> the branch-aware keep/delete verdict instantly. The dedup engine is ported to
+> JavaScript and runs entirely client-side, so your files never leave the page —
+> nothing is uploaded anywhere. It's the same algorithm as the CLI, pinned to it
+> by a [parity test](tests/test_js_parity.py).
 
 ## Why this exists
 
-Archiving a mailbox — or saving a long conversation one message at a time —
-leaves you with a folder of files that *mostly* overlap: the same thread exported
-five times, each copy a little different. Cleaning it up by hand is slow, and the
+Archiving a mailbox, or saving a long conversation one message at a time, leaves
+you with a folder of files that mostly overlap: the same thread exported five
+times, each copy a little different. Cleaning it up by hand is slow, and the
 obvious shortcut ("keep the biggest file, delete the rest") is quietly wrong,
-because a forked conversation can tuck a unique reply — or an attachment — into a
-file that isn't the largest. I wanted a tool that could state, *provably*, "these
-are the files to keep; together they hold every message and attachment, and the
-rest are safe to delete." That guarantee is the whole point, and it's what makes
-the deduplication **branch-aware** instead of a size heuristic.
+because a forked conversation can tuck a unique reply or attachment into a file
+that isn't the largest. I wanted a tool that could state, provably, "these are
+the files to keep; together they hold every message and attachment, and the rest
+are safe to delete." That guarantee is the whole point, and it's what makes the
+deduplication branch-aware instead of a size heuristic.
 
 ## Engineering highlights
 

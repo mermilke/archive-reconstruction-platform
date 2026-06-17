@@ -68,6 +68,10 @@
   .fmtnote a{color:var(--accent);font-weight:600;text-decoration:none}
   .fmtnote a:hover{text-decoration:underline}
   .fmtnote code{background:#e0f2fe;border-radius:4px;padding:1px 5px;font-size:12px}
+  /* transient status banner (replaces blocking alert()) */
+  .statusbar{max-width:70ch;margin:16px auto 0;background:#fffbeb;border:1px solid #fde68a;
+    border-left:4px solid #f59e0b;border-radius:10px;padding:12px 15px;font-size:13px;color:#334155}
+  .statusbar[hidden]{display:none}
   /* file viewer / compare modal */
   .fname-btn{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:0;
     cursor:pointer;text-align:left;word-break:break-all}
@@ -122,6 +126,7 @@
     <input type="file" id="picker" multiple accept=".txt">
   </label>
   <p class="sampleline">No exports handy? <button type="button" class="linkbtn" id="loadSample">Load the sample data</button> to see it work.</p>
+  <div class="statusbar" id="status" role="status" aria-live="polite" hidden></div>
 
   <div class="fmtnote">
     <b>This is a <code>.txt</code>-only demo.</b> The installable tool reads real mailbox exports
@@ -148,11 +153,11 @@
   </p>
 </main>
 
-<div class="modal" id="viewer">
-  <div class="modal-dialog">
+<div class="modal" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-head">
       <h3 id="viewerTitle"></h3>
-      <button class="x" id="viewerClose">Close</button>
+      <button class="x" id="viewerClose" aria-label="Close viewer">Close</button>
     </div>
     <div class="modal-note" id="viewerNote" style="display:none"></div>
     <div class="cols" id="viewerCols"></div>
@@ -169,8 +174,16 @@
   var workspace = document.getElementById("workspace");
   var chips = document.getElementById("chips");
   var fileList = document.getElementById("fileList");
+  var statusbar = document.getElementById("status");
 
   var currentState = null;   // last computed ArcDedup state (holds byName for the viewer)
+
+  // Inline, non-blocking status (replaces alert()): screen-reader-friendly via
+  // the element's role="status" aria-live region.
+  function setStatus(msg){
+    if(msg){ statusbar.textContent = msg; statusbar.hidden = false; }
+    else { statusbar.textContent = ""; statusbar.hidden = true; }
+  }
 
   function readFile(file){
     return new Promise(function(resolve){
@@ -209,9 +222,9 @@
   }
 
   function render(state, statusMsg){
+    setStatus(statusMsg || "");
     if(!state || !state.files.length){
       workspace.style.display = "none";
-      if(statusMsg) alert(statusMsg);
       return;
     }
     workspace.style.display = "";
@@ -341,20 +354,45 @@
       viewerCols.className = "cols";
       viewerCols.appendChild(column(f.name + " — " + a.length + " message(s)", a, null, null));
       viewerCols.appendChild(column("Keeper: " + keeper + " — " + b.length + " message(s)", b, extraKeys, extraAtts));
-      viewer.classList.add("open");
+      openModal();
     } else {
       var msgs = messagesFor(f.name);
       viewerTitle.textContent = f.name + " — " + msgs.length + " message(s)";
       viewerCols.className = "cols one";
       viewerCols.appendChild(column("Messages", msgs, null, null));
-      viewer.classList.add("open");
+      openModal();
     }
   }
 
-  function closeViewer(){ viewer.classList.remove("open"); }
+  var lastFocus = null;   // element to restore focus to when the dialog closes
+
+  function openModal(){
+    lastFocus = document.activeElement;
+    viewer.classList.add("open");
+    viewer.setAttribute("aria-hidden", "false");
+    document.getElementById("viewerClose").focus();
+  }
+
+  function closeViewer(){
+    if(!viewer.classList.contains("open")) return;
+    viewer.classList.remove("open");
+    viewer.setAttribute("aria-hidden", "true");
+    if(lastFocus && typeof lastFocus.focus === "function"){ lastFocus.focus(); }
+  }
+
   document.getElementById("viewerClose").onclick = closeViewer;
   viewer.addEventListener("click", function(e){ if(e.target === viewer) closeViewer(); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeViewer(); });
+
+  // Basic focus trap: keep Tab cycling inside the open dialog.
+  viewer.addEventListener("keydown", function(e){
+    if(e.key !== "Tab" || !viewer.classList.contains("open")) return;
+    var focusable = viewer.querySelectorAll("button, a[href], input, [tabindex]");
+    if(!focusable.length) return;
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
 
   document.getElementById("reset").onclick = function(){
     currentState = null;
