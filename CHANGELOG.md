@@ -10,7 +10,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - **Renderer and CLI test coverage.** `tests/test_timeline.py` exercises the
   timeline renderer directly — both schema forms (rich object and bare event
-  array), event counting, category resolution, HTML escaping, the
+  array), event counting, category resolution, HTML escaping, the overview-axis
+  SVG, the filter UI, phase sections, per-card importance, the
   self-contained/offline guarantee, and the committed `examples/events.json` —
   and `tests/test_cli.py` drives `arc`'s argument dispatch and exit codes plus
   the cp1252-safe output helper. The suite is now thirteen files.
@@ -21,15 +22,20 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `tests/test_archive_example.py` computes the expected keep/redundant sets from
   the corpus by filename role, so adding a fixture can't silently rot a magic
   number.
-- **The test runner caps each file at 300s**, so a hung local-server or Node
-  test reports a timeout instead of wedging the whole run.
+- **The test runner caps each file at 300s** (a hung local-server or Node test
+  reports a timeout instead of wedging the whole run) and now flags a test that
+  exits 0 without printing its summary, closing the exit-code-only blind spot.
+- **Maturity classifier is now `4 - Beta`** (was `5 - Production/Stable`) — a
+  more honest signal for a v1.x solo project; the package name and feature set
+  are unchanged.
 - **`examples/mailbox/` is no longer tracked** (regenerate with
   `scripts/generate_sample_mailbox.py`), keeping the source tree code-forward.
 - **In-browser dedup tool accessibility (`docs/try.html`).** Status messages use
   an inline `aria-live` banner instead of a blocking `alert()`, and the
   compare/viewer modal gains dialog ARIA, focus-on-open, focus-restore, and a Tab
   focus trap.
-- **README introduction tightened** — lighter em-dash and bold density.
+- **README tightened** — lighter em-dash and bold density across the
+  introduction, the engineering highlights, and the formats section.
 
 ## [1.1.0] — 2026-06-17
 

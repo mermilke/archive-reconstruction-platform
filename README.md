@@ -65,38 +65,38 @@ deduplication branch-aware instead of a size heuristic.
 
 On the synthetic sample corpora, both verifiable from a clean checkout:
 
-- **`examples/archive`** — **77 readable exports → 25 keep / 52 redundant**
+- **`examples/archive`** — 77 readable exports, 25 kept / 52 redundant
   (`arc dedup examples/archive`; asserted by
   [`tests/test_archive_example.py`](tests/test_archive_example.py)). A
-  deliberately messy mixed-format pile: `.txt`/`.eml`/`.mbox` plus emails
-  saved-to-PDF, three-way branches, normalization collapses, attachment forks,
-  and timezone-shifted duplicates.
-- **`examples/threads`** — **6 files → keep 2 / delete 4**
+  deliberately messy mixed-format pile: `.txt`/`.eml`/`.mbox` plus emails saved
+  to PDF, three-way branches, normalization collapses, attachment forks, and
+  timezone-shifted duplicates.
+- **`examples/threads`** — 6 files, 2 kept / 4 redundant
   ([`tests/test_dedup.py`](tests/test_dedup.py)).
-- **Provably lossless threading** — thread-tree reconstruction confirms the
-  dedup keep-set covers every message:
-  *“Collapsed 3 files → 2 branches; 5 unique messages, **0 lost**.”*
-  (`arc tree`; [`tests/test_thread.py`](tests/test_thread.py)). The verifier
-  reconciles identity across formats, so even the mixed `examples/archive` pile —
-  where the same message is exported with a `Message-ID` in one file and without
-  one in another — verifies as *“0 lost (37 cross-format duplicates collapsed)”*
-  rather than crying wolf.
+- **Provably lossless threading.** Thread-tree reconstruction confirms the dedup
+  keep-set covers every message: *“Collapsed 3 files → 2 branches; 5 unique
+  messages, 0 lost.”* (`arc tree`;
+  [`tests/test_thread.py`](tests/test_thread.py)). The verifier reconciles
+  identity across formats, so even the mixed `examples/archive` pile, where the
+  same message is exported with a `Message-ID` in one file and without one in
+  another, verifies as *“0 lost (37 cross-format duplicates collapsed)”* rather
+  than crying wolf.
 
 What's underneath:
 
-- **Branch-aware subset dedup.** Each file reduces to a *set of content keys*; a
-  file is redundant **only** when its key-set is a subset of another's. A fork
-  that hides a unique reply or attachment is never collapsed into the largest
-  file — the failure mode of every "keep the biggest" heuristic.
-- **Timestamp-ignoring body fingerprint.** Message identity is *sender + a
-  normalized body fingerprint*, with timestamps deliberately excluded, so the
+- **Branch-aware subset dedup.** Each file reduces to a set of content keys; a
+  file is redundant only when its key-set is a subset of another's. A fork that
+  hides a unique reply or attachment is never collapsed into the largest file,
+  which is the failure mode of every "keep the biggest" heuristic.
+- **Timestamp-ignoring body fingerprint.** Message identity is sender plus a
+  normalized body fingerprint, with timestamps deliberately excluded, so the
   same message re-exported under a different timezone collapses to one instead of
   looking like two. Quoted replies, forward headers, and `-- ` signatures are
   stripped before fingerprinting so only the message's own content counts.
-- **Thread-tree reconstruction that *proves* it.** `In-Reply-To` / `References`
+- **Thread-tree reconstruction that proves it.** `In-Reply-To` / `References`
   headers rebuild the reply forest, then a verifier checks the content-key
-  keep-set against that tree and reports a benchmark line (`X→Y files, N lost`) —
-  dedup is provably correct on threaded input, not just heuristic.
+  keep-set against that tree and reports a benchmark line (`X→Y files, N lost`),
+  so dedup is provably correct on threaded input, not just heuristic.
 - **Stdlib PDF text extraction.** Emails saved/printed to PDF are read with no
   third-party dependency: `zlib`-inflate each content stream, then walk the PDF
   text-showing operators (`Tj`/`TJ`/`'`/`"` with `Td`/`TD`/`T*` line breaks). An
@@ -107,7 +107,7 @@ What's underneath:
   [`tests/test_js_parity.py`](tests/test_js_parity.py) shells out to Node and
   asserts the JS keep/delete verdict matches `arc dedup` byte-for-byte (down to
   Python/JS `splitlines` and set-subset edge cases).
-- **Zero-dependency core, lint + type-checked.** Standard library only — no
+- **Zero-dependency core, lint + type-checked.** Standard library only: no
   network, no services, no external assets in the generated HTML. CI runs the
   test matrix (Linux + Windows × Python 3.9–3.13) plus `ruff` and `mypy`; the
   one networked feature (opt-in `arc organize`) and PDF robustness live behind
@@ -364,11 +364,11 @@ the reader can't make sense of is skipped, never silently flagged for deletion.
 (still zero-dependency); RFC 2047-encoded subjects, attachments, and HTML-only
 bodies are handled. Pass `--pattern '*.eml'` to restrict to one format.
 
-For a taste of a *real* archive — many conversations exported several times
-over, in different formats, with the attachments saved alongside —
-`examples/archive/` mixes `.txt`, `.eml`, `.mbox`, `.pdf`, `.csv`, and `.png` in
-one folder (89 files: 77 readable exports + 12 attachments; dedup keeps 25
-branches and flags 52 as redundant):
+For a taste of a real archive (many conversations exported several times over,
+in different formats, with the attachments saved alongside), `examples/archive/`
+mixes `.txt`, `.eml`, `.mbox`, `.pdf`, `.csv`, and `.png` in one folder (89
+files: 77 readable exports + 12 attachments; dedup keeps 25 branches and flags
+52 as redundant):
 
 ```sh
 arc dedup examples/archive    # or: PYTHONPATH=src python -m arc.cli dedup examples/archive
@@ -391,10 +391,10 @@ branch-aware dedup non-trivial:
   excerpts of a thread fold in as cross-format subsets, and a conversation that
   exists *only* as a PDF is read and kept as a branch (never lost).
 
-The same folder holds **both kinds of PDF**: a `.pdf` named as another message's
-attachment (alongside `.csv`/`.png`) rides along matched by name — a first-class
-part of the dedup key, never parsed — while an email *saved/printed* to PDF is
-read as an input. PDF text reading uses a **standard-library** reader, so the
+The same folder holds both kinds of PDF: a `.pdf` named as another message's
+attachment (alongside `.csv`/`.png`) rides along matched by name, a first-class
+part of the dedup key that's never parsed, while an email saved or printed to
+PDF is read as an input. PDF text reading uses a standard-library reader, so the
 core stays zero-dependency (an optional `[pdf]` extra adds `pypdf` for tougher
 real-world PDFs; it's never required).
 
