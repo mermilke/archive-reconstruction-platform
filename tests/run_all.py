@@ -54,13 +54,20 @@ def main(argv):
             if out:
                 print("\n".join("    " + line for line in out.splitlines()))
             continue
-        ok = proc.returncode == 0
+        # Every test file prints an "OK ..." (or "SKIP ...") summary on success.
+        # A clean exit with *no output* means main() ran no checks — treat that
+        # as a failure rather than a silent green (the exit-code-only blind spot).
+        no_output = proc.returncode == 0 and not (proc.stdout or "").strip()
+        ok = proc.returncode == 0 and not no_output
         if not ok:
             failures.append(name)
         if not quiet or not ok:
             mark = "PASS" if ok else "FAIL"
             print(f"[{mark}] {name}")
-            if not ok:
+            if no_output:
+                print("    exited 0 but printed nothing — did its checks run? "
+                      "(each test file should print an 'OK ...' summary)")
+            elif not ok:
                 # Surface the failing test's output so the cause is visible.
                 out = (proc.stdout + proc.stderr).strip()
                 if out:

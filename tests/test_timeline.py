@@ -47,6 +47,37 @@ BARE = [
     {"date": "2025-01-15", "group": "Beta", "title": "b1", "description": "..."},
 ]
 
+# A tab with filters, phases, and a spread of importance/dates — to exercise the
+# overview axis, the filter UI, phase sections, and the per-card importance.
+PHASED = {
+    "title": "Phased",
+    "categories": [
+        {"id": "eng", "label": "Engineering", "color": "#EF4444"},
+        {"id": "val", "label": "Validation", "color": "#10B981"},
+    ],
+    "tabs": [{
+        "id": "t", "label": "T", "filters": True,
+        "groups": [{
+            "id": "g", "label": "G", "category": "eng",
+            "events": [
+                {"date": "2025-01-10", "title": "kickoff", "category": "eng",
+                 "importance": 1, "phase": "Build"},
+                {"date": "2025-02-14", "title": "harden", "category": "eng",
+                 "importance": 2, "phase": "Hardening"},
+                {"date": "2025-03-20", "title": "signoff", "category": "val",
+                 "importance": 3, "phase": "Validation"},
+            ],
+        }],
+    }],
+}
+
+# Same shape, but a tab with filters off (and no category declared).
+NOFILTERS = {
+    "title": "Plain",
+    "tabs": [{"id": "t", "label": "T", "groups": [{"id": "g", "label": "G", "events": [
+        {"date": "2025-01-01", "title": "only"}]}]}],
+}
+
 
 def test_count_events_both_schema_forms():
     assert count_events(RICH) == 2
@@ -108,8 +139,45 @@ def test_load_and_build_the_committed_events_json():
     assert "<svg" in html
 
 
+def test_axis_svg_places_a_dot_per_event():
+    """The overview rail is an SVG with a labelled date span and one dot per
+    dated event, each carrying a hover tooltip."""
+    html = render_timeline(PHASED)
+    assert 'class="axis-svg"' in html
+    assert "data-lo=" in html and "data-hi=" in html
+    assert html.count("<circle") >= 3, "expected one overview dot per dated event"
+    assert "<title>" in html, "dots should carry hover tooltips"
+
+
+def test_filters_ui_present_only_when_enabled():
+    on = render_timeline(PHASED)
+    assert 'class="filters"' in on
+    assert 'data-cat-filter="all"' in on, "category filter buttons should render"
+    assert 'data-key-filter="key"' in on, "the 'key events' filter should render"
+    off = render_timeline(NOFILTERS)
+    assert 'class="filters"' not in off, "no filter UI when a tab doesn't opt in"
+
+
+def test_phases_render_as_labelled_sections():
+    html = render_timeline(PHASED)
+    assert 'class="phase"' in html
+    for label in ("Build", "Hardening", "Validation"):
+        assert f"<h3>{label}</h3>" in html, f"phase {label!r} should be its own section"
+
+
+def test_importance_reaches_the_card_dataset():
+    """Importance drives dot size / star markers via the card's data-key."""
+    html = render_timeline(PHASED)
+    assert 'data-key="3"' in html, "the milestone (importance 3) should be tagged"
+    assert 'data-key="1"' in html
+
+
 def main():
     test_count_events_both_schema_forms()
+    test_axis_svg_places_a_dot_per_event()
+    test_filters_ui_present_only_when_enabled()
+    test_phases_render_as_labelled_sections()
+    test_importance_reaches_the_card_dataset()
     test_bare_array_groups_become_one_tab()
     test_render_is_self_contained()
     test_title_is_html_escaped()
@@ -118,7 +186,8 @@ def main():
     test_unparseable_date_does_not_crash()
     test_load_and_build_the_committed_events_json()
     print("OK - timeline: both schema forms, counts, self-contained + escaped HTML, "
-          "category resolution, and the committed events.json render.")
+          "category resolution, overview axis, filter UI, phase sections, importance, "
+          "and the committed events.json render.")
 
 
 if __name__ == "__main__":

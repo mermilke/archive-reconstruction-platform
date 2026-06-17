@@ -43,38 +43,31 @@ def _reports():
 
 
 def test_roles_match_keep_and_delete():
+    """Keep/redundant sets equal exactly the files of each role, and counts are
+    *derived from the corpus* — not hard-coded — so adding a fixture can't
+    silently rot a magic number. Every redundant file must also be covered by a
+    kept *branch* (not merely some larger redundant file)."""
     result = dedup_directory(ARCHIVE)
     by_name = {r.name: r for r in result.reports}
 
     for name in by_name:  # guard against typos / unclassified files
         assert _role(name) in KEEP_ROLES | SUBSET_ROLES, f"unclassified file: {name}"
 
-    kept = set(result.keep)
-    for name, report in by_name.items():
-        if _role(name) in KEEP_ROLES:
-            assert name in kept, f"{name} is a branch but was flagged redundant"
-        else:
-            assert report.redundant, f"{name} is a subset but was kept"
-            assert kept & set(report.superseded_by), (
-                f"{name} should be superseded by a kept branch; got {report.superseded_by}"
-            )
-
-
-def test_counts():
-    """Counts are *derived from the corpus* (by filename role), not hard-coded, so
-    adding or removing a fixture can't silently rot a magic number — the keep set
-    must equal exactly the branch-role files, and delete the subset-role files."""
-    result = dedup_directory(ARCHIVE)
-    by_name = {r.name: r for r in result.reports}
     expected_keep = {n for n in by_name if _role(n) in KEEP_ROLES}
     expected_delete = {n for n in by_name if _role(n) in SUBSET_ROLES}
 
+    assert set(result.keep) == expected_keep, "kept = exactly the branch-role files"
+    assert set(result.delete) == expected_delete, "redundant = exactly the subset-role files"
     assert len(result.reports) == len(expected_keep) + len(expected_delete), (
         "every scanned file should be either a branch or a subset")
-    assert set(result.keep) == expected_keep, (
-        "kept branches should be exactly the branch-role files")
-    assert set(result.delete) == expected_delete, (
-        "redundant files should be exactly the subset-role files")
+
+    kept = set(result.keep)
+    for name in expected_delete:
+        report = by_name[name]
+        assert report.redundant, f"{name} is a subset but was kept"
+        assert kept & set(report.superseded_by), (
+            f"{name} should be superseded by a kept branch; got {report.superseded_by}"
+        )
 
 
 def test_attachment_files_stay_attachments_but_saved_pdf_emails_are_read():
@@ -179,7 +172,6 @@ def test_pdf_only_conversation_is_read_and_kept_as_a_branch():
 
 def main():
     test_roles_match_keep_and_delete()
-    test_counts()
     test_attachment_files_stay_attachments_but_saved_pdf_emails_are_read()
     test_eml_can_be_a_subset_of_a_txt_thread()
     test_three_way_branch_keeps_every_fork()
