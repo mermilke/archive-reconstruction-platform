@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0] — 2026-06-17
 
 ### Added
 
@@ -175,6 +175,6 @@ library does everything in the core.
   implemented with stdlib `urllib` so there is still nothing to `pip install`.
   Every other command is fully offline.
 
-[Unreleased]: https://github.com/mermilke/archive-reconstruction-platform/compare/v1.1.0...HEAD
+[1.2.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.2.0
 [1.1.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.1.0
 [1.0.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.0.0
