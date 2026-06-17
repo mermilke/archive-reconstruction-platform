@@ -78,3 +78,12 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 no_implicit_optional = true
 ignore_missing_imports = true
+
+[tool.coverage.run]
+# The test runner launches each test file as a subprocess; parallel mode writes
+# one data file per process, merged with `coverage combine`. See CONTRIBUTING.md.
+source = ["src"]
+parallel = true
+
+[tool.coverage.report]
+show_missing = true

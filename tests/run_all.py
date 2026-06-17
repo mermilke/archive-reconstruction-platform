@@ -26,11 +26,21 @@ def main(argv):
         print(f"No test files found in {HERE}")
         return 1
 
+    # When measuring coverage, each test runs as a subprocess, so wrap the child
+    # interpreter with `coverage run` (parallel-mode writes a separate data file
+    # per process; combine them afterwards). Triggered by the standard
+    # COVERAGE_PROCESS_START env var so a plain run stays dependency-free.
+    measure = bool(os.environ.get("COVERAGE_PROCESS_START"))
+
     failures = []
     start = time.time()
     for path in test_files:
         name = os.path.basename(path)
-        proc = subprocess.run([sys.executable, path], capture_output=True, text=True)
+        if measure:
+            cmd = [sys.executable, "-m", "coverage", "run", "--parallel-mode", path]
+        else:
+            cmd = [sys.executable, path]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
         ok = proc.returncode == 0
         if not ok:
             failures.append(name)

@@ -39,7 +39,7 @@ jobs:
         run: python tests/run_all.py
 
   lint:
-    name: lint + type-check
+    name: lint + type-check + coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -49,8 +49,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Lint/type tooling lives in the optional [dev] extra; the runtime core
-      # still installs with zero dependencies.
+      # Lint/type/coverage tooling lives in the optional [dev] extra; the runtime
+      # core still installs with zero dependencies.
       - name: Install dev tooling
         run: python -m pip install -e ".[dev]"
 
@@ -59,3 +59,14 @@ jobs:
 
       - name: Type-check (mypy)
         run: mypy
+
+      # The runner launches each test as a subprocess; COVERAGE_PROCESS_START
+      # makes run_all.py wrap them with `coverage run` (then combine + report).
+      - name: Coverage
+        env:
+          COVERAGE_PROCESS_START: pyproject.toml
+        run: |
+          coverage erase
+          python tests/run_all.py
+          coverage combine
+          coverage report --fail-under=65

@@ -155,14 +155,30 @@ source email, quoted context, attachments, and significance).
 
 ## Install
 
+The recommended way is [**pipx**](https://pipx.pypa.io), which installs the `arc`
+command into its own isolated environment and puts it on your PATH (plain
+`pip install --user` often leaves console scripts off PATH):
+
 ```sh
-# From a clone (editable): gives you the `arc` command on your PATH
-pip install -e .
+# Install the released CLI straight from the repo
+pipx install "git+https://github.com/mermilke/archive-reconstruction-platform"
 arc --version
 arc --help
+
+# Optional: more robust PDF text extraction
+pipx install "archive-reconstruction-platform[pdf] @ git+https://github.com/mermilke/archive-reconstruction-platform"
 ```
 
-Or run it straight from a clone without installing — see **Quick start** below.
+Or from a clone with `pip` (editable — handy for hacking on it):
+
+```sh
+pip install -e .          # gives you the `arc` command
+pip install -e ".[dev]"   # + ruff / mypy / coverage for contributors
+arc --version
+```
+
+Either way the core installs with **zero third-party dependencies**. You can also
+run it straight from a clone without installing — see **Quick start** below.
 
 ## Quick start
 
@@ -202,9 +218,11 @@ one-shot test runner — `python tests/run_all.py` — and `make test` / `.\task
 ## Testing
 
 Every feature ships with a test, and every "messy input" feature ships with a
-messy fixture. The suite is **nine test files** covering parsing and parser
+messy fixture. The suite is **eleven test files** covering parsing and parser
 hardening, branch-aware dedup, thread-tree reconstruction, the `.eml`/`.mbox`
-adapter, the SQLite store, the local web UI, and the timeline bridge:
+adapter, stdlib PDF reading, the AI categorizer (offline, mocked transport), the
+SQLite store, the local web UI, the timeline bridge, and the big mixed-format
+example corpus:
 
 ```sh
 python tests/run_all.py        # or: make test  /  .\tasks.ps1 test
@@ -213,6 +231,22 @@ python tests/run_all.py        # or: make test  /  .\tasks.ps1 test
 It runs on every push and pull request via GitHub Actions (the **tests** badge
 above), across a matrix of **Linux and Windows on Python 3.9–3.13**, plus a
 byte-compile check over every module and a smoke test of the `arc` entry point.
+A separate CI job runs **`ruff`**, **`mypy`**, and **coverage** (currently ~72%,
+with a 65% floor).
+
+### Coverage
+
+The runner is stdlib-only (no pytest), so measure coverage by wrapping each test
+subprocess — `COVERAGE_PROCESS_START` tells `run_all.py` to do that, then combine
+the per-process data files:
+
+```sh
+pip install -e ".[dev]"
+coverage erase
+COVERAGE_PROCESS_START=pyproject.toml python tests/run_all.py
+coverage combine
+coverage report                       # PowerShell: $env:COVERAGE_PROCESS_START="pyproject.toml"
+```
 
 One test earns its keep in particular. The dedup core is implemented twice — in
 Python, and in JavaScript for the zero-install [browser tool](#screenshots) —
