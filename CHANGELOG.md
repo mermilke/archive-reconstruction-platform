@@ -15,6 +15,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   email subject or an AI response can't break out of the `<script>` element or
   its attribute context. The text path was already escaped; this closes the
   colour and script-JSON gaps. Covered by new tests in `tests/test_timeline.py`.
+- **Active-content href schemes are dropped.** A source/attachment link with a
+  `javascript:`, `vbscript:`, or `data:` URL is rendered as plain text instead of
+  a clickable `<a>`, so an author- or AI-supplied href can't become
+  click-to-execute. Normal relative/`file:`/`http(s):` links are unchanged.
 
 ### Fixed
 
