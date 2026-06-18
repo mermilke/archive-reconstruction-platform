@@ -4,6 +4,50 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+
+- **Timeline renderer output hardening.** Category colours are now validated
+  against a CSS-colour allowlist before they are interpolated into SVG/`style`
+  attributes, and the inline category JSON escapes `<`, `>`, `&`, and the JS
+  line/paragraph separators (U+2028/U+2029) so a category label sourced from an
+  email subject or an AI response can't break out of the `<script>` element or
+  its attribute context. The text path was already escaped; this closes the
+  colour and script-JSON gaps. Covered by new tests in `tests/test_timeline.py`.
+
+### Fixed
+
+- **cp1252 `.txt` exports no longer abort the scan.** A plain-text export saved
+  in cp1252 (common from Outlook/Windows) is decoded with a cp1252 fallback
+  instead of raising `UnicodeDecodeError`, matching the defensive decoding the
+  `.eml`/`.pdf` readers already use. (`tests/test_parse_hardening.py`)
+- **CLI output is cp1252-console safe everywhere.** `arc` degrades an
+  unencodable glyph (arrows/ellipses/emoji in a subject or title) to an escape
+  instead of aborting the command on a Windows cp1252 console — previously only
+  `arc tree` was guarded.
+- **Thread reconstruction orders by real time.** Sibling ordering and the
+  "earliest occurrence wins" dedup now compare timestamps chronologically (the
+  shared datetime parser) rather than lexicographically, so non-zero-padded or
+  reordered timestamps sort correctly. (`tests/test_thread.py`)
+- **Bounded PDF inflation.** A single FlateDecode stream is now capped (64 MB) so
+  a malformed or hostile "zip-bomb" PDF — which can arrive via the web drop —
+  can't exhaust memory.
+- **`arc web` cleans up after itself.** The temporary working directory of
+  uploaded files is removed on shutdown.
+
+### Changed
+
+- **`examples/mailbox/` is now actually untracked.** v1.2.0 documented this but
+  the 71 files remained in the git index; they are removed from tracking now
+  (still on disk; regenerate with `scripts/generate_sample_mailbox.py`).
+  `tests/test_organize.py` falls back to the always-tracked `examples/threads`
+  so it can't silently pass on an absent corpus.
+- **Broader JS/Python parity.** The cross-language parity test now also pins
+  signature, `-----Original Message-----`, and quoted-line normalization (not
+  just a single quote-tail), so the in-browser port can't drift from Python on
+  the harder normalizer paths.
+
 ## [1.2.0] — 2026-06-17
 
 ### Added
@@ -175,6 +219,7 @@ library does everything in the core.
   implemented with stdlib `urllib` so there is still nothing to `pip install`.
   Every other command is fully offline.
 
+[Unreleased]: https://github.com/mermilke/archive-reconstruction-platform/compare/v1.2.0...HEAD
 [1.2.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.2.0
 [1.1.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.1.0
 [1.0.0]: https://github.com/mermilke/archive-reconstruction-platform/releases/tag/v1.0.0
