@@ -117,6 +117,59 @@ def test_js_matches_python_on_quote_stripped_bodies():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def test_js_matches_python_across_normalization_cases():
+    """The clean example corpus and the single quote-tail pair don't exercise the
+    *harder* normalizer paths. Here the same message is re-exported four ways —
+    plain, with a ``-- `` signature, with a ``-----Original Message-----`` forward
+    block, and with leading ``>`` quoted lines — and must collapse to ONE keeper
+    in both implementations. If the JS port's signature/forward/quote stripping
+    drifts from Python's, one of these re-exports would fingerprint differently
+    and the keep/delete verdicts would diverge here.
+    """
+    sender = "From: Raj Patel <raj.patel@voltera.example>\n"
+    subject = "Subject: RE: Drive Assist 3.0 canary\n"
+    core = "Sounds good, shipping the canary Friday."
+
+    def export(ts, tail):
+        return f"{sender}Sent: 2025-01-0{ts} 1{ts}:00\n{subject}\n{core}\n{tail}"
+
+    files = {
+        "a_clean.txt": export(1, ""),
+        "b_signature.txt": export(2, "\n-- \nRaj Patel\nVoltera Mobility\n"),
+        "c_original.txt": export(
+            3,
+            "\n-----Original Message-----\n"
+            "From: Lena Ortiz <lena.ortiz@voltera.example>\n"
+            "Sent: 2024-12-31 09:00\n"
+            "Are we still go for Friday?\n",
+        ),
+        "d_quoted.txt": export(
+            4,
+            "\nOn Wed, Dec 31, 2024 at 9:00 AM Lena Ortiz <lena.ortiz@voltera.example> wrote:\n"
+            "> Are we still go for Friday?\n> Thanks\n",
+        ),
+    }
+    tmp = tempfile.mkdtemp(prefix="arc-js-norm-")
+    try:
+        for name, text in files.items():
+            with open(os.path.join(tmp, name), "w", encoding="utf-8", newline="") as fh:
+                fh.write(text)
+
+        # Sanity: Python must collapse all four to the single clean keeper, so the
+        # case actually tests normalization (and isn't trivially all-unique).
+        py = dedup_directory(tmp)
+        assert set(py.keep) == {"a_clean.txt"}, (
+            f"setup: all re-exports should collapse to the clean keeper, got keep={py.keep}"
+        )
+        assert set(py.delete) == {"b_signature.txt", "c_original.txt", "d_quoted.txt"}, (
+            f"setup: the three re-exports should be redundant, got delete={py.delete}"
+        )
+
+        _assert_verdict_parity(tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def test_js_summary_counts_match_python():
     js = _run_js(THREADS_DIR)
     paths = find_message_files(THREADS_DIR)
@@ -140,8 +193,10 @@ def main():
         return 0
     test_js_matches_python_on_examples()
     test_js_matches_python_on_quote_stripped_bodies()
+    test_js_matches_python_across_normalization_cases()
     test_js_summary_counts_match_python()
-    print("OK - JS dedup port matches the Python core (examples + quote-stripping).")
+    print("OK - JS dedup port matches the Python core "
+          "(examples + quote/signature/forward normalization).")
     return 0
 
 
