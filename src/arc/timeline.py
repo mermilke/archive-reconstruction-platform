@@ -95,6 +95,31 @@ def _tint(h: str, alpha: float) -> str:
     return "rgba(%d,%d,%d,%s)" % (r, g, b, alpha)
 
 
+# A category colour is interpolated raw into SVG ``fill`` / inline ``style``
+# attributes, so it must be a plain colour token and nothing else: hex, an
+# rgb()/hsl() function, or a CSS colour name. Category labels/colours can come
+# from an email subject or an AI response (untrusted), so anything outside this
+# allowlist is rejected before it reaches the HTML.
+_COLOR_RE = re.compile(
+    r"^#[0-9A-Fa-f]{3,8}$"
+    r"|^(?:rgb|rgba|hsl|hsla)\([0-9.,%/\s]+\)$"
+    r"|^[A-Za-z]+$"
+)
+
+
+def _safe_color(value: str | None) -> str | None:
+    """Return ``value`` if it is a safe CSS colour token, else ``None``.
+
+    ``None`` makes :func:`_build_categories` fall back to the built-in palette,
+    so a malformed or hostile colour never breaks out of the attribute (or the
+    inline ``<script>``) it lands in.
+    """
+    if not value:
+        return None
+    v = str(value).strip()
+    return v if _COLOR_RE.match(v) else None
+
+
 def _parse_date(value: str):
     value = (value or "").strip()
     for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%Y-%m", "%Y"):
@@ -172,7 +197,7 @@ def _build_categories(data: dict[str, Any]) -> dict[str, dict[str, str | None]]:
 
     for c in data.get("categories", []):
         cid = c["id"]
-        cats[cid] = {"label": c.get("label", _prettify(cid)), "color": c.get("color")}
+        cats[cid] = {"label": c.get("label", _prettify(cid)), "color": _safe_color(c.get("color"))}
         order.append(cid)
 
     # Discover any category id referenced by groups/events but not declared.
@@ -243,6 +268,13 @@ def render_timeline(data: Any, title: str | None = None) -> str:
     html = html.replace("__STOREKEY__", E(_slug(page_title)))
     cats_json = json.dumps({cid: {"label": info["label"], "color": info["color"]}
                             for cid, info in cats.items()})
+    # This JSON is embedded inside an inline <script>. A category label can carry
+    # arbitrary text (email subjects, AI output), so neutralize the sequences
+    # that could close the script element or break the JS string. These are all
+    # valid JSON escapes, so the parsed value is unchanged.
+    cats_json = (cats_json.replace("<", "\\u003c").replace(">", "\\u003e")
+                 .replace("&", "\\u0026")
+                 .replace("\\u2028", "\\u2028").replace("\\u2029", "\\u2029"))
     html = html.replace("__CATSJSON__", cats_json)
     html = html.replace("__STYLE__", _STYLE)
     html = html.replace("__TABBAR__", tab_bar)

@@ -111,6 +111,56 @@ def test_declared_category_color_reaches_the_page():
     assert "#EF4444" in render_timeline(RICH)
 
 
+def test_category_label_cannot_break_out_of_the_inline_script():
+    """Category labels can come from email subjects / AI output, and the labels
+    are embedded in an inline <script> as JSON. A label containing `</script>`
+    (or a raw JS line separator) must not close the element or break the JS
+    string — yet must still round-trip to the exact original text."""
+    import json
+    import re
+
+    sep = chr(0x2028)  # U+2028 LINE SEPARATOR — valid in JSON, fatal in raw JS
+    label = "</script><script>pwn()</script> A&B" + sep + "tail"
+    data = {
+        "title": "T",
+        "categories": [{"id": "x", "label": label}],
+        "tabs": [{"id": "t", "label": "T", "groups": [{"id": "g", "category": "x",
+                  "events": [{"date": "2025-01-01", "title": "hi", "category": "x"}]}]}],
+    }
+    html = render_timeline(data)
+    m = re.search(r"window\.ETT_CATS = (\{.*?\});", html, re.S)
+    assert m, "the inline category JSON should be present"
+    script_json = m.group(1)
+    assert "</script" not in script_json and "<script" not in script_json, \
+        "a hostile label closed/opened a <script> element"
+    assert sep not in script_json and chr(0x2029) not in script_json, \
+        "a raw JS line separator leaked into the inline script"
+    assert json.loads(script_json)["x"]["label"] == label, \
+        "escaping must be reversible — the label should round-trip exactly"
+
+
+def test_hostile_category_color_is_rejected():
+    """A category color is interpolated raw into SVG/style attributes, so a value
+    that isn't a plain color token must be dropped (it falls back to the palette)
+    rather than break out of the attribute. A valid color still passes through."""
+    data = {
+        "title": "T",
+        "categories": [
+            {"id": "bad", "label": "Bad", "color": 'red"><script>x</script>'},
+            {"id": "ok", "label": "Ok", "color": "#3af"},
+        ],
+        "tabs": [{"id": "t", "label": "T", "groups": [
+            {"id": "g1", "category": "bad", "events": [
+                {"date": "2025-01-01", "title": "a", "category": "bad"}]},
+            {"id": "g2", "category": "ok", "events": [
+                {"date": "2025-01-02", "title": "b", "category": "ok"}]},
+        ]}],
+    }
+    html = render_timeline(data)
+    assert 'red"><script>' not in html, "a hostile color was interpolated raw"
+    assert "#3af" in html, "a valid color should survive"
+
+
 def test_undeclared_category_still_renders():
     """An event referencing a category nobody declared gets a palette color
     rather than crashing the render."""
@@ -182,6 +232,8 @@ def main():
     test_render_is_self_contained()
     test_title_is_html_escaped()
     test_declared_category_color_reaches_the_page()
+    test_category_label_cannot_break_out_of_the_inline_script()
+    test_hostile_category_color_is_rejected()
     test_undeclared_category_still_renders()
     test_unparseable_date_does_not_crash()
     test_load_and_build_the_committed_events_json()
