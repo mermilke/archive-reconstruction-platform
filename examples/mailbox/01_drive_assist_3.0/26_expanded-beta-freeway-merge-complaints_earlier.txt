@@ -1,5 +1,0 @@
-From: Elena Cruz <elena.cruz@voltera.example>
-Sent: 2025-11-18 15:00
-Subject: Expanded beta - freeway merge complaints
-
-Cluster of reports: merges feel timid. It waits for huge gaps on busy freeways.

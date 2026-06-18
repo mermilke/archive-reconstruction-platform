@@ -1,5 +1,0 @@
-From: Sofia Marenko <sofia.marenko@voltera.example>
-Sent: 2025-03-10 08:00
-Subject: Sim run - unprotected lefts
-
-2.1M sim miles overnight. One failure cluster: gap acceptance on unprotected left turns.

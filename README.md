@@ -223,11 +223,11 @@ one-shot test runner — `python tests/run_all.py` — and `make test` / `.\task
 ## Testing
 
 Every feature ships with a test, and every "messy input" feature ships with a
-messy fixture. The suite is **eleven test files** covering parsing and parser
+messy fixture. The suite is **thirteen test files** covering parsing and parser
 hardening, branch-aware dedup, thread-tree reconstruction, the `.eml`/`.mbox`
 adapter, stdlib PDF reading, the AI categorizer (offline, mocked transport), the
-SQLite store, the local web UI, the timeline bridge, and the big mixed-format
-example corpus:
+SQLite store, the local web UI, the timeline renderer and bridge, the CLI
+dispatch, and the big mixed-format example corpus:
 
 ```sh
 python tests/run_all.py        # or: make test  /  .\tasks.ps1 test

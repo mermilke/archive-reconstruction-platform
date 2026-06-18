@@ -17,11 +17,23 @@ from arc import ai  # noqa: E402
 from arc.bridge import ai_email_inputs, assemble_categorized, collect_unique_messages  # noqa: E402
 from arc.timeline import render_timeline  # noqa: E402
 
-MAILBOX = os.path.join(ROOT, "examples", "mailbox")
+
+def _corpus_dir():
+    """A folder of emails to organize. Prefer the richer (but regenerable, hence
+    git-untracked) ``examples/mailbox`` when it's present locally; otherwise fall
+    back to ``examples/threads``, which is always tracked — so this test never
+    silently passes on a content-less corpus after a fresh checkout."""
+    mailbox = os.path.join(ROOT, "examples", "mailbox")
+    if glob.glob(os.path.join(mailbox, "**", "*.txt"), recursive=True):
+        return mailbox
+    return os.path.join(ROOT, "examples", "threads")
+
+
+CORPUS = _corpus_dir()
 
 
 def _emails():
-    paths = sorted(glob.glob(os.path.join(MAILBOX, "**", "*.txt"), recursive=True))
+    paths = sorted(glob.glob(os.path.join(CORPUS, "**", "*.txt"), recursive=True))
     uniques, _total = collect_unique_messages(paths)
     return ai_email_inputs(uniques)
 
@@ -98,8 +110,9 @@ def test_classify_with_injected_transport():
 
 def test_assemble_into_timeline():
     emails, items = _emails()
+    assert emails, "the corpus should yield at least one email to organize"
     classification = _fake_classification(emails)
-    data = assemble_categorized(MAILBOX, items, classification)
+    data = assemble_categorized(CORPUS, items, classification)
 
     # 3 categories -> up to 3 groups; every email becomes one event.
     events = [ev for g in data["tabs"][0]["groups"] for ev in g["events"]]

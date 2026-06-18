@@ -1,6 +1,0 @@
-From: Yuki Tanaka <yuki.tanaka@voltera.example>
-Sent: 2025-02-07 10:15
-Subject: Fast-charge curve calibration
-Attachments: charge_curve.csv
-
-First fast-charge curve is calibrated. 10-80% is down to 28 minutes on the test pack.
