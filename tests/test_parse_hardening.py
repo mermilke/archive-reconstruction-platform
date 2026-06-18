@@ -148,6 +148,30 @@ def test_identical_content_tie_break_keeps_one():
     assert result.delete == ["b_copy.txt"]
 
 
+def test_non_utf8_txt_is_decoded_not_crashed():
+    """An Outlook/Windows export saved as cp1252 (smart quotes, em-dash) must
+    parse, not abort the scan with a UnicodeDecodeError."""
+    import tempfile
+
+    # Em-dash + curly quotes; these encode to cp1252 bytes 0x97/0x93/0x94, which
+    # are invalid UTF-8 — so the reader must fall back to cp1252 to recover them.
+    body = ("Status looks good " + chr(0x2014) + " shipping the canary. "
+            + chr(0x201C) + "Go" + chr(0x201D) + " from Raj.")
+    text = ("From: Raj Patel <raj.patel@voltera.example>\n"
+            "Sent: 2025-11-26 16:45\n"
+            "Subject: RE: canary\n\n" + body + "\n")
+    with tempfile.TemporaryDirectory() as d:
+        p = os.path.join(d, "cp1252.txt")
+        with open(p, "wb") as fh:
+            fh.write(text.encode("cp1252"))
+        msgs = parse_path(p)
+    assert len(msgs) == 1, "the cp1252 export should yield one message"
+    assert "shipping the canary" in msgs[0].body
+    # cp1252 0x97 -> U+2014 em-dash; proves the cp1252 fallback decoded it cleanly
+    # rather than mangling the byte through a lossy utf-8 read.
+    assert "—" in msgs[0].body, "cp1252 em-dash should decode to U+2014"
+
+
 def main():
     test_clean_body_is_a_noop()
     test_quoted_reply_is_stripped_from_fingerprint()
@@ -160,7 +184,8 @@ def main():
     test_no_from_block_anchors_nothing()
     test_empty_file_and_whitespace()
     test_identical_content_tie_break_keeps_one()
-    print("OK - parser hardening: quotes/forwards/signatures/timezones/malformed all handled.")
+    test_non_utf8_txt_is_decoded_not_crashed()
+    print("OK - parser hardening: quotes/forwards/signatures/timezones/malformed/cp1252 handled.")
 
 
 if __name__ == "__main__":

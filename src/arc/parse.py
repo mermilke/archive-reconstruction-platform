@@ -85,9 +85,21 @@ def parse_thread(text: str) -> list[Message]:
 
 
 def parse_file(path: str) -> list[Message]:
-    """Read a stacked thread-export ``.txt`` file and parse it into messages."""
-    with open(path, encoding="utf-8") as fh:
-        return parse_thread(fh.read())
+    """Read a stacked thread-export ``.txt`` file and parse it into messages.
+
+    Exports are usually UTF-8, but Outlook/Windows saves are often cp1252, so a
+    strict UTF-8 read would abort the whole scan on one such file. Try UTF-8
+    (BOM-tolerant) first, then cp1252, then a lossy fallback — the same
+    defensive decoding the ``.eml``/``.pdf`` readers use.
+    """
+    with open(path, "rb") as fh:
+        raw = fh.read()
+    for enc in ("utf-8-sig", "cp1252"):
+        try:
+            return parse_thread(raw.decode(enc))
+        except UnicodeDecodeError:
+            continue
+    return parse_thread(raw.decode("utf-8", "replace"))
 
 
 def parse_path(path: str) -> list[Message]:

@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 import shutil  # noqa: E402
 import tempfile  # noqa: E402
 
-from arc.parse import find_message_files, parse_path  # noqa: E402
+from arc.parse import find_message_files, parse_path, parse_thread  # noqa: E402
 from arc.thread import build_forest, verify_no_loss, walk  # noqa: E402
 
 THREADED = os.path.join(ROOT, "tests", "fixtures", "threaded")
@@ -177,12 +177,49 @@ def test_mixed_id_corpus_collapses_without_reporting_loss():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+# Two replies to one root whose timestamps sort the OTHER way as strings than as
+# dates: "9:00" > "10:00" lexicographically, but 09:00 < 10:00 chronologically.
+_SIBLING_ORDER = """From: Ana <ana@voltera.example>
+Sent: 2025-03-08 08:00
+Subject: Canary plan
+Message-ID: <root@voltera.example>
+
+Root message.
+
+From: Bo <bo@voltera.example>
+Sent: 2025-03-09 9:00
+Subject: RE: Canary plan
+Message-ID: <r1@voltera.example>
+In-Reply-To: <root@voltera.example>
+
+Earlier reply at nine.
+
+From: Cy <cy@voltera.example>
+Sent: 2025-03-09 10:00
+Subject: RE: Canary plan
+Message-ID: <r2@voltera.example>
+In-Reply-To: <root@voltera.example>
+
+Later reply at ten.
+"""
+
+
+def test_siblings_order_chronologically_not_lexicographically():
+    forest = build_forest(parse_thread(_SIBLING_ORDER))
+    assert len(forest) == 1, "one root conversation"
+    order = [n.message.sender.split()[0] for n in walk(forest)]
+    # Root, then the 09:00 reply, then the 10:00 reply — by real time, even though
+    # "10:00" sorts before "9:00" as a string.
+    assert order == ["Ana", "Bo", "Cy"], f"siblings out of chronological order: {order}"
+
+
 def main():
     test_threading_headers_are_captured()
     test_forest_shape()
     test_verify_no_loss_with_message_ids()
     test_verify_no_loss_falls_back_without_headers()
     test_mixed_id_corpus_collapses_without_reporting_loss()
+    test_siblings_order_chronologically_not_lexicographically()
     print("OK - thread tree rebuilt; dedup verified to lose 0 messages.")
 
 

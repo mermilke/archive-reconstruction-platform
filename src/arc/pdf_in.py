@@ -60,10 +60,20 @@ def _hint():
 _STREAM_RE = re.compile(rb"stream\r?\n(.*?)\r?\nendstream", re.DOTALL)
 
 
+# Cap a single inflated stream so a malformed or hostile "zip bomb" PDF (a tiny
+# FlateDecode stream that expands to gigabytes) can't exhaust memory — PDFs can
+# now arrive via the web drop. 64 MB is far more text than any real email page.
+_MAX_INFLATE = 64 * 1024 * 1024
+
+
 def _inflate(chunk: bytes) -> bytes:
-    """Return the chunk inflated if it is zlib/FlateDecode data, else as-is."""
+    """Return the chunk inflated if it is zlib/FlateDecode data, else as-is.
+
+    Inflation is bounded to ``_MAX_INFLATE`` bytes; anything beyond that is
+    truncated rather than buffered, which is harmless for text extraction.
+    """
     try:
-        return zlib.decompress(chunk)
+        return zlib.decompressobj().decompress(chunk, _MAX_INFLATE)
     except Exception:
         return chunk
 

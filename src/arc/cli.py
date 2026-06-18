@@ -379,7 +379,26 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _make_stdout_safe() -> None:
+    """Never let a Unicode subject/title crash output on a cp1252 console.
+
+    Subjects and titles can carry arrows/ellipses/emoji; a Windows console in
+    cp1252 would raise ``UnicodeEncodeError`` when one is printed. Switching the
+    streams to ``backslashreplace`` keeps ASCII output identical and degrades the
+    rare unencodable glyph to an escape instead of aborting the command. (No-op
+    when stdout is a plain buffer, e.g. captured in tests.)
+    """
+    import sys as _sys
+
+    for stream in (_sys.stdout, _sys.stderr):
+        try:
+            stream.reconfigure(errors="backslashreplace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
+    _make_stdout_safe()
     parser = build_parser()
     args = parser.parse_args(argv)
     return args.func(args)

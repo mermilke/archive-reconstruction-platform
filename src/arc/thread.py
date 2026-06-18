@@ -28,6 +28,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+from .bridge import _ts_key
 from .dedup import dedup_directory, message_key
 from .parse import Message, find_message_files, parse_path
 
@@ -77,8 +78,14 @@ def _who(sender: str) -> str:
     return (m.group(1) if m else (sender or "")).strip() or "Unknown"
 
 
-def _ts(msg: Message) -> str:
-    return msg.timestamp or ""
+def _ts(msg: Message):
+    """A *chronologically* sortable key for a message's timestamp.
+
+    Parses the header timestamp into a datetime (shared with the bridge/store),
+    so "earliest occurrence wins" and the sibling ordering are by real date, not
+    by string order — an unparseable or absent timestamp sorts last.
+    """
+    return _ts_key(msg.timestamp or "")
 
 
 @dataclass

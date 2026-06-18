@@ -349,6 +349,9 @@ def serve(host: str = "127.0.0.1", port: int = 8000, open_browser: bool = True) 
         print("\nStopping.")
     finally:
         httpd.shutdown()
+        # Remove the temp working dir of uploaded files; it never outlives the run.
+        import shutil
+        shutil.rmtree(httpd.session.dir, ignore_errors=True)  # type: ignore[attr-defined]
     return 0
 
 
