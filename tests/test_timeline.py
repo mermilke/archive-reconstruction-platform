@@ -161,6 +161,27 @@ def test_hostile_category_color_is_rejected():
     assert "#3af" in html, "a valid color should survive"
 
 
+def test_dangerous_href_schemes_are_dropped():
+    """Source links and attachment chips render as <a href>. A javascript:/data:
+    href must not become a clickable link (it falls back to plain text), while a
+    normal relative/file href still links."""
+    data = {
+        "title": "T",
+        "tabs": [{"id": "t", "label": "T", "groups": [{"id": "g", "events": [{
+            "date": "2025-01-01", "title": "evt",
+            "source": {"type": "email", "href": "javascript:alert(1)", "label": "Open"},
+            "attachments": [
+                {"name": "bad.pdf", "href": "data:text/html,<script>x</script>"},
+                {"name": "good.pdf", "href": "files/good.pdf"},
+            ],
+        }]}]}],
+    }
+    html = render_timeline(data)
+    assert "javascript:alert(1)" not in html, "javascript: source href should be dropped"
+    assert "data:text/html" not in html, "data: attachment href should be dropped"
+    assert 'href="files/good.pdf"' in html, "a normal relative href should still link"
+
+
 def test_undeclared_category_still_renders():
     """An event referencing a category nobody declared gets a palette color
     rather than crashing the render."""
@@ -234,6 +255,7 @@ def main():
     test_declared_category_color_reaches_the_page()
     test_category_label_cannot_break_out_of_the_inline_script()
     test_hostile_category_color_is_rejected()
+    test_dangerous_href_schemes_are_dropped()
     test_undeclared_category_still_renders()
     test_unparseable_date_does_not_crash()
     test_load_and_build_the_committed_events_json()

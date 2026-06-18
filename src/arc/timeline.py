@@ -120,6 +120,23 @@ def _safe_color(value: str | None) -> str | None:
     return v if _COLOR_RE.match(v) else None
 
 
+# Source/attachment hrefs are rendered as ``<a href>``. They normally come from
+# author data (events.json) or the toolkit's own ``file:``/``/source/`` links, so
+# escaping handles the attribute context — but an *active-content* scheme would
+# be a click-to-execute even when escaped, so those are dropped (the chip then
+# renders as plain text).
+_BAD_HREF_SCHEME = re.compile(r"^\s*(?:javascript|vbscript|data)\s*:", re.I)
+
+
+def _safe_href(href: Any) -> str | None:
+    """Return ``href`` unless it uses a dangerous URL scheme, in which case
+    ``None`` (so the caller renders plain text instead of a link)."""
+    if not href:
+        return None
+    h = str(href)
+    return None if _BAD_HREF_SCHEME.match(h) else h
+
+
 def _parse_date(value: str):
     value = (value or "").strip()
     for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%Y-%m", "%Y"):
@@ -658,7 +675,7 @@ def _source_row(ev: dict[str, Any]) -> str:
     if not isinstance(src, dict):
         return ""
     typ = src.get("type", "ref")
-    href = src.get("href")
+    href = _safe_href(src.get("href"))
     label = src.get("label")
     parts: list[str] = []
     if href:
@@ -700,7 +717,7 @@ def _details(ev: dict[str, Any]) -> str:
 def _att_chip(att: Any) -> str:
     if isinstance(att, dict):
         name = att.get("name", "")
-        href = att.get("href")
+        href = _safe_href(att.get("href"))
     else:
         name, href = str(att), None
     if href:
