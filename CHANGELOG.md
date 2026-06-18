@@ -6,6 +6,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- **Consolidated project docs.** The data-handling and threat-model notes from
+  `SECURITY.md` now live in a **Privacy & data handling** section of the README,
+  and `CONTRIBUTING.md` was removed — its dev setup, test runner, and
+  lint/type-check conventions are already covered by the README's Install and
+  Testing sections. `ROADMAP.md` and `DESIGN.md` are unchanged.
+
 ### Security
 
 - **Timeline renderer output hardening.** Category colours are now validated
@@ -98,7 +106,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   subprocess, so `run_all.py` now wraps each child under `coverage` when
   `COVERAGE_PROCESS_START` is set (combine the per-process data files afterwards).
   A CI step reports coverage and enforces a 65% floor (~72% today). See
-  `CONTRIBUTING.md`.
+  the README's Testing section.
 - **`SECURITY.md` and `CONTRIBUTING.md`.** Security states the threat model
   plainly (fully local, recommend-only, the only networked path is opt-in
   `arc organize`) and how to report a vulnerability; Contributing documents the

@@ -485,6 +485,26 @@ shipped:
 pull, and forward-to-an-address ingestion. These need hosted infrastructure,
 token storage, and a security review — out of scope for now.
 
+## Privacy & data handling
+
+The toolkit runs entirely on your machine and never deletes anything — it only
+ever *recommends* a delete list, and acting on that recommendation is a manual
+step you take yourself. Your exports stay local:
+
+- **Offline by default.** `dedup`, `tree`, `timeline`, `ingest`, `store`, and the
+  local `arc web` UI make no network connections — files are read from disk,
+  processed in memory, and written back to paths you choose.
+- **Recommend-only.** No command ever deletes, moves, or modifies your source
+  files, and a PDF whose text can't be extracted is skipped rather than flagged
+  for deletion — the tool never recommends deleting a file it couldn't read.
+- **Self-contained output.** Generated timelines are single HTML files with no
+  external scripts, styles, fonts, or trackers, and the local web UI binds to
+  `127.0.0.1`, writing dropped files to a temporary working directory.
+
+The one feature that touches the network is `arc organize`, an opt-in categorizer
+that calls the Claude API and runs *only* when `ANTHROPIC_API_KEY` is set. If you
+never run it, no email content ever leaves your machine.
+
 ## A note on the example data
 
 All example data is **fully synthetic**. There are no real names, companies,

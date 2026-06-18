@@ -81,7 +81,7 @@ ignore_missing_imports = true
 
 [tool.coverage.run]
 # The test runner launches each test file as a subprocess; parallel mode writes
-# one data file per process, merged with `coverage combine`. See CONTRIBUTING.md.
+# one data file per process, merged with `coverage combine`. See the README.
 source = ["src"]
 parallel = true
 
